@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ import java.util.TreeSet;
     operate on or return <code>CollectionFactory</code>s. 
  
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: Factories.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
+    @version $Id: Factories.java,v 1.4 2004-03-28 07:48:14 cananian Exp $
  */
 public final class Factories {
     
@@ -38,6 +40,16 @@ public final class Factories {
 	};
     }
     
+    /** A <code>MapFactory</code> that generates <code>LinkedHashMap</code>s. */ 
+    public static final MapFactory linkedHashMapFactory = linkedHashMapFactory();
+    public static final <K,V> MapFactory<K,V> linkedHashMapFactory() {
+	return new SerialMapFactory<K,V>() {
+	    public LinkedHashMap<K,V> makeMap(Map<? extends K,? extends V> map) {
+		return new LinkedHashMap<K,V>(map);
+	    }
+	};
+    }
+    
     /** A <code>SetFactory</code> that generates <code>HashSet</code>s. */
     public static final SetFactory hashSetFactory = hashSetFactory();
     public static final <V> SetFactory<V> hashSetFactory() {
@@ -47,6 +59,19 @@ public final class Factories {
 	    }
 	    public HashSet<V> makeSet(int i) {
 		return new HashSet<V>(i);
+	    }
+	};
+    }
+    
+    /** A <code>SetFactory</code> that generates <code>LinkedHashSet</code>s. */
+    public static final SetFactory linkedHashSetFactory = linkedHashSetFactory();
+    public static final <V> SetFactory<V> linkedHashSetFactory() {
+	return new SerialSetFactory<V>() {
+	    public LinkedHashSet<V> makeSet(Collection<? extends V> c) {
+		return new LinkedHashSet<V>(c);
+	    }
+	    public LinkedHashSet<V> makeSet(int i) {
+		return new LinkedHashSet<V>(i);
 	    }
 	};
     }
