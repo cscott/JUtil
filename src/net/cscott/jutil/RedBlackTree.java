@@ -157,7 +157,7 @@ public class RedBlackTree extends BinaryTree {
     }
     
     /** Post delete fixup routine.  
-	@see CLR, pg. 274
+	@see "CLR, pg. 274"
     */
     protected void rbDeleteFixup(Node x) {
 	while(x != root() && color(x) == BLACK) {
