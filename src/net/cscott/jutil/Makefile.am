@@ -51,6 +51,7 @@ PersistentMap.java \
 PersistentSet.java \
 PersistentTreeNode.java \
 RedBlackTree.java \
+ReferenceUnique.java \
 ReverseIterator.java \
 ReverseListIterator.java \
 SetFactory.java \
