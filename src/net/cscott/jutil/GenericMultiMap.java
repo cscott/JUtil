@@ -7,10 +7,8 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
-import java.util.HashSet;
 
 /**
  * <code>GenericMultiMap</code> is a default implementation of a
@@ -27,8 +25,8 @@ import java.util.HashSet;
  *	 are passed on to 'mm'.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: GenericMultiMap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $ */
-public class GenericMultiMap<K,V> implements MultiMap<K,V> {
+ * @version $Id: GenericMultiMap.java,v 1.4 2005-01-20 02:32:31 cananian Exp $ */
+public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     
     // internal Map[KeyType -> Collection[ ValueType ]]
     private Map<K,Collection<V>> internMap;
@@ -141,20 +139,6 @@ public class GenericMultiMap<K,V> implements MultiMap<K,V> {
 	}
     }
 
-    /** Associates the specified value with the specified key in this
-	map.  If the map previously contained any mappings for this
-	key, all of the old values are replaced.  Returns some value
-	that was previous associated with the specified key, or
-	<code>null</code> if no values were associated previously. 
-    */
-    public V put(K key, V value) {
-	Collection<V> c = getValues(key);
-	V prev = c.size()==0 ? null : c.iterator().next();
-	c.clear();
-	c.add(value);
-	return prev;
-    }
-
     /** Removes all mappings for this key from this map if present. 
 	Returns some previous value associated with specified key, or
 	<code>null</code> if there was no mapping for key.  
@@ -178,104 +162,8 @@ public class GenericMultiMap<K,V> implements MultiMap<K,V> {
 	return result;
     }
 
-    /** Copies the mappings from the specified map to this
-	map.  These mappings will replace any mappings that this map
-	had for any of the keys currently in the specified map.  Note
-	that <code>putAll(mm)</code> where <code>mm</code> is a
-	<code>MultiMap</code> will NOT add all of the mappings in
-	<code>mm</code>; it will only add all of the Keys in
-	<code>mm</code>, mapping each Key to one of the Values it
-	mapped to in <code>mm</code>.  To add all of the mappings from
-	another <code>MultiMap</code>, use
-	<code>addAll(MultiMap)</code>.  */
-    public void putAll(Map<? extends K,? extends V> t) {
-	Iterator<? extends Map.Entry<? extends K,? extends V>> entries = t.entrySet().iterator();
-	while(entries.hasNext()) {
-	    Map.Entry<? extends K,? extends V> e = entries.next();
-	    this.put( e.getKey(), e.getValue() );
-	}
-    }
-    
     public void clear() {
 	internMap.clear();
-    }
-
-    public boolean equals(Object o) {
-	if (o==null) return false;
-	if (o==this) return true;
-	try {
-	    Set entrySet = ((Map) o).entrySet();
-	    return this.entrySet().equals(entrySet);
-	} catch (ClassCastException e) {
-	    return false;
-	}
-    }
-
-    public int hashCode() {
-	Iterator<Map.Entry<K,V>> entries = entrySet().iterator();
-	int sum = 0;
-	while(entries.hasNext()) {
-	    sum += entries.next().hashCode();
-	}
-	return sum;
-    }
-
-    /** Ensures that <code>this</code> contains an association from
-	<code>key</code> to <code>value</code>.
-
-	(<code>MultiMap</code> specific operation).
-
-	@return <code>true</code> if this mapping changed as a result of
-	        the call
-    */
-    public boolean add(K key, V value) {
-	boolean changed = getValues(key).add(value);
-	return changed;
-    }
-    
-    /** Adds to the current mappings: associations for
-	<code>key</code> to each value in <code>values</code>.  
-
-	(<code>MultiMap</code> specific operation). 
-
-	@return <code>true</code> if this mapping changed as a result
-	        of the call
-    */
-    public boolean addAll(K key, Collection<? extends V> values) {
-	return getValues(key).addAll(values);
-    }
-    /** Add all mappings in the given multimap to this multimap. */
-    public boolean addAll(MultiMap<? extends K,? extends V> mm) {
-	boolean changed = false;
-	for (Map.Entry<? extends K, ? extends V> me : mm.entrySet()) {
-	    if (add(me.getKey(), me.getValue()))
-		changed = true;
-	}
-	return changed;
-    }
-	
-    /** Removes from the current mappings: associations for
-	<code>key</code> to any value not in <code>values</code>. 
-
-	(<code>MultiMap</code> specific operation). 
-
-	@return <code>true</code> if this mapping changed as a result
-	        of the call
-    */
-    public boolean retainAll(K key, Collection<?> values) {
-	return getValues(key).retainAll(values);
-    }
-
-    /** Removes from the current mappings: associations for
-	<code>key</code> to any value in <code>values</code>.
-
-	(<code>MultiMap</code> specific operation). 
-
-	@return <code>true</code> if this mapping changed as a result
-	        of the call
-    */
-    public boolean removeAll(K key, Collection<?> values) {
-	return getValues(key).removeAll(values);
     }
 
     /** Returns the collection of Values associated with
@@ -305,20 +193,6 @@ public class GenericMultiMap<K,V> implements MultiMap<K,V> {
 	    return c.contains(b);
 	else
 	    return false;
-    }
-
-    public String toString() {
-	StringBuffer sb = new StringBuffer();
-	sb.append("[");
-	Iterator<K> keys = keySet().iterator();
-	while(keys.hasNext()) {
-	    K k = keys.next();
-	    Collection<V> values = getValues(k);
-	    if (values.size()==0) continue;
-	    sb.append("< "+k+" -> "+values+" > ");
-	}
-	sb.append("]");
-	return sb.toString();
     }
 
     /** Returns a set view of the keys in this map. */

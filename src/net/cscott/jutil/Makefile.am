@@ -9,6 +9,7 @@ JAVAROOT=$(top_builddir)/classes
 noinst_JAVA = \
 AbstractHeap.java \
 AbstractMapEntry.java \
+AbstractMultiMap.java \
 AggregateMapFactory.java \
 AggregateSetFactory.java \
 BinaryHeap.java \
