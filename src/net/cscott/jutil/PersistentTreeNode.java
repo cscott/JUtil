@@ -21,7 +21,7 @@ import java.util.Iterator;
  * equality tests for treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentTreeNode.java,v 1.4 2004-01-30 08:55:20 cananian Exp $
+ * @version $Id: PersistentTreeNode.java,v 1.5 2005-01-20 21:39:08 cananian Exp $
  */
 abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     extends AbstractMapEntry<K,V> implements java.io.Serializable {
@@ -247,6 +247,9 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 			   left.left, merge(left.right, right, c, allocator),
 			   allocator);
     }
+    static abstract class Merger<V> {
+	public abstract V merge(V origValue, V newValue);
+    }
     /** Merge trees with possibly overlapping sets of keys.  The value
      *  from <code>newNode</code> is preferred in case both
      *  <code>origNode</code> and <code>newNode</code> contain the same
@@ -254,14 +257,32 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     static <N extends PersistentTreeNode<N,K,V>,K,V>
 		      N putAll(N origNode, N newNode, Comparator<K> c,
 			       Allocator<N,K,V> allocator) {
+	return putAll(origNode, newNode, c, allocator, null/*default*/);
+    }
+    /** Merge trees with possibly overlapping sets of keys.  The given
+     *  <code>merger</code> is used when both 
+     *  <code>origNode</code> and <code>newNode</code> contain the same
+     *  key. */
+    static <N extends PersistentTreeNode<N,K,V>,K,V>
+		      N putAll(N origNode, N newNode, Comparator<K> c,
+			       Allocator<N,K,V> allocator, Merger<V> merger) {
 	if (origNode==null) return newNode;
 	if (newNode==null) return origNode;
+	// fill in missing merger.
+	if (merger==null) merger = new Merger<V>() {
+	    public V merge(V origValue, V newValue) { return newValue; }
+	};
 	// okay, compare origNode and newNode.
 	int keycmp = c.compare(origNode.key, newNode.key);
 	if (keycmp==0) {
-	    // delete origNode.key and then do the merge.
+	    // merge origNode and newNode (by default, deleting origNode)
+	    // and then finish the putAll
 	    return putAll(merge(origNode.left, origNode.right, c, allocator),
-			  newNode, c, allocator);
+			  newNode(newNode, newNode.key,
+				  merger.merge(origNode.getValue(),
+					       newNode.getValue()),
+				  newNode.left, newNode.right, allocator),
+			  c, allocator, merger);
 	}
 	// the node with the smallest heap key goes on top.
 	// in case of tie, the smallest tree key goes on top (left node)
@@ -272,15 +293,15 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	    // origNode on top.
 	    NodePair<N,K,V> np=partition(origNode.key, newNode, c, allocator);
 	    return newNode(origNode, origNode.key, origNode.getValue(),
-			   putAll(origNode.left, np.left, c, allocator),
-			   putAll(origNode.right, np.right, c, allocator),
+			   putAll(origNode.left, np.left, c, allocator,merger),
+			   putAll(origNode.right, np.right,c,allocator,merger),
 			   allocator);
 	} else {
 	    // newNode on top.
 	    NodePair<N,K,V> np=partition(newNode.key, origNode, c, allocator);
 	    return newNode(newNode, newNode.key, newNode.getValue(),
-			   putAll(np.left, newNode.left, c, allocator),
-			   putAll(np.right, newNode.right, c, allocator),
+			   putAll(np.left, newNode.left, c, allocator, merger),
+			   putAll(np.right, newNode.right, c,allocator,merger),
 			   allocator);
 	}
 	// done!

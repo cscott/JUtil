@@ -27,7 +27,7 @@ import net.cscott.jutil.FilterIterator.Filter;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMultiMapFactory.java,v 1.1 2005-01-20 20:54:41 cananian Exp $
+ * @version $Id: PersistentMultiMapFactory.java,v 1.2 2005-01-20 21:39:08 cananian Exp $
  */
 public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     final MapAllocator<K,V> mapAllocator = new MapAllocator<K,V>();
@@ -119,7 +119,24 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 				    mapAllocator);
 	    return true;
 	}
-	// XXX fast versions of addAll / putAll
+	public boolean addAll(MultiMap<? extends K,? extends V> mm) {
+	    if (!(mm instanceof PersistentMultiMapFactory.MultiMapImpl))
+		return super.addAll(mm);
+	    MultiMapImpl mmi = (MultiMapImpl) mm;
+	    if (this.factory() != mmi.factory()) return super.addAll(mm);
+	    // fast impl.
+	    MapNode.Merger<SetNode<V>> merger=new MapNode.Merger<SetNode<V>>(){
+		public SetNode<V> merge(SetNode<V> oldv, SetNode<V> newv) {
+		    return SetNode.putAll(oldv, newv,
+					  valueComparator, setAllocator);
+		}
+	    };
+	    MapNode<K,V> np= MapNode.putAll(this.root, mmi.root, keyComparator,
+					    mapAllocator, merger);
+	    if (np==root) return false;
+	    this.root = np;
+	    return true;
+	}
 
 	public Collection<V> getValues(K key) {
 	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, (K)key);
@@ -129,7 +146,8 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	// hashcode of a (multi)map is the sum of the map.entries in the
 	// set (equiv, mm.entrySet().hashSet()), where Map.Entry.hashCode
 	// is key.hash^value.hash (with 0s if key/value are null)
-	// is (x^y)+(x^z) = (2*x)^(y+z)?  NO.
+	// HOWEVER, since (x^y)+(x^z) != (2*x)^(y+z), we hack the hashcode
+	// and use key.hash ^ value-as-set.hashCode()
 
 	public Collection<V> values() {
 	    return new AbstractSet<V>() {
@@ -197,6 +215,17 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		return PersistentMultiMapFactory.this;
 	    }
 	    public int size() { return setRoot==null?0:setRoot.size; }
+	    public int hashCode() {
+		return (setRoot==null)?0:setRoot.setHashCode;
+	    }
+	    public boolean equals(Object o) {
+		// sets from the same factory can be compared very quickly
+		if (o instanceof PersistentMultiMapFactory.MultiMapImpl.ValuesSet &&
+		    factory() == ((ValuesSet)o).factory())
+		    // constant-time!
+		    return this.setRoot == ((ValuesSet)o).setRoot;
+		return super.equals(o);
+	    }
 	    public boolean add(V v) {
 		SetNode<V> v2 = SetNode.put(setRoot, valueComparator, v, v,
 					    setAllocator);
@@ -213,7 +242,8 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		if (vs.factory() != this.factory()) return super.addAll(c);
 		// fast path:
 		SetNode<V> v2 = SetNode.putAll(setRoot, vs.setRoot,
-					       valueComparator, setAllocator);
+					       valueComparator, setAllocator,
+					       null);
 		if (setRoot == v2) return false; // no change.
 		MultiMapImpl.this.root = MapNode.put(root, keyComparator,
 						     key, v2, mapAllocator);
