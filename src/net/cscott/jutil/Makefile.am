@@ -51,6 +51,7 @@ PairMapEntry.java \
 PersistentEnvironment.java \
 PersistentMap.java \
 PersistentMapFactory.java \
+PersistentMultiMapFactory.java \
 PersistentSet.java \
 PersistentSetFactory.java \
 PersistentTreeNode.java \

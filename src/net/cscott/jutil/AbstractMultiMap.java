@@ -13,7 +13,7 @@ import java.util.AbstractMap;
  * interface, to minimize the effort requires to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractMultiMap.java,v 1.1 2005-01-20 02:32:31 cananian Exp $ */
+ * @version $Id: AbstractMultiMap.java,v 1.2 2005-01-20 20:54:41 cananian Exp $ */
 public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     implements MultiMap<K,V> {
 
@@ -48,8 +48,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	        the call
     */
     public boolean add(K key, V value) {
-	boolean changed = getValues(key).add(value);
-	return changed;
+	return getValues(key).add(value);
     }
     
     /** Adds to the current mappings: associations for
@@ -66,10 +65,9 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     /** Add all mappings in the given multimap to this multimap. */
     public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	boolean changed = false;
-	for (Map.Entry<? extends K, ? extends V> me : mm.entrySet()) {
+	for (Map.Entry<? extends K, ? extends V> me : mm.entrySet())
 	    if (add(me.getKey(), me.getValue()))
 		changed = true;
-	}
 	return changed;
     }
 	
@@ -96,9 +94,6 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     public boolean removeAll(K key, Collection<?> values) {
 	return getValues(key).removeAll(values);
     }
-
-    public abstract Collection<V> getValues(K key);
-    public abstract boolean contains(Object a, Object b);
 
     public boolean equals(Object o) {
 	if (o==null) return false;
@@ -148,9 +143,16 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     public boolean isEmpty() { return size()==0; }
     public int size() { return entrySet().size(); }
 
+    public V get(Object key) {
+	if (!containsKey(key)) return null;
+	return getValues((K)key).iterator().next();
+    }
+
+    public abstract Collection<V> getValues(K key);
+    public abstract boolean contains(Object a, Object b);
+
     public abstract V remove(Object key);
     public abstract boolean remove(Object key, Object value);
     public abstract void clear();
-    public abstract V get(Object key);
     public abstract MultiMapSet<K,V> entrySet();
 }
