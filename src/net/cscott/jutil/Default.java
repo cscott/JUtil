@@ -24,7 +24,7 @@ import java.util.SortedSet;
  * <code>Collection</code>s, and <code>Comparator</code>s.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Default.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: Default.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
  */
 public abstract class Default  {
     /** A <code>Comparator</code> for objects that implement 
@@ -77,15 +77,15 @@ public abstract class Default  {
 		throw new UnsupportedOperationException();
 	    }
 	    public boolean remove(Object e) { return false; }
-	    public <T> boolean containsAll(Collection<T> c) {
+	    public boolean containsAll(Collection<?> c) {
 		return c.isEmpty();
 	    }
-	    public <T extends E> boolean addAll(Collection<T> c) {
+	    public boolean addAll(Collection<? extends E> c) {
 		if (c.isEmpty()) return false;
 		throw new UnsupportedOperationException();
 	    }
-	    public <T> boolean removeAll(Collection<T> c) { return false; }
-	    public <T> boolean retainAll(Collection<T> c) { return false; }
+	    public boolean removeAll(Collection<?> c) { return false; }
+	    public boolean retainAll(Collection<?> c) { return false; }
 	    public void clear() { }
 	    public boolean equals(Object o) {
 		// note we implement Set, not Collection, interface
@@ -217,23 +217,21 @@ public abstract class Default  {
     /**
      * Improved <code>unmodifiableCollection()</code> class that
      * helps w/ covariant subtyping. */
-    public static <A,B extends A> Collection<A> unmodifiableCollection(final Collection<B> cc,
-								       Collection<A> _ignore_ // XXX BUG IN JAVAC: this parameter should not be necessary.
-								       ) {
+    public static <A> Collection<A> unmodifiableCollection(final Collection<? extends A> cc) {
 	return new AbstractCollection<A>() {
-	    public <T> boolean containsAll(Collection<T> c) {
+	    public boolean containsAll(Collection<?> c) {
 		return cc.containsAll(c);
 	    }
-	    public <T> boolean removeAll(Collection<T> c) {
+	    public boolean removeAll(Collection<?> c) {
 		return cc.removeAll(c);
 	    }
-	    public <T> boolean retainAll(Collection<T> c) {
+	    public boolean retainAll(Collection<?> c) {
 		return cc.retainAll(c);
 	    }
 	    public boolean contains(Object o) { return cc.contains(o); }
 	    public boolean isEmpty() { return cc.isEmpty(); }
 	    public Iterator<A> iterator() {
-		final Iterator<B> it = cc.iterator();
+		final Iterator<? extends A> it = cc.iterator();
 		return new UnmodifiableIterator<A>() {
 		    public boolean hasNext() { return it.hasNext(); }
 		    public A next() { return it.next(); }

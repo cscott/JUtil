@@ -13,7 +13,7 @@ import java.util.AbstractMap;
     methds of the <code>MultiMap</code> interface.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: UnmodifiableMultiMap.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+    @version $Id: UnmodifiableMultiMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
 */
 public abstract class UnmodifiableMultiMap<K,V> 
     extends AbstractMap<K,V> implements MultiMap<K,V> {
@@ -46,19 +46,19 @@ public abstract class UnmodifiableMultiMap<K,V>
     /** Throws UnsupportedOperationException. */
     public boolean remove(Object key, Object value) { return die(); }
     /** Throws UnsupportedOperationException. */
-    public <K2 extends K, V2 extends V> void putAll(Map<K2,V2> t) { die(); }
+    public void putAll(Map<? extends K,? extends V> t) { die(); }
     /** Throws UnsupportedOperationException. */
     public void clear() { die(); }
     /** Throws UnsupportedOperationException. */
     public boolean add(K key, V value) { return die(); }
     /** Throws UnsupportedOperationException. */
-    public <V2 extends V> boolean addAll(K key, Collection<V2> values) { return die(); }
+    public boolean addAll(K key, Collection<? extends V> values) { return die(); }
     /** Throws UnsupportedOperationException. */
-    public <K2 extends K, V2 extends V> boolean addAll(MultiMap<K2,V2> mm) { return die(); }
+    public boolean addAll(MultiMap<? extends K,? extends V> mm) { return die(); }
     /** Throws UnsupportedOperationException. */
-    public <T> boolean retainAll(K key, Collection<T> values) { return die(); }
+    public boolean retainAll(K key, Collection<?> values) { return die(); }
     /** Throws UnsupportedOperationException. */
-    public <T> boolean removeAll(K key, Collection<T> values) { return die(); }
+    public boolean removeAll(K key, Collection<?> values) { return die(); }
     private boolean die() {
 	if (true) throw new UnsupportedOperationException();
 	return false;

@@ -2,9 +2,14 @@
 MAINTAINERCLEANFILES = Makefile.in
 #SUBDIRS = 
 
-AM_JAVACFLAGS = -g #-warnunchecked
+AM_JAVACFLAGS = -g #-Xlint:unchecked
 # JAVAROOT directory must exist!
 JAVAROOT=$(top_builddir)/classes
+
+DISABLED = \
+PersistentMapFactory.java \
+PersistentSetFactory.java \
+TestSet.java \
 
 noinst_JAVA = \
 AbstractHeap.java \
@@ -48,9 +53,7 @@ MultiMapSet.java \
 PairMapEntry.java \
 PersistentEnvironment.java \
 PersistentMap.java \
-PersistentMapFactory.java \
 PersistentSet.java \
-PersistentSetFactory.java \
 PersistentTreeNode.java \
 RedBlackTree.java \
 ReferenceUnique.java \
@@ -60,7 +63,6 @@ SetFactory.java \
 SetWrapper.java \
 SnapshotIterator.java \
 TestMap.java \
-TestSet.java \
 UniqueStack.java \
 UniqueVector.java \
 UnmodifiableIterator.java \

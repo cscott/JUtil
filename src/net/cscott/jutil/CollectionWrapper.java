@@ -15,7 +15,7 @@ import java.util.Collection;
  * AbstractCollection's interface
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: CollectionWrapper.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: CollectionWrapper.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public class CollectionWrapper<E> implements Collection<E> {
     
@@ -31,7 +31,7 @@ public class CollectionWrapper<E> implements Collection<E> {
 	return b.add(o);
     }
 
-    public <T extends E> boolean addAll(Collection<T> c) {
+    public boolean addAll(Collection<? extends E> c) {
 	return b.addAll(c);
     }
 
@@ -43,7 +43,7 @@ public class CollectionWrapper<E> implements Collection<E> {
 	return b.contains(o);
     }
     
-    public <T> boolean containsAll(Collection<T> c) {
+    public boolean containsAll(Collection<?> c) {
 	return b.containsAll(c);
     }
 
@@ -59,11 +59,11 @@ public class CollectionWrapper<E> implements Collection<E> {
 	return b.remove(o);
     }
     
-    public <T> boolean removeAll(Collection<T> c) {
+    public boolean removeAll(Collection<?> c) {
 	return b.removeAll(c);
     }
 
-    public <T> boolean retainAll(Collection<T> c) {
+    public boolean retainAll(Collection<?> c) {
 	return b.retainAll(c);
     }
 

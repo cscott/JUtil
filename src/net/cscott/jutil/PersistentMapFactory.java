@@ -17,7 +17,7 @@ import java.util.WeakHashMap;
  * also fast.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMapFactory.java,v 1.1 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: PersistentMapFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();
@@ -32,12 +32,12 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
      *  is based on persistent randomized treaps.  All <code>Map</code>s
      *  created by this factory maximally reuse space, and have very
      *  fast comparison operations. */
-    public <K2 extends K, V2 extends V> Map<K,V> makeMap(Map<K2,V2> mm) {
+    public Map<K,V> makeMap(Map<? extends K,? extends V> mm) {
 	return new MapImpl(mm);
     }
     class MapImpl extends AbstractMap<K,V> {
 	Node<K,V> root = null;
-	<K2 extends K, V2 extends V> MapImpl(Map<K2,V2> mm) {
+	MapImpl(Map<? extends K,? extends V> mm) {
 	    putAll(mm);
 	}
 	MapImpl(Node<K,V> root) { this.root = root; }
@@ -88,7 +88,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    putFast(key, value);
 	    return oldValue;
 	}
-	public <K2 extends K, V2 extends V> void putAll(Map<K2,V2> mm) {
+	public void putAll(Map<? extends K,? extends V> mm) {
 	    // special fast case for maps from the same factory
 	    // maps from the same factory can be compared very quickly
 	    if (mm instanceof MapImpl &&

@@ -9,7 +9,7 @@ import java.util.*;
  *  <code>MultiMap</code>s.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapFactory.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: MultiMapFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public class MultiMapFactory<K,V> extends MapFactory<K,V> {
     
@@ -20,7 +20,7 @@ public class MultiMapFactory<K,V> extends MapFactory<K,V> {
     public final MultiMap<K,V> makeMap() {
 	return makeMultiMap();
     }
-    public final <K2 extends K, V2 extends V> MultiMap<K,V> makeMap(Map<K2,V2> map) {
+    public final MultiMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 	return makeMultiMap(map);
     }
     // MultiMapFactory interface.
@@ -33,7 +33,7 @@ public class MultiMapFactory<K,V> extends MapFactory<K,V> {
     /** Creates a new <code>MultiMap</code> initialized with all 
 	of the <code>Map.Entry</code>s in <code>map</code>
     */
-    public <K2 extends K, V2 extends V> MultiMap<K,V> makeMultiMap(Map<K2,V2> map) {
+    public MultiMap<K,V> makeMultiMap(Map<? extends K,? extends V> map) {
 	return new GenericMultiMap<K,V>(map);
     }
     public MultiMap<K,V> makeMultiMap(MapFactory<K,Collection<V>> mf, CollectionFactory<V> cf) {

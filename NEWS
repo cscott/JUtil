@@ -1,1 +1,7 @@
-There is no news.
+JUtil NEWS - User visible changes.
+Copyright (C) 2003, 2004 C. Scott Ananian <cscott@cscott.net>
+
+Version 1.1 - January 2004, by C. Scott Ananian
+
+Interfaces have been changed to match the genericized-with-wildcards
+signatures of the standard library collection classes.

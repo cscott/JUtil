@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(JUtil, 1.0, cscott@cscott.net)
-AC_COPYRIGHT(Copyright (c) 2003 C. Scott Ananian)
-AC_REVISION($Revision: 1.3 $)
+AC_INIT(JUtil, 1.1, cscott@cscott.net)
+AC_COPYRIGHT([Copyright (c) 2003, 2004 C. Scott Ananian])
+AC_REVISION($Revision: 1.4 $)
 AC_CONFIG_SRCDIR(configure.ac) # double check --srcdir validity.
 AC_CONFIG_AUX_DIR(scripts)
 AM_INIT_AUTOMAKE
@@ -13,15 +13,11 @@ AC_CHECK_PROGS(JAR, fastjar jar, not-found)
 AC_MSG_CHECKING([for a jsr-14-compliant java 1.4 compiler])
 JAVAC=not-found
 CLS=f$$
-echo "abstract class $CLS extends java.util.AbstractList<Integer> { }" \
+echo "abstract class $CLS extends java.util.AbstractList<Integer> { public boolean addAll(java.util.Collection<? extends Integer> c) { return false; } }" \
      > /tmp/$CLS.java
-for jc in jikes javac ${HOME}/jsr14_adding_generics-2_0-ea/scripts/javac-novariance-fixed ${HOME}/jsr14_adding_generics-1_{3,2,0}-ea/scripts/javac ; do
+for jc in jikes javac ${HOME}/jsr14-ea-2_4{,a1}/scripts/javac ; do
     if $jc -d /tmp -source 1.5 /tmp/$CLS.java 1>/dev/null 2>/dev/null; then
       JAVAC="$jc -source 1.5"
-      break
-    fi
-    if $jc -d /tmp -source 1.4 -gj /tmp/$CLS.java 1>/dev/null 2>/dev/null; then
-      JAVAC="$jc -source 1.4 -gj"
       break
     fi
 done

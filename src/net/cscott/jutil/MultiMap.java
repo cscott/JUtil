@@ -83,7 +83,7 @@ import java.util.Map;
 	 </OL> 
     
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MultiMap.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+    @version $Id: MultiMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public interface MultiMap<K,V> extends Map<K,V> {
     /** Returns some arbitrary value from the collection of values to
@@ -116,7 +116,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	another <code>MultiMap</code>, use
 	<code>addAll(MultiMap)</code>.
     */
-    public <K2 extends K, V2 extends V> void putAll(Map<K2,V2> t);
+    public void putAll(Map<? extends K,? extends V> t);
 
     /** Removes mappings from key to all associated values from this map.
      *  This is consistent with the <code>Map</code> definition of
@@ -160,10 +160,10 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
     */
-    <V2 extends V> boolean addAll(K key, Collection<V2> values);
+    boolean addAll(K key, Collection<? extends V> values);
 
     /** Adds all mappings in the given multimap to this multimap. */
-    <K2 extends K, V2 extends V> boolean addAll(MultiMap<K2,V2> mm);
+    boolean addAll(MultiMap<? extends K,? extends V> mm);
 
     /** Removes from the current mappings: associations for
 	<code>key</code> to any value not in <code>values</code>. 
@@ -173,7 +173,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
     */
-    <T> boolean retainAll(K key, Collection<T> values);
+    boolean retainAll(K key, Collection<?> values);
 
     /** Removes from the current mappings: associations for
 	<code>key</code> to any value in <code>values</code>.
@@ -183,7 +183,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
     */
-    <T> boolean removeAll(K key, Collection<T> values);
+    boolean removeAll(K key, Collection<?> values);
 
     /** Returns the collection of Values associated with
 	<code>key</code>.  Modifications to the returned

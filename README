@@ -4,5 +4,7 @@ If you've grabbed the sources from CVS, you'll want to run ./autogen.sh
 to let autoheader/autoconf/automake do their thing.  This is not necessary
 if you're using a release distributed as a .tar.gz file.
 
+A Java 1.5 compiler is required.
+
 See the INSTALL file for generic build instructions;
 the BUILDING file has more specific information.

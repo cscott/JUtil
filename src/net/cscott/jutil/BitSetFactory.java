@@ -25,7 +25,7 @@ import java.util.HashMap;
     cause <code>IllegalArgumentException</code> to be thrown.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: BitSetFactory.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+    @version $Id: BitSetFactory.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
  */
 public class BitSetFactory<V> extends SetFactory<V> {
     
@@ -103,7 +103,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	<BR> <B>effects:</B> Constructs a lightweight
 	     <code>Set</code> with the elements from <code>c</code>.
     */ 
-    public <T extends V> BitStringSet<V> makeSet(Collection<T> c) {
+    public BitStringSet<V> makeSet(Collection<? extends V> c) {
 	BitStringSet<V> bss = new BitStringSet<V>(bitStringSize, this);
 	bss.addAll(c);
 	return bss;
@@ -164,7 +164,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
-	public <T extends V> boolean addAll(Collection<T> c) {
+	public boolean addAll(Collection<? extends V> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
 		BitStringSet bss = (BitStringSet) c;
@@ -190,7 +190,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
-	public <T> boolean containsAll(Collection<T> c) {
+	public boolean containsAll(Collection<?> c) {
 	    // check that ('c' - this) is nullset
 	    // (which is the same as C /\ NOT(this) )
 	    if (c instanceof BitStringSet &&
@@ -296,7 +296,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
-	public <T> boolean removeAll(Collection<T> c) {
+	public boolean removeAll(Collection<?> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
 		this.hashCodeValid=false;
@@ -309,7 +309,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		// optimization hack; super.removeAll takes time
 		// proportional to this.size()
 		boolean changed = false;
-		for(Iterator<T> i=c.iterator(); i.hasNext();) {
+		for(Iterator<?> i=c.iterator(); i.hasNext();) {
 		    changed |= remove(i.next());
 		}
 		return changed;
@@ -318,7 +318,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
-	public <T> boolean retainAll(Collection<T> c) {
+	public boolean retainAll(Collection<?> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
 		this.hashCodeValid=false;

@@ -20,7 +20,7 @@ import java.util.Map;
  * Sedgewick's book.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinaryHeap.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: BinaryHeap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  * @see Heap
  */
 public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
@@ -31,19 +31,19 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     
     /** Creates a new, empty <code>BinaryHeap</code>, which will
      *  use the keys' natural order. */
-    public BinaryHeap() { this(Collections.EMPTY_SET, null); }
+    public BinaryHeap() { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, null); }
     /** Creates a new, empty <code>BinaryHeap</code> with the
      *  specified comparator. */
-    public BinaryHeap(Comparator<K> c) { this(Collections.EMPTY_SET, c); }
+    public BinaryHeap(Comparator<K> c) { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, c); }
     /** Builds a binary heap from the given heap, using
      *  the same key comparator as the given heap.  O(n) time. */
-    public <V2 extends V> BinaryHeap(Heap<K,V2> h) {
+    public BinaryHeap(Heap<K,? extends V> h) {
 	this(h.entries(), h.comparator());
     }
     /** Builds a binary heap from a collection of <code>Map.Entry</code>s
      *  and a key comparator.
      *  O(n) time. */
-    public <K2 extends K, V2 extends V> BinaryHeap(Collection<Map.Entry<K2,V2>> collection, Comparator<K> comparator) {
+    public BinaryHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
 	super(comparator);
 	// initialize comparator
 	c = entryComparator(); // cache in field.
@@ -75,14 +75,14 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	if (debug) checkHeap();
 	return min;
     }
-    public <K2 extends K, V2 extends V> void union(Heap<K2,V2> h) {
+    public void union(Heap<? extends K,? extends V> h) {
 	union(h.entries());
     }
     /** Union a collection of <code>Map.Entry</code>s, using BUILD-HEAP. */
-    private <K2 extends K, V2 extends V> void union(Collection<Map.Entry<K2,V2>> coll) {
+    private void union(Collection<? extends Map.Entry<? extends K,? extends V>> coll) {
 	// this is the BUILD-HEAP function. pg 145 in CLR.
-	for (Iterator<Map.Entry<K2,V2>> it=coll.iterator(); it.hasNext(); ) {
-	    Map.Entry<K2,V2> e = it.next();
+	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=coll.iterator(); it.hasNext(); ) {
+	    Map.Entry<? extends K,? extends V> e = it.next();
 	    A.add(new Entry(e.getKey(), e.getValue(), A.size()));
 	}
 	// okay, now heapify
@@ -238,21 +238,29 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	}{
 	Heap<String,String> h = new BinaryHeap<String,String>();
 	assert h.size()==0 && h.isEmpty();
-	Map.Entry<String,String> me[] = {
-	    h.insert("C", "c1"), h.insert("S", "s1"), h.insert("A", "a"),
-	    h.insert("S", "s2"), h.insert("C", "c2"), h.insert("O", "o"),
-	    h.insert("T", "t1"), h.insert("T", "t2"), h.insert("Z", "z"),
-	    h.insert("M", "m"),
-	};
+
+	ArrayList<Map.Entry<String,String>> mel =
+	    new ArrayList<Map.Entry<String,String>>();
+	mel.add(h.insert("C", "c1"));
+	mel.add(h.insert("S", "s1"));
+	mel.add(h.insert("A", "a"));
+	mel.add(h.insert("S", "s2"));
+	mel.add(h.insert("C", "c2"));
+	mel.add(h.insert("O", "o"));
+	mel.add(h.insert("T", "t1"));
+	mel.add(h.insert("T", "t2"));
+	mel.add(h.insert("Z", "z"));
+	mel.add(h.insert("M", "m"));
+
 	assert h.extractMinimum().getValue().equals("a");
 	System.out.println(h);
-	h.decreaseKey(me[3], "B"); // s2
+	h.decreaseKey(mel.get(3), "B"); // s2
 	assert h.extractMinimum().getValue().equals("s2");
-	h.delete(me[4]); // c2
+	h.delete(mel.get(4)); // c2
 	assert h.extractMinimum().getValue().equals("c1");
 	System.out.println(h);
 	// finally, test updateKey
-	h.updateKey(me[9], "P"); // m
+	h.updateKey(mel.get(9), "P"); // m
 	assert h.extractMinimum().getValue().equals("o");
 	assert h.extractMinimum().getValue().equals("m");
 	System.out.println(h);

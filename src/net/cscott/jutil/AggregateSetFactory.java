@@ -20,7 +20,7 @@ import java.util.Set;
  * the standard <code>Factories.hashSetFactory</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateSetFactory.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: AggregateSetFactory.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
  */
 public class AggregateSetFactory<V> extends SetFactory<V>
     implements java.io.Serializable {
@@ -37,7 +37,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
      *  The <code>remove()</code> method of the returned <code>Set</code>
      *  is very slow.
      */
-    public <T extends V> Set<V> makeSet(Collection<T> c) {
+    public Set<V> makeSet(Collection<? extends V> c) {
 	return new AggregateSet(c);
     }
     private class AggregateSet extends AbstractSet<V> {
@@ -46,7 +46,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	final ID<V> IDENTITY = new ID<V>();
 	int size=0;
 
-	<T extends V> AggregateSet(Collection<T> c) {
+	AggregateSet(Collection<? extends V> c) {
 	    addAll(c);
 	}
 	public boolean add(V o) {

@@ -19,7 +19,7 @@ import java.util.Set;
  * correctly extends <code>Map</code>.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: GenericInvertibleMultiMap.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: GenericInvertibleMultiMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     private final MultiMap<K,V> map;
@@ -37,10 +37,10 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     /* have to put up w/ unchecked-type warnings on these; no way to say
      * 'this method only makes sense if K==V'. */
     public GenericInvertibleMultiMap(MultiMapFactory mmf) {
-	this(mmf.makeMultiMap(), mmf.makeMultiMap());
+	this((MultiMap<K,V>)mmf.makeMultiMap(), (MultiMap<V,K>)mmf.makeMultiMap());
     }
     public GenericInvertibleMultiMap(MapFactory mf, CollectionFactory cf) {
-	this(new GenericMultiMap(mf,cf), new GenericMultiMap(mf,cf));
+	this((MultiMap<K,V>)new GenericMultiMap(mf,cf), (MultiMap<V,K>)new GenericMultiMap(mf,cf));
     }
     public GenericInvertibleMultiMap(CollectionFactory cf) {
 	this(Factories.hashMapFactory, cf);
@@ -50,11 +50,11 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     }
 
     /* Collections API */
-    public <K2 extends K, V2 extends V> GenericInvertibleMultiMap(Map<K2,V2> m) {
+    public GenericInvertibleMultiMap(Map<? extends K,? extends V> m) {
 	this();
 	putAll(m);
     }
-    public <K2 extends K, V2 extends V> GenericInvertibleMultiMap(MultiMap<K2,V2> mm) {
+    public GenericInvertibleMultiMap(MultiMap<? extends K,? extends V> mm) {
 	this();
 	addAll(mm);
     }
@@ -67,17 +67,17 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	imap.add(value, key);
 	return map.add(key, value);
     }
-    public <T extends V> boolean addAll(K key, Collection<T> values) {
+    public boolean addAll(K key, Collection<? extends V> values) {
 	boolean changed = false;
-	for (Iterator<T> it=values.iterator(); it.hasNext(); )
+	for (Iterator<? extends V> it=values.iterator(); it.hasNext(); )
 	    if (this.add(key, it.next()))
 		changed = true;
 	return changed;
     }
-    public <K2 extends K, V2 extends V> boolean addAll(MultiMap<K2,V2> mm) {
+    public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	boolean changed = false;
-	for (Iterator<Map.Entry<K2,V2>> it=mm.entrySet().iterator(); it.hasNext(); ) {
-	    Map.Entry<K2,V2> me = it.next();
+	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=mm.entrySet().iterator(); it.hasNext(); ) {
+	    Map.Entry<? extends K,? extends V> me = it.next();
 	    if (add(me.getKey(), me.getValue()))
 		changed = true;
 	}
@@ -215,10 +215,11 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	this.add(key, value);
 	return old;
     }
-    public <K2 extends K, V2 extends V> void putAll(Map<K2,V2> t) {
-	for (Iterator<K2> it=t.keySet().iterator(); it.hasNext(); ) {
-	    K2 key = it.next();
-	    this.put(key, t.get(key));
+    public void putAll(Map<? extends K,? extends V> t) {
+	for (Iterator<? extends Map.Entry<? extends K, ? extends V>> it =
+		 t.entrySet().iterator(); it.hasNext(); ) {
+	    Map.Entry<? extends K, ? extends V> me = it.next();
+	    this.put(me.getKey(), me.getValue());
 	}
     }
     public V remove(Object key) {
@@ -233,14 +234,14 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	imap.remove(value, key);
 	return map.remove(key, value);
     }
-    public <T> boolean removeAll(K key, Collection<T> values) {
+    public boolean removeAll(K key, Collection<?> values) {
 	boolean changed = false;
-	for (Iterator<T> it=values.iterator(); it.hasNext(); )
+	for (Iterator<?> it=values.iterator(); it.hasNext(); )
 	    if (this.remove(key, it.next()))
 		changed = true;
 	return changed;
     }
-    public <T> boolean retainAll(K key, Collection<T> values) {
+    public boolean retainAll(K key, Collection<?> values) {
 	boolean changed = false;
 	for (Iterator<V> it=this.getValues(key).iterator(); it.hasNext(); )
 	    if (!values.contains(it.next())) {

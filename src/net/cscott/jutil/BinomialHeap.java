@@ -4,6 +4,7 @@
 package net.cscott.jutil;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,7 +18,7 @@ import java.util.Map;
  * Leiserson, and Rivest, on page 400 and following.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinomialHeap.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: BinomialHeap.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
  */
 public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     private static final boolean debug=false;
@@ -28,16 +29,16 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     /** Constructs a new, empty <code>BinomialHeap</code>, sorted according
      *  to the keys' natural order. All keys inserted into the new map
      *  must implement the <code>Comparable</code> interface. O(1) time. */
-    public BinomialHeap() { this(Collections.EMPTY_SET, null); }
+    public BinomialHeap() { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, null); }
     /** Constructs a new, empty <code>BinomialHeap</code>, sorted according
      *  to the given comparator. O(1) time. */
-    public BinomialHeap(Comparator<K> c) { this(Collections.EMPTY_SET, c); }
+    public BinomialHeap(Comparator<K> c) { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, c); }
     /** Constructs a new binomial heap with the same entries as the specified
      *  <code>Heap</code>. O(n) time. */
-    public <V2 extends V> BinomialHeap(Heap<K,V2> h) { this(h.entries(), h.comparator()); }
+    public BinomialHeap(Heap<K,? extends V> h) { this(h.entries(), h.comparator()); }
     /** Constructs a binomial heap from a collection of
      *  <code>Map.Entry</code>s and a key comparator.  O(n) time. */
-    public <K2 extends K, V2 extends V> BinomialHeap(Collection<Map.Entry<K2,V2>> collection, Comparator<K> comparator) {
+    public BinomialHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
 	super(comparator);
 	c = entryComparator();
 	union(collection);
@@ -83,36 +84,31 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
      *  O(lg n) time if the given heap is a <code>BinomialHeap</code>
      *  and its entry comparator is the same as this one's.
      *  Otherwise, it takes O(n) time. */
-    public <K2 extends K, V2 extends V> void union(Heap<K2,V2> h) {
-	if (h instanceof BinomialHeap<K2,V2> &&
-	    entryComparator().equals(((BinomialHeap<K2,V2>)h).entryComparator()))
+    public void union(Heap<? extends K,? extends V> h) {
+	if (h instanceof BinomialHeap<? extends K,? extends V> &&
+	    entryComparator().equals(((BinomialHeap<? extends K,? extends V>)h).entryComparator()))
 	    // the unsafe cast below from K2 to K and V2 to V should really
 	    // be safe if the entryComparators for the two Heaps are identical.
 	    union((BinomialHeap)h);
 	else { union(h.entries()); h.clear(); }
     }
     // union a set of Map.Entry's
-    private <K2 extends K, V2 extends V> void union(Collection<Map.Entry<K2,V2>> coll) {
+    private void union(Collection<? extends Map.Entry<? extends K,? extends V>> coll) {
 	// add an n-entry set to an m-entry heap in O(n+lg(n+m)) time.
 	// BUILD-HEAP in O(n) time by successive unions.
-	BinomialHeap<K,V>[] ha = new BinomialHeap<K,V>[coll.size()];
-	int size = 0;
-	for (Iterator<Map.Entry<K2,V2>> it=coll.iterator(); it.hasNext(); ) {
-	    Map.Entry<K2,V2> e = it.next();
+	ArrayList<BinomialHeap<K,V>> hal = new ArrayList<BinomialHeap<K,V>>(coll.size());
+	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=coll.iterator(); it.hasNext(); ) {
+	    Map.Entry<? extends K,? extends V> e = it.next();
 	    BinomialHeap<K,V> bh = new BinomialHeap<K,V>(this.comparator());
 	    bh.insert(e.getKey(), e.getValue());
-	    ha[size++] = bh;
+	    hal.add(bh);
 	}
 	// now successively union-ify
-	while (size>1) {
-	    for (int i=0; i<size; i+=2) {
-		ha[i/2] = ha[i];
-		if (i+1 < size)
-		    ha[i/2].union(ha[i+1]);
-	    }
-	    size=(size+1)/2; // divide-by-two, round up.
-	}
-	if (size>0) this.union(ha[0]); // and now merge into this.
+	while (hal.size() > 1)
+	    for (int i=0; i<hal.size()-1; i++)
+		hal.get(i).union(hal.remove(hal.size()-1));
+
+	if (hal.size()>0) this.union(hal.get(0)); // and now merge into this.
     }
     /** Merges all of the mappings from the specified map to this
      *  map. Note that duplicates <b>are</b> permitted. This operation
@@ -500,21 +496,28 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	// (tests borrowed from BinaryHeap.java)
 	Heap<String,String> h = new BinomialHeap<String,String>();
 	assert h.isEmpty() && h.size()==0;
-	Map.Entry<String,String> me[] = {
-	    h.insert("C", "c1"), h.insert("S", "s1"), h.insert("A", "a"),
-	    h.insert("S", "s2"), h.insert("C", "c2"), h.insert("O", "o"),
-	    h.insert("T", "t1"), h.insert("T", "t2"), h.insert("Z", "z"),
-	    h.insert("M", "m"),
-	};
+	ArrayList<Map.Entry<String,String>> mel =
+	    new ArrayList<Map.Entry<String,String>>();
+	mel.add(h.insert("C", "c1"));
+	mel.add(h.insert("S", "s1"));
+	mel.add(h.insert("A", "a"));
+	mel.add(h.insert("S", "s2"));
+	mel.add(h.insert("C", "c2"));
+	mel.add(h.insert("O", "o"));
+	mel.add(h.insert("T", "t1"));
+	mel.add(h.insert("T", "t2"));
+	mel.add(h.insert("Z", "z"));
+	mel.add(h.insert("M", "m"));
+
 	assert h.extractMinimum().getValue().equals("a");
 	System.out.println(h);
-	h.decreaseKey(me[3], "B"); // s2
+	h.decreaseKey(mel.get(3), "B"); // s2
 	assert h.extractMinimum().getValue().equals("s2");
-	h.delete(me[4]); // c2
+	h.delete(mel.get(4)); // c2
 	assert h.extractMinimum().getValue().equals("c1");
 	System.out.println(h);
 	// finally, test updateKey
-	h.updateKey(me[9], "P"); // m
+	h.updateKey(mel.get(9), "P"); // m
 	assert h.extractMinimum().getValue().equals("o");
 	assert h.extractMinimum().getValue().equals("m");
 	System.out.println(h);

@@ -125,11 +125,11 @@ public class IntervalTree extends RedBlackTree {
 	if (x == NIL) {
 	    return Default.nullIterator;
 	} else if (interval(x).overlaps(i)) {
-	    return new CombineIterator(new Iterator[] {
+	    return new CombineIterator(
 		Default.singletonIterator(interval(x)),
 		allOverlapping(x.left(), i),
 		allOverlapping(x.right(), i)
-	    });
+	    );
 	} else if (x.left() != NIL && max(x.left()) >= i.low) {
 	    // FSK: I suspect there is a asymptotically more efficient
 	    // way to handle this case, but haven't worked it out yet.

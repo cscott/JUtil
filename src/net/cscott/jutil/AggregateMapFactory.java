@@ -22,7 +22,7 @@ import java.util.Set;
  * <code>HashMap</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateMapFactory.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: AggregateMapFactory.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
  */
 public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     implements java.io.Serializable {
@@ -37,7 +37,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
      *  subset of the backing set of this
      *  <code>AggregateMapFactory</code>.
      */
-    public <K2 extends K,V2 extends V> Map<K,V> makeMap(final Map<K2,V2> mm) {
+    public Map<K,V> makeMap(final Map<? extends K,? extends V> mm) {
 	return new AggregateMap(mm);
     }
     class AggregateMap extends AbstractMap<K,V> {
@@ -46,7 +46,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	DoublyLinkedList<K,V> entries=null;
 	int size=0;
 
-	<K2 extends K,V2 extends V> AggregateMap(Map<K2,V2> mm) { putAll(mm); }
+	AggregateMap(Map<? extends K,? extends V> mm) { putAll(mm); }
 
 	private void unlink(DoublyLinkedList<K,V> entry) {
 	    if (entries==entry) { // first element.

@@ -12,45 +12,74 @@ import java.util.NoSuchElementException;
  * <code>Iterator</code>s into one.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: CombineIterator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: CombineIterator.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 
 public class CombineIterator<E> implements Iterator<E> {
-    final Iterator<E>[] ita;
-    int i=0;
+    final Iterator<Iterator<E>> iti;
+    Iterator<E> cur=null, last=null;
+
     /** Creates a <code>CombineIterator</code> from an array of Iterators. */
-    public CombineIterator(Iterator<E>[] ita) {
-        this.ita = ita;
+    public CombineIterator(List<Iterator<E>> itl) {
+        this(itl.iterator());
     }
     /** Creates a <code>CombineIterator</code> from a pair of
 	Iterators. 
     */
-    public CombineIterator(Iterator<E> i1, Iterator<E> i2) {
-	this(new Iterator<E>[]{ i1, i2 });
+    public CombineIterator(final Iterator<E> i1, final Iterator<E> i2) {
+	this(new UnmodifiableIterator<Iterator<E>>() {
+	    int i=0;
+	    public Iterator<E> next() {
+		switch(i++) {
+		case 0: return i1;
+		case 1: return i2;
+		default: throw new NoSuchElementException();
+		}
+	    }
+	    public boolean hasNext() {
+		return i<2;
+	    }
+	});
+    }
+    /** Creates a <code>CombineIterator</code> from three
+	Iterators. 
+    */
+    public CombineIterator(final Iterator<E> i1, final Iterator<E> i2,
+			   final Iterator<E> i3) {
+	this(new UnmodifiableIterator<Iterator<E>>() {
+	    int i=0;
+	    public Iterator<E> next() {
+		switch(i++) {
+		case 0: return i1;
+		case 1: return i2;
+		case 2: return i3;
+		default: throw new NoSuchElementException();
+		}
+	    }
+	    public boolean hasNext() {
+		return i<3;
+	    }
+	});
     }
 
     /** Creates a <code>CombineIterator</code> from an
      *  Iterator over Iterators. */
     public CombineIterator(Iterator<Iterator<E>> it) {
-	List<Iterator<E>> l = new ArrayList<Iterator<E>>();
-	while (it.hasNext()) { l.add(it.next()); }
-	this.ita = l.toArray(new Iterator<E>[l.size()]);
+	this.iti = it;
     }
+
     public E next() {
-	while (i < ita.length && !ita[i].hasNext() )
-	    i++;
-	if (i < ita.length && ita[i].hasNext())
-	    return ita[i].next();
+	if (hasNext())
+	    return (last=cur).next();
 	else
 	    throw new NoSuchElementException();
     }
     public boolean hasNext() {
-	for (int j=i; j<ita.length; j++)
-	    if (ita[j].hasNext())
-		return true;
-	return false;
+	while ((cur==null || !cur.hasNext()) && iti.hasNext())
+	    cur=iti.next();
+	return (cur!=null && cur.hasNext());
     }
     public void remove() {
-	ita[i].remove();
+	last.remove();
     }
 }

@@ -22,7 +22,7 @@ import java.util.Arrays;
     even though <code>LinkedList</code> is a subtype of <code>List</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListFactory.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: ListFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public abstract class ListFactory<V> extends CollectionFactory<V> {
     
@@ -39,7 +39,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	return makeList(initCapacity);
     }
 
-    public final <T extends V> List<V> makeCollection(Collection<T> c) {
+    public final List<V> makeCollection(Collection<? extends V> c) {
 	return makeList(c);
     }
 
@@ -58,7 +58,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
     /** Generates a new mutable <code>List</code>, using the elements
 	of <code>c</code> as a template for its initial contents. 
     */
-    public abstract <T extends V> List<V> makeList(Collection<T> c); 
+    public abstract List<V> makeList(Collection<? extends V> c); 
 
 
     /** Creates and returns an unmodifiable <code>List</code> view of
@@ -138,9 +138,11 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	reflected in <code>this</code>. 
 
     */
+    /* arrays of generic types are no longer allowed.
     public static <E> List<E> concatenate(final List<E>[] lists) {
 	return concatenate(Arrays.asList(lists));
     }
+    */
 
     /** Creates and returns an immutable <code>List</code> of one element. 
 	<BR> <B>effects:</B> returns the list [ o ]

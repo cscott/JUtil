@@ -105,7 +105,7 @@ import java.util.Map;
  * them; there's nothing you can do about that.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Heap.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: Heap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  * @see BinaryHeap
  * @see BinomialHeap
  * @see FibonacciHeap
@@ -136,7 +136,7 @@ public interface Heap<K,V> {
      *  as <code>this</code>. (That is, they must both be binomial heaps, or
      *  both fibonacci heaps, etc.)
      */
-    public <K2 extends K, V2 extends V> void union(Heap<K2,V2> h);
+    public void union(Heap<? extends K,? extends V> h);
     /** Replace the key in the specified map entry with the specified
      *  <b>smaller</b> key.  */
     public void decreaseKey(Map.Entry<K,V> me, K newkey);
@@ -171,5 +171,6 @@ public interface Heap<K,V> {
 
     /** Returns the comparator associated with this <code>Heap</code>,
      *  or <code>null</code> if it uses its elements' natural ordering. */
+    // XXX: Should this be Comparator<? super K> instead?
     public Comparator<K> comparator();
 }

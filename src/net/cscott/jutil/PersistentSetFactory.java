@@ -19,7 +19,7 @@ import java.util.WeakHashMap;
  * also fast.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSetFactory.java,v 1.1 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: PersistentSetFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public class PersistentSetFactory<T> extends SetFactory<T> {
     final Allocator<T> allocator = new Allocator<T>();
@@ -34,12 +34,12 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
      *  is based on persistent randomized treaps.  All <code>Set</code>s
      *  created by this factory maximally reuse space, and have very
      *  fast comparison operations. */
-    public <V extends T> Set<T> makeSet(Collection<V> c) {
+    public Set<T> makeSet(Collection<? extends T> c) {
 	return new SetImpl(c);
     }
     class SetImpl extends AbstractSet<T> {
 	Node<T> root = null;
-	<V extends T> SetImpl(Collection<V> c) {
+	SetImpl(Collection<? extends T> c) {
 	    addAll(c);
 	}
 	SetImpl(Node<T> root) { this.root = root; }
@@ -76,7 +76,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    this.root = Node.put(this.root, comparator, elem, elem, allocator);
 	    return old_root!=this.root;
 	}
-	public <V extends T> boolean addAll(Collection<V> c) {
+	public boolean addAll(Collection<? extends T> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
 	    if (c instanceof SetImpl &&
@@ -88,7 +88,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    } else // slow case
 		return super.addAll(c);
 	}
-	public <V> boolean containsAll(Collection<V> c) {
+	public boolean containsAll(Collection<?> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
 	    if (c instanceof SetImpl &&

@@ -4,6 +4,7 @@
 package net.cscott.jutil;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +19,7 @@ import java.util.Map;
  * Algorithms</i> by Cormen, Leiserson, and Riverst, in Chapter 21.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FibonacciHeap.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: FibonacciHeap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
  */
 public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     private static final boolean debug = false;
@@ -34,23 +35,23 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
      *  to its keys' natural order.  All keys inserted into the new
      *  map must implement the <code>Comparable</code> interface.
      *  O(1) time. */
-    public FibonacciHeap() { this(Collections.EMPTY_SET, null); }
+    public FibonacciHeap() { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, null); }
     /** Creates a new, empty <code>FibonacciHeap</code>, sorted according
      *  to the given <code>Comparator</code>.  O(1) time. */
-    public FibonacciHeap(Comparator<K> c) { this(Collections.EMPTY_SET, c); }
+    public FibonacciHeap(Comparator<K> c) { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, c); }
     /** Constructs a new heap with the same entries as the specified
      *  <code>Heap</code>. O(n) time. */
-    public <V2 extends V> FibonacciHeap(Heap<K,V2> h) {
+    public FibonacciHeap(Heap<K,? extends V> h) {
 	this(h.entries(), h.comparator());
     }
     /** Constructs a new heap from a collection of
      *  <code>Map.Entry</code>s and a key comparator. O(n) time. */
-    public <K2 extends K, V2 extends V> FibonacciHeap(Collection<Map.Entry<K2,V2>> collection, Comparator<K> comparator) {
+    public FibonacciHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
 	super(comparator);
 	c = entryComparator();
-	for (Iterator<Map.Entry<K2,V2>> it=collection.iterator();
+	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=collection.iterator();
 	     it.hasNext(); ) {
-	    Map.Entry<K2,V2> e = it.next();
+	    Map.Entry<? extends K,? extends V> e = it.next();
 	    insert(e.getKey(), e.getValue());
 	}
     }
@@ -86,9 +87,9 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	h.clear();
 	// done.
     }
-    public <K2 extends K, V2 extends V> void union(Heap<K2,V2> h) {
-	if (h instanceof FibonacciHeap<K2,V2> &&
-	    entryComparator().equals(((FibonacciHeap<K2,V2>)h).entryComparator()))
+    public void union(Heap<? extends K,? extends V> h) {
+	if (h instanceof FibonacciHeap<? extends K,? extends V> &&
+	    entryComparator().equals(((FibonacciHeap<? extends K,? extends V>)h).entryComparator()))
 	    // the unsafe cast below from K2 to K and V2 to V should really be
 	    // safe if the entryComparators for the two Heaps are identical.
 	    union((FibonacciHeap)h);
@@ -120,7 +121,8 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     }
     // reduce the number of trees in the fibonacci heap
     private void _consolidate() {
-	Node<K,V>[] A = new Node<K,V>[D(n)+1];
+	ArrayList<Node<K,V>> A = new ArrayList<Node<K,V>>
+	    (Collections.<Node<K,V>>nCopies(D(n)+1, null));
 	// for each node w in the root list of H
 	// (remove each node from the root list as we iterate)
 	for (Node<K,V> w = min; w!=null; ) {
@@ -131,28 +133,28 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 		w = (w==wR) ? null : wR;
 	    }
 	    int  d = x.degree;
-	    while (A[d] != null) {
-		Node<K,V> y = A[d];
+	    while (A.get(d) != null) {
+		Node<K,V> y = A.get(d);
 		if (c.compare(x.entry, y.entry) > 0) {
 		    Node<K,V> t=x; x=y; y=t; // exchange x and y
 		}
 		_link(y, x);
-		A[d] = null;
+		A.set(d, null);
 		d++;
 	    }
-	    A[d] = x;
+	    A.set(d, x);
 	}
 	
 	min = null;
-	for (int i=0; i < A.length; i++) {
-	    if (A[i] != null) {
+	for (int i=0; i < A.size(); i++) {
+	    if (A.get(i) != null) {
 		// add A[i] to the root list of H (it already has no siblings)
-		assert A[i].parent == null; // it is a root.
-		assert A[i].left == A[i] && A[i].right == A[i];
-		_concatenateListsContaining(min, A[i]);
+		assert A.get(i).parent == null; // it is a root.
+		assert A.get(i).left == A.get(i) && A.get(i).right == A.get(i);
+		_concatenateListsContaining(min, A.get(i));
 		if (min==null ||
-		    c.compare(A[i].entry, min.entry) < 0)
-		    min = A[i];
+		    c.compare(A.get(i).entry, min.entry) < 0)
+		    min = A.get(i);
 	    }
 	}
     }
@@ -361,23 +363,31 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	}{
 	Heap<String,String> h = new FibonacciHeap<String,String>();
 	assert h.isEmpty() && h.size()==0;
-	Map.Entry<String,String> me[] = {
-	    h.insert("C", "c1"), h.insert("S", "s1"), h.insert("A", "a"),
-	    h.insert("S", "s2"), h.insert("C", "c2"), h.insert("O", "o"),
-	    h.insert("T", "t1"), h.insert("T", "t2"), h.insert("Z", "z"),
-	    h.insert("M", "m"),
-	};
+
+	ArrayList<Map.Entry<String,String>> mel =
+	    new ArrayList<Map.Entry<String,String>>();
+	mel.add(h.insert("C", "c1"));
+	mel.add(h.insert("S", "s1"));
+	mel.add(h.insert("A", "a"));
+	mel.add(h.insert("S", "s2"));
+	mel.add(h.insert("C", "c2"));
+	mel.add(h.insert("O", "o"));
+	mel.add(h.insert("T", "t1"));
+	mel.add(h.insert("T", "t2"));
+	mel.add(h.insert("Z", "z"));
+	mel.add(h.insert("M", "m"));
+
 	assert h.extractMinimum().getValue().equals("a");
 	System.out.println("1: "+h);
-	h.decreaseKey(me[3], "B"); // s2
+	h.decreaseKey(mel.get(3), "B"); // s2
 	System.out.println("2: "+h);
 	assert h.extractMinimum().getValue().equals("s2");
-	h.delete(me[4]); // c2
+	h.delete(mel.get(4)); // c2
 	System.out.println("3: "+h);
 	assert h.extractMinimum().getValue().equals("c1");
 	System.out.println("4: "+h);
 	// finally, test updateKey
-	h.updateKey(me[9], "P"); // m
+	h.updateKey(mel.get(9), "P"); // m
 	assert h.extractMinimum().getValue().equals("o");
 	assert h.extractMinimum().getValue().equals("m");
 	System.out.println("5: "+h);

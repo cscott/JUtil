@@ -11,7 +11,7 @@ import java.util.Map;
     one particular <code>Map</code> implementation. 
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MapWrapper.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+    @version $Id: MapWrapper.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
 */
 public class MapWrapper<K,V> implements Map<K,V> {
     private Map<K,V> map;
@@ -23,7 +23,7 @@ public class MapWrapper<K,V> implements Map<K,V> {
     public V get(Object o) { return map.get(o); }
     public V put(K k, V v) { return map.put(k, v); }
     public V remove(Object o) { return map.remove(o); }
-    public <K2 extends K, V2 extends V> void putAll(Map<K2,V2> m) { map.putAll(m); }
+    public void putAll(Map<? extends K,? extends V> m) { map.putAll(m); }
     public void clear() { map.clear(); }
     public java.util.Set<K> keySet() { return map.keySet(); }
     public java.util.Set<Map.Entry<K,V>> entrySet() { return map.entrySet(); }
