@@ -12,7 +12,8 @@ pkgdata_DATA = @PACKAGE_TARNAME@.jar
 # used to be $(shell find classes -name "*.class") 
 @PACKAGE_TARNAME@.jar: $(shell find classes -type f)
 	echo "Manifest-Version: 1.0" > manifest
-#	echo "Main-Class: net.cscott.gjdoc.Main" >> manifest
+#       print the library version number if executed.
+	echo "Main-Class: net.cscott.jutil.Version" >> manifest
 #	echo "Class-Path: lib/jlfgr-1_0.jar lib/gtk-icons.jar" >> manifest
 	cd classes && $(JAR) -cfm ../$@ ../manifest net
 	-$(RM) manifest

@@ -6,4 +6,10 @@ public abstract class Version {
     public static final String PACKAGE_VERSION = "@PACKAGE_VERSION@";
     public static final String PACKAGE_STRING = "@PACKAGE_STRING@";
     public static final String PACKAGE_BUGREPORT = "@PACKAGE_BUGREPORT@";
+
+    /** Print the package version if invoked. */
+    public static void main(String[] args) {
+	System.out.println(PACKAGE_STRING);
+	System.out.println("Bug reports to "+PACKAGE_BUGREPORT);
+    }
 }
