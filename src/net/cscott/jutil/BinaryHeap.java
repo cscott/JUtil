@@ -20,7 +20,7 @@ import java.util.Map;
  * Sedgewick's book.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinaryHeap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: BinaryHeap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
  * @see Heap
  */
 public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
@@ -81,10 +81,8 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     /** Union a collection of <code>Map.Entry</code>s, using BUILD-HEAP. */
     private void union(Collection<? extends Map.Entry<? extends K,? extends V>> coll) {
 	// this is the BUILD-HEAP function. pg 145 in CLR.
-	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=coll.iterator(); it.hasNext(); ) {
-	    Map.Entry<? extends K,? extends V> e = it.next();
+	for (Map.Entry<? extends K,? extends V> e : coll)
 	    A.add(new Entry(e.getKey(), e.getValue(), A.size()));
-	}
 	// okay, now heapify
 	for (int i=size()/2; i>0; i--)
 	    downheap(i);

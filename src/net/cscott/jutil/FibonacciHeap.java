@@ -19,7 +19,7 @@ import java.util.Map;
  * Algorithms</i> by Cormen, Leiserson, and Riverst, in Chapter 21.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FibonacciHeap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: FibonacciHeap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
  */
 public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     private static final boolean debug = false;
@@ -49,9 +49,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     public FibonacciHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
 	super(comparator);
 	c = entryComparator();
-	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=collection.iterator();
-	     it.hasNext(); ) {
-	    Map.Entry<? extends K,? extends V> e = it.next();
+	for (Map.Entry<? extends K,? extends V> e : collection) {
 	    insert(e.getKey(), e.getValue());
 	}
     }

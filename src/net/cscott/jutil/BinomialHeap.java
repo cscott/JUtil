@@ -18,7 +18,7 @@ import java.util.Map;
  * Leiserson, and Rivest, on page 400 and following.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinomialHeap.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: BinomialHeap.java,v 1.4 2004-01-13 21:40:19 cananian Exp $
  */
 public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     private static final boolean debug=false;
@@ -97,8 +97,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	// add an n-entry set to an m-entry heap in O(n+lg(n+m)) time.
 	// BUILD-HEAP in O(n) time by successive unions.
 	ArrayList<BinomialHeap<K,V>> hal = new ArrayList<BinomialHeap<K,V>>(coll.size());
-	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=coll.iterator(); it.hasNext(); ) {
-	    Map.Entry<? extends K,? extends V> e = it.next();
+	for (Map.Entry<? extends K,? extends V> e : coll) {
 	    BinomialHeap<K,V> bh = new BinomialHeap<K,V>(this.comparator());
 	    bh.insert(e.getKey(), e.getValue());
 	    hal.add(bh);

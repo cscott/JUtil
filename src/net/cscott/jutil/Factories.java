@@ -19,7 +19,7 @@ import java.util.TreeSet;
     operate on or return <code>CollectionFactory</code>s. 
  
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: Factories.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+    @version $Id: Factories.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
  */
 public final class Factories {
     
@@ -129,10 +129,9 @@ public final class Factories {
 		    final Map<K,V> m = mf.makeMap();
 		    // we could call addAll on the result, but we'll be
 		    // gentle on entrySet()s which might not allow 'add'.
-		    for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=c.iterator(); it.hasNext(); ) {
-			Map.Entry<? extends K,? extends V> me = it.next();
+		    for (Map.Entry<? extends K,? extends V> me : c)
 			m.put(me.getKey(), me.getValue());
-		    }
+
 		    Set<Map.Entry<K,V>> s = m.entrySet();
 		    if (s instanceof MapSet<K,V> && ((MapSet)s).asMap()==m)
 			return s; // optimize!
@@ -157,10 +156,9 @@ public final class Factories {
 		    final MultiMap<K,V> m = mf.makeMultiMap();
 		    // we could call addAll on the result, but we'll be
 		    // gentle on entrySet()s which might not allow 'add'.
-		    for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=c.iterator(); it.hasNext(); ) {
-			Map.Entry<? extends K,? extends V> me = it.next();
+		    for (Map.Entry<? extends K,? extends V> me : c)
 			m.add(me.getKey(), me.getValue());
-		    }
+
 		    Set<Map.Entry<K,V>> s = m.entrySet();
 		    if (s instanceof MultiMapSet &&
 			((MultiMapSet)s).asMultiMap()==m)

@@ -19,7 +19,7 @@ import java.util.Set;
  * correctly extends <code>Map</code>.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: GenericInvertibleMultiMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: GenericInvertibleMultiMap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
  */
 public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     private final MultiMap<K,V> map;
@@ -69,15 +69,14 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     }
     public boolean addAll(K key, Collection<? extends V> values) {
 	boolean changed = false;
-	for (Iterator<? extends V> it=values.iterator(); it.hasNext(); )
-	    if (this.add(key, it.next()))
+	for (V v: values)
+	    if (this.add(key, v))
 		changed = true;
 	return changed;
     }
     public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	boolean changed = false;
-	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it=mm.entrySet().iterator(); it.hasNext(); ) {
-	    Map.Entry<? extends K,? extends V> me = it.next();
+	for (Map.Entry<? extends K,? extends V> me : mm.entrySet()) {
 	    if (add(me.getKey(), me.getValue()))
 		changed = true;
 	}
@@ -192,9 +191,8 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 		    public K next() { last=it.next(); return last; }
 		    public void remove() {
 			// mirror op in imap.
-			for (Iterator<V> it2=map.getValues(last).iterator();
-			     it2.hasNext(); )
-			    imap.remove(it2.next(), last);
+			for (V v: map.getValues(last))
+			    imap.remove(v, last);
 			// do it here.
 			it.remove();
 		    }
@@ -216,9 +214,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	return old;
     }
     public void putAll(Map<? extends K,? extends V> t) {
-	for (Iterator<? extends Map.Entry<? extends K, ? extends V>> it =
-		 t.entrySet().iterator(); it.hasNext(); ) {
-	    Map.Entry<? extends K, ? extends V> me = it.next();
+	for (Map.Entry<? extends K, ? extends V> me : t.entrySet()) {
 	    this.put(me.getKey(), me.getValue());
 	}
     }
@@ -236,8 +232,8 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     }
     public boolean removeAll(K key, Collection<?> values) {
 	boolean changed = false;
-	for (Iterator<?> it=values.iterator(); it.hasNext(); )
-	    if (this.remove(key, it.next()))
+	for (Object v : values)
+	    if (this.remove(key, v))
 		changed = true;
 	return changed;
     }

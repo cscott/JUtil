@@ -16,7 +16,7 @@ import java.util.Set;
  * a <code>HashMap</code> as the backing store.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: HashEnvironment.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: HashEnvironment.java,v 1.2 2004-01-13 21:40:19 cananian Exp $
  */
 public class HashEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
@@ -77,8 +77,8 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     public int size() { return size; }
     /** Clears all mappings. */
     public void clear() {
-	for (Iterator<K> it=keySet().iterator(); it.hasNext(); )
-	    remove(it.next());
+	for (K k: keySet())
+	    remove(k);
     }
     
     // --- ENVIRONMENT INTERFACE

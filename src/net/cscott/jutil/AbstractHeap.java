@@ -13,7 +13,7 @@ import java.util.Map;
  * to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractHeap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: AbstractHeap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
  */
 public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     /** A comparator for the keys in <code>Map.Entry</code>s, based
@@ -68,11 +68,8 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
 	return e;
     }
     public void union(Heap<? extends K,? extends V> h) {
-	for (Iterator<? extends Map.Entry<? extends K,? extends V>> it = h.entries().iterator();
-	     it.hasNext(); ) {
-	    Map.Entry<? extends K,? extends V> e = it.next();
+	for (Map.Entry<? extends K,? extends V> e : h.entries())
 	    insert(e.getKey(), e.getValue());
-	}
 	h.clear();
     }
     public boolean isEmpty() { return size()==0; }

@@ -27,7 +27,7 @@ import java.util.HashSet;
  *	 are passed on to 'mm'.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: GenericMultiMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $ */
+ * @version $Id: GenericMultiMap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $ */
 public class GenericMultiMap<K,V> implements MultiMap<K,V> {
     
     // internal Map[KeyType -> Collection[ ValueType ]]
@@ -95,15 +95,15 @@ public class GenericMultiMap<K,V> implements MultiMap<K,V> {
     // isEmpty() are slower than they might otherwise be.
     public int size() {
 	int count=0;
-	for (Iterator<Collection<V>> it=internMap.values().iterator(); it.hasNext(); )
-	    count += it.next().size();
+	for (Collection<V> c : internMap.values() )
+	    count += c.size();
 	return count;
     }
 
     public boolean isEmpty() {
 	// we could return 'size()==0' but that's slow.
-	for (Iterator<Collection<V>> it=internMap.values().iterator(); it.hasNext(); )
-	    if (it.next().size()>0)
+	for (Collection<V> c : internMap.values() )
+	    if (c.size()>0)
 		return false;
 	return true;
     }
@@ -114,8 +114,8 @@ public class GenericMultiMap<K,V> implements MultiMap<K,V> {
     }
     
     public boolean containsValue(Object value) {
-	for (Iterator<K> it=internMap.keySet().iterator(); it.hasNext(); )
-	    if (getValues(it.next()).contains(value))
+	for (K k : internMap.keySet())
+	    if (getValues(k).contains(value))
 		return true;
 	return false;
     }
@@ -247,9 +247,7 @@ public class GenericMultiMap<K,V> implements MultiMap<K,V> {
     /** Add all mappings in the given multimap to this multimap. */
     public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	boolean changed = false;
-	for (Iterator<? extends Map.Entry<? extends K, ? extends V>> it =
-		 mm.entrySet().iterator(); it.hasNext(); ) {
-	    Map.Entry<? extends K, ? extends V> me = it.next();
+	for (Map.Entry<? extends K, ? extends V> me : mm.entrySet()) {
 	    if (add(me.getKey(), me.getValue()))
 		changed = true;
 	}

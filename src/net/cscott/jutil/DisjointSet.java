@@ -19,7 +19,7 @@ import java.util.Set;
  * function.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: DisjointSet.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: DisjointSet.java,v 1.2 2004-01-13 21:40:19 cananian Exp $
  */
 public class DisjointSet<E>  {
     private final Map<E,Node<E>> elmap = new HashMap<E,Node<E>>();
@@ -115,8 +115,7 @@ public class DisjointSet<E>  {
     /** Returns a human-readable representation of the DisjointSet. */
     public String toString() {
 	MultiMap<E,E> mm = new GenericMultiMap<E,E>();
-	for (Iterator<Node<E>> it=elmap.values().iterator(); it.hasNext(); ) {
-	    Node<E> n = it.next();
+	for (Node<E> n : elmap.values()) {
 	    Node<E> r = _find_set(n);
 	    if (n!=r) mm.add(r.element, n.element);
 	}
