@@ -21,13 +21,14 @@ import java.util.WeakHashMap;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSetFactory.java,v 1.6 2004-06-29 19:23:01 cananian Exp $
+ * @version $Id: PersistentSetFactory.java,v 1.7 2005-01-20 02:31:07 cananian Exp $
  */
 public class PersistentSetFactory<T> extends SetFactory<T> {
     final Allocator<T> allocator = new Allocator<T>();
     final Comparator<T> comparator;
 
-    /** Creates a <code>PersistentSetFactory</code>. */
+    /** Creates a <code>PersistentSetFactory</code>. Note that the elements
+     *  must implement a good hashcode as well as being comparable. */
     public PersistentSetFactory(Comparator<T> comparator) {
 	this.comparator = comparator;
     }

@@ -18,7 +18,7 @@ import java.util.Stack;
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSet.java,v 1.3 2004-01-30 08:55:19 cananian Exp $
+ * @version $Id: PersistentSet.java,v 1.4 2005-01-20 02:31:07 cananian Exp $
  */
 public class PersistentSet<T>  {
     final Node<T> root;
@@ -26,13 +26,17 @@ public class PersistentSet<T>  {
     final Node.Allocator<T> allocator;
 
     /** Creates an empty <code>PersistentSet</code> whose member objects
-     *  will all implement <code>java.lang.Comparable</code>. */
+     *  will all implement <code>java.lang.Comparable</code>. Note that
+     *  good hashcode implementations for the member objects are still
+     *  required. */
     public PersistentSet() {
 	// cast below is safe iff T implements Comparable.
 	this((Comparator<T>)((Comparator)Default.comparator));
     }
     /** Creates an empty <code>PersistentSet</code> whose member objects
-     *  are ordered by the given <code>Comparator</code>.
+     *  are ordered by the given <code>Comparator</code>.  Note that
+     *  good hashcode implementations for the member objects are still
+     *  required.
      */
     public PersistentSet(Comparator<T> c) {
 	this(null, c, new Node.Allocator<T>());

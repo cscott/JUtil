@@ -19,13 +19,14 @@ import java.util.WeakHashMap;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMapFactory.java,v 1.5 2004-06-29 19:23:01 cananian Exp $
+ * @version $Id: PersistentMapFactory.java,v 1.6 2005-01-20 02:31:07 cananian Exp $
  */
 public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();
     final Comparator<K> comparator;
 
-    /** Creates a <code>PersistentMapFactory</code>. */
+    /** Creates a <code>PersistentMapFactory</code>.  Note that the keys
+     *  must implement a good hashcode as well as being comparable. */
     public PersistentMapFactory(Comparator<K> comparator) {
 	this.comparator = comparator;
     }

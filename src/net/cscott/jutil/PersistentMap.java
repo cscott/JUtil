@@ -20,7 +20,7 @@ import java.util.Stack;
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMap.java,v 1.3 2004-01-30 08:55:19 cananian Exp $
+ * @version $Id: PersistentMap.java,v 1.4 2005-01-20 02:31:08 cananian Exp $
  */
 public class PersistentMap<K,V> implements java.io.Serializable {
     final Node<K,V> root;
@@ -29,6 +29,8 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 
     /** Creates an empty <code>PersistentMap</code> whose
      *  key objects will all implement <code>java.lang.Comparable</code>. 
+     *  Note that good hashcode implementations for the key objects are
+     *  still required.
      */
     public PersistentMap() {
 	// cast below is safe iff K implements Comparable.
@@ -36,6 +38,8 @@ public class PersistentMap<K,V> implements java.io.Serializable {
     }
     /** Creates an empty <code>PersistentMap</code> whose
      *  key objects are ordered by the given <code>Comparator</code>.
+     *  Note that good hashcode implementations for the key objects are
+     *  still required.
      */
     public PersistentMap(Comparator<K> c) {
 	this(null, c, new Node.Allocator<K,V>());
