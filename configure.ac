@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(JUtil, 1.1, cscott@cscott.net)
+AC_INIT(JUtil, 1.2, cscott@cscott.net)
 AC_COPYRIGHT([Copyright (c) 2003, 2004 C. Scott Ananian])
-AC_REVISION($Revision: 1.4 $)
+AC_REVISION($Revision: 1.5 $)
 AC_CONFIG_SRCDIR(configure.ac) # double check --srcdir validity.
 AC_CONFIG_AUX_DIR(scripts)
 AM_INIT_AUTOMAKE
