@@ -14,7 +14,7 @@ pkgdata_DATA = @PACKAGE_TARNAME@.jar
 	echo "Manifest-Version: 1.0" > manifest
 #       print the library version number if executed.
 	echo "Main-Class: net.cscott.jutil.Version" >> manifest
-#	echo "Class-Path: lib/jlfgr-1_0.jar lib/gtk-icons.jar" >> manifest
+	echo "Implementation-Version: $(VERSION)" >> manifest
 	cd classes && $(JAR) -cfm ../$@ ../manifest net
 	-$(RM) manifest
 
@@ -30,7 +30,10 @@ doc:
 	$(MAKE) doc-link
 	$(RM) -rf doc
 	gjdoc -version -author -breakiterator -source 1.5 \
-	   -doctitle "JUtil documentation" \
+	   -windowtitle "@PACKAGE_STRING@ documentation" \
+	   -doctitle "@PACKAGE_STRING@ documentation" \
+	   -header "@PACKAGE_STRING@" \
+	   -bottom "Copyright &copy; 2003 C. Scott Ananian" \
 	   -link http://java.sun.com/j2se/1.4/docs/api \
 	   -d doc -sourcepath doc-link \
 	   net.cscott.jutil
@@ -54,6 +57,20 @@ dist: ChangeLog
 
 backup: dist
 	scp $(PACKAGE)-$(VERSION).tar.gz catfish.lcs.mit.edu:
+upload: dist doc ChangeLog @PACKAGE_TARNAME@.jar
+	$(RM) -rf $(PACKAGE)-$(VERSION)
+	mkdir $(PACKAGE)-$(VERSION)
+	tar -c doc | tar -C $(PACKAGE)-$(VERSION) -x
+	(date ; echo "Released @PACKAGE_STRING@" ; echo " " ; cat ChangeLog)\
+		> $(PACKAGE)-$(VERSION)/ChangeLog.txt
+	cp $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)/
+	cd $(PACKAGE)-$(VERSION) && \
+		ln -s $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE).tar.gz
+	cp @PACKAGE_TARNAME@.jar $(PACKAGE)-$(VERSION)/
+	touch $(PACKAGE)-$(VERSION)/VERSION_$(VERSION)
+	tar -c $(PACKAGE)-$(VERSION)/ | \
+		ssh catfish.lcs.mit.edu "mkdir -p public_html/Projects/@PACKAGE_NAME@ && cd public_html/Projects/@PACKAGE_NAME@ && /bin/rm -rf $(PACKAGE)-$(VERSION) && tar -xv"
+	$(RM) -rf $(PACKAGE)-$(VERSION)
 
 # the 'cvs' rules only make sense if you've got a copy checked out from CVS
 needs-cvs:
