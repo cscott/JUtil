@@ -24,25 +24,32 @@ import java.util.SortedSet;
  * <code>Collection</code>s, and <code>Comparator</code>s.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Default.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: Default.java,v 1.4 2004-02-01 19:57:31 cananian Exp $
  */
 public abstract class Default  {
     /** A <code>Comparator</code> for objects that implement 
-     *   <code>Comparable</code>. */
-    public static final Comparator<Comparable> comparator = new SerializableComparator<Comparable>() {
-	public int compare(Comparable o1, Comparable o2) {
-	    if (o1==null && o2==null) return 0;
-	    // 'null' is less than everything.
-	    if (o1==null) return -1;
-	    if (o2==null) return 1;
-	    return (o1==null) ? -o2.compareTo(o1):
-	                         o1.compareTo(o2);
-	}
-	// this should always be a singleton.
-	private Object readResolve() { return Default.comparator; }
-    };
+     *   <code>Comparable</code> (checked dynamically at run-time). */
+    public static final Comparator comparator = comparator();
+    /** A <code>Comparator</code> for objects that implement 
+     *  <code>Comparable</code> (checked dynamically at run-time).
+     *  This version is parameterized to play nicely with Java's
+     *  type system. */
+    public static final <T> Comparator<T> comparator() {
+	return new SerializableComparator<T>() {
+	    public int compare(T t1, T t2) {
+		if (t1==null && t2==null) return 0;
+		// null is less than everything
+		if (t1==null) return -1;
+		if (t2==null) return 1;
+		// okay, cast to Comparable.
+		return ((Comparable)t1).compareTo(t2);
+	    }
+	};
+    }
     /** An <code>Iterator</code> over the empty set. */
     public static final Iterator nullIterator = nullIterator();
+    /** An <code>Iterator</code> over the empty set, parameterized to
+     *  play nicely with Java's type system. */
     public static final <E> Iterator<E> nullIterator() {
 	return new UnmodifiableIterator<E>() {
 	    public boolean hasNext() { return false; }
@@ -60,10 +67,15 @@ public abstract class Default  {
 	    public E next() { return i.next(); }
 	};
     }
+    /** An empty set. */
+    public static final SortedSet EMPTY_SET = EMPTY_SET();
     /** An empty set; the parameterized version.
-     *  Made necessary by limitations in GJ's type system. */
+     *  Plays nicely with Java's type system. */
     public static final <E> SortedSet<E> EMPTY_SET() {
-	return new SerializableSortedSet<E>() {
+	return new EmptySortedSet<E>();
+    }
+    /** Implementation of an immutable empty set. */
+    private static class EmptySet<E> implements Set<E>, java.io.Serializable {
 	    public int size() { return 0; }
 	    public boolean isEmpty() { return true; }
 	    public boolean contains(Object e) { return false; }
@@ -93,6 +105,10 @@ public abstract class Default  {
 		return ((Set)o).size()==0;
 	    }
 	    public int hashCode() { return 0; }
+    }
+    /** Implementation of an immutable empty sorted set. */
+    private static class EmptySortedSet<E> extends EmptySet<E>
+	implements SortedSet<E> {
 	    // sorted set interface:
 	    public Comparator<E> comparator() { return null; }
 	    public SortedSet<E> subSet(E fromEl, E toEl) { return this; }
@@ -100,7 +116,6 @@ public abstract class Default  {
 	    public SortedSet<E> tailSet(E fromEl) { return this; }
 	    public E first() { throw new NoSuchElementException(); }
 	    public E last() { throw new NoSuchElementException(); }
-	};
     }
     /** An empty list.  The parameterized version.
      *  Made necessary by limitations in GJ's type system. */
@@ -112,108 +127,125 @@ public abstract class Default  {
 	    }
 	};
     }
-    /** An empty map. Missing from <code>java.util.Collections</code>.*/
-    public static final SortedMap EMPTY_MAP = new SerializableSortedMap() {
+    /** An empty map. Missing from <code>java.util.Collections</code> in
+     *  Java 1.2. */
+    public static final SortedMap EMPTY_MAP = EMPTY_MAP();
+    /** An empty map, parameterized to play nicely with Java's type system. */
+    public static final <K,V> SortedMap<K,V> EMPTY_MAP() {
+	return new EmptySortedMap<K,V>();
+    }
+    /** Implementation of an immutable empty map. */
+    private static class EmptyMap<K,V>
+	implements Map<K,V>, java.io.Serializable {
 	public void clear() { }
 	public boolean containsKey(Object key) { return false; }
 	public boolean containsValue(Object value) { return false; }
-	public Set entrySet() { return Collections.EMPTY_SET; }
+	public MapSet<K,V> entrySet() {
+	    return new EmptyMapSet(this);
+	}
+	/*XXX:JAVAC -- this class should not need to be static.
+	private class EmptyMapSet extends EmptySortedSet<Map.Entry<K,V>>
+	    implements MapSet<K,V> {
+	    public Map<K,V> asMap() { return EmptyMap.this; }
+	}
+	*/
+	private static class EmptyMapSet<K,V>
+	    extends EmptySortedSet<Map.Entry<K,V>> implements MapSet<K,V> {
+	    Map<K,V> parent;
+	    EmptyMapSet(Map<K,V> parent) { this.parent = parent; }
+	    public Map<K,V> asMap() { return parent; }
+	}
+
 	public boolean equals(Object o) {
 	    if (!(o instanceof Map)) return false;
 	    return ((Map)o).size()==0;
 	}
-	public Object get(Object key) { return null; }
+	public V get(Object key) { return null; }
 	public int hashCode() { return 0; }
 	public boolean isEmpty() { return true; }
-	public Set keySet() { return Collections.EMPTY_SET; }
-	public Object put(Object key, Object value) {
+	public Set<K> keySet() { return Default.<K>EMPTY_SET(); }
+	public V put(K key, V value) {
 	    throw new UnsupportedOperationException();
 	}
-	public void putAll(Map t) {
+	public void putAll(Map<? extends K,? extends V> t) {
 	    if (t.size()==0) return;
 	    throw new UnsupportedOperationException();
 	}
-	public Object remove(Object key) { return null; }
+	public V remove(Object key) { return null; }
 	public int size() { return 0; }
-	public Collection values() { return Collections.EMPTY_SET; }
+	public Collection<V> values() { return Default.<V>EMPTY_SET(); }
 	public String toString() { return "{}"; }
 	// this should always be a singleton.
-	private Object readResolve() { return Default.EMPTY_MAP; }
+	//private Object readResolve() { return Default.EMPTY_MAP; }
+    }
+    /** Implementation of an immutable empty sorted map. */
+    private static class EmptySortedMap<K,V> extends EmptyMap<K,V>
+	implements SortedMap<K,V> {
 	// SortedMap interface.
-	public Comparator comparator() { return null; }
-	public Object firstKey() { throw new NoSuchElementException(); }
-	public Object lastKey() { throw new NoSuchElementException(); }
-	public SortedMap headMap(Object toKey) { return Default.EMPTY_MAP; }
-	public SortedMap tailMap(Object fromKey) { return Default.EMPTY_MAP; }
-	public SortedMap subMap(Object fromKey, Object toKey) {
-	    return Default.EMPTY_MAP;
-	}
-    };
+	public Comparator<? super K> comparator() { return null; }
+	public K firstKey() { throw new NoSuchElementException(); }
+	public K lastKey() { throw new NoSuchElementException(); }
+	public SortedMap<K,V> headMap(K toKey) { return this; }
+	public SortedMap<K,V> tailMap(K fromKey) { return this; }
+	public SortedMap<K,V> subMap(K fromKey, K toKey) { return this; }
+    }
     /** An empty multi-map. */
-    public static final MultiMap EMPTY_MULTIMAP = new SerializableMultiMap() {
-	private MultiMap _this_ = this;
-	public void clear() { }
-	public boolean containsKey(Object key) { return false; }
-	public boolean containsValue(Object value) { return false; }
-	public MultiMapSet entrySet() {
-	    return new AbstractMultiMapSet() {
-		    public Iterator iterator() { return nullIterator; }
-		    public int size() { return 0; }
-		    public MultiMap asMap() { return _this_; }
-		    public MultiMap asMultiMap() { return _this_; }
-	    };
+    public static final MultiMap EMPTY_MULTIMAP = EMPTY_MULTIMAP();
+    /** An empty multi-map, parameterized to play nicely with Java's
+     *  type system. */
+    public static final <K,V> MultiMap<K,V> EMPTY_MULTIMAP() {
+	return new EmptyMultiMap<K,V>();
+    }
+    /** Implementation of an immutable empty multimap. */
+    private static class EmptyMultiMap<K,V> extends EmptyMap<K,V>
+	implements MultiMap<K,V> {
+	public MultiMapSet<K,V> entrySet() {
+	    return new EmptyMultiMapSet(this);
 	}
-	abstract class AbstractMultiMapSet
-	    extends AbstractSet implements MultiMapSet { }
-	public boolean equals(Object o) {
-	    if (!(o instanceof Map)) return false;
-	    return ((Map)o).size()==0;
+	/*XXX:JAVAC -- this class should not need to be static.
+	private class EmptyMultiMapSet extends EmptySortedSet<Map.Entry<K,V>>
+	    implements MultiMapSet<K,V> {
+	    public MultiMap<K,V> asMap() { return EmptyMultiMap.this; }
+	    public MultiMap<K,V> asMultiMap() { return EmptyMultiMap.this; }
 	}
-	public Object get(Object key) { return null; }
-	public int hashCode() { return 0; }
-	public boolean isEmpty() { return true; }
-	public Set keySet() { return Collections.EMPTY_SET; }
-	public Object put(Object key, Object value) {
-	    throw new UnsupportedOperationException();
+	*/
+	private static class EmptyMultiMapSet<K,V>
+	    extends EmptySortedSet<Map.Entry<K,V>> implements MultiMapSet<K,V>{
+	    MultiMap<K,V> parent;
+	    EmptyMultiMapSet(MultiMap<K,V> parent) { this.parent = parent; }
+	    public MultiMap<K,V> asMap() { return parent; }
+	    public MultiMap<K,V> asMultiMap() { return parent; }
 	}
-	public void putAll(Map t) {
-	    if (t.size()==0) return;
-	    throw new UnsupportedOperationException();
-	}
-	public Object remove(Object key) { return null; }
-	public int size() { return 0; }
-	public Collection values() { return Collections.EMPTY_SET; }
-	public String toString() { return "{}"; }
 	// this should always be a singleton.
-	private Object readResolve() { return Default.EMPTY_MULTIMAP; }
+	//private Object readResolve() { return Default.EMPTY_MULTIMAP; }
 	// MultiMap interface.
 	public boolean remove(Object key, Object value) {
 	    return false;
 	}
-	public boolean add(Object key, Object value) {
+	public boolean add(K key, V value) {
 	    throw new UnsupportedOperationException();
 	}
-	public boolean addAll(Object key, Collection values) {
+	public boolean addAll(K key, Collection<? extends V> values) {
 	    if (values.size()==0) return false;
 	    throw new UnsupportedOperationException();
 	}
-	public boolean addAll(MultiMap mm) {
+	public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	    if (mm.size()==0) return false;
 	    throw new UnsupportedOperationException();
 	}
-	public boolean retainAll(Object key, Collection values) {
+	public boolean retainAll(K key, Collection<?> values) {
 	    return false;
 	}
-	public boolean removeAll(Object key, Collection values) {
+	public boolean removeAll(K key, Collection<?> values) {
 	    return false;
 	}
-	public Collection getValues(Object key) {
-	    return Collections.EMPTY_SET;
+	public SortedSet<V> getValues(K key) {
+	    return Default.<V>EMPTY_SET();
 	}
 	public boolean contains(Object key, Object value) {
 	    return false;
 	}
-    };
+    }
     /**
      * Improved <code>unmodifiableCollection()</code> class that
      * helps w/ covariant subtyping. */
@@ -249,6 +281,14 @@ public abstract class Default  {
 	// serializable.
 	return new PairList<A,B>(left, right);
     }
+    /** Pairs, implemented as a <code>List</code>.
+     *  The <code>PairList</code> implements <code>hashCode()</code>
+     *  and <code>equals()</code> "properly" so they can be used as keys
+     *  in hashtables and etc.  They are implemented as mutable lists of
+     *  fixed size 2.  Note that the <code>hashCode()</code> implementation
+     *  differs from pairs implemented as <code>Map.Entry</code>s; the
+     *  parameterization is different as well.
+     */
     public static class PairList<A,B> extends AbstractList
 	implements java.io.Serializable {
 	private A left;
@@ -256,7 +296,9 @@ public abstract class Default  {
 	public PairList(A left, B right) {
 	    this.left = left; this.right = right;
 	}
+	/** Return the left element of the pair (head). */
 	public A left() { return left; }
+	/** Return the right element of the pair (tail). */
 	public B right() { return right; }
 	public int size() { return 2; }
 	public Object get(int index) {
@@ -301,13 +343,4 @@ public abstract class Default  {
     private static abstract class SerializableAbstractList<E>
 	extends AbstractList<E>
 	implements java.io.Serializable { /* only declare */ }
-    /** A serializable set. */
-    private static interface SerializableSortedSet<E>
-	extends SortedSet<E>, java.io.Serializable { /* only declare */ }
-    /** A serializable map. */
-    private static interface SerializableSortedMap<K,V>
-	extends SortedMap<K,V>, java.io.Serializable { /* only declare */ }
-    /** A serializable multi-map. */
-    private static interface SerializableMultiMap<K,V>
-	extends MultiMap<K,V>, java.io.Serializable { /* only declare */ }
 }
