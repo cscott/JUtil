@@ -12,12 +12,14 @@ import java.util.Map;
 import java.util.WeakHashMap;
 /**
  * A <code>PersistentMapFactory</code> uses hash-consing to ensure that
- * the <code>PersistentMap</code>s created by it maximally reuse space.
+ * the <code>Map</code>s created by it maximally reuse space.
  * Equality tests between <code>Map</code>s created by this factory are
- * also fast.
+ * constant-time.  Cloning a <code>Map</code> created by this factory is
+ * also constant-time.  The implementation is based on persistent
+ * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMapFactory.java,v 1.3 2004-01-14 18:44:01 cananian Exp $
+ * @version $Id: PersistentMapFactory.java,v 1.4 2004-01-30 08:55:19 cananian Exp $
  */
 public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();
@@ -48,6 +50,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    // maps from the same factory can be compared very quickly
 	    if (o instanceof MapImpl &&
 		factory() == ((MapImpl)o).factory())
+		// constant-time!
 		return this.root == ((MapImpl)o).root;
 	    return super.equals(o);
 	}
@@ -58,6 +61,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	public void clear() {
 	    this.root = null;
 	}
+	// constant-time!
 	public MapImpl clone() { return new MapImpl(this.root); }
 	public boolean containsKey(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle

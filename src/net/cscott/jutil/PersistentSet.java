@@ -12,10 +12,13 @@ import java.util.Set;
 import java.util.Stack;
 /**
  * <code>PersistentSet</code> implements a persistent set, based on a
- * persistent randomized treap.
+ * persistent randomized treap.  Unlike the <code>Set</code>s returned
+ * by <code>PersistentSetFactory</code>, <code>PersistentSet</code>
+ * does not implement that standard <code>java.util.Set</code> API
+ * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSet.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: PersistentSet.java,v 1.3 2004-01-30 08:55:19 cananian Exp $
  */
 public class PersistentSet<T>  {
     final Node<T> root;
@@ -88,6 +91,11 @@ public class PersistentSet<T>  {
 	return (this.root == new_root) ? this :
 	    new PersistentSet<T>(new_root, c, allocator);
     }
+
+    /** Cloning takes constant time, regardless of the size of the set. */
+    public PersistentSet<T> clone() {
+	return new PersistentSet<T>(root, c, allocator);
+    }
    
     /** Human-readable representation of the set. */
     public String toString() { return asSet().toString(); }
@@ -96,6 +104,8 @@ public class PersistentSet<T>  {
     /** <code>java.util.Collection</code>s view of the set. */
     public Set<T> asSet() {
 	return new AbstractSet<T>() {
+	    // constant-time clone.
+	    public Set<T> clone() { return PersistentSet.this.asSet(); }
 	    public boolean contains(Object o) {
 		// oops, not safe if we pass a non-T o in here!
 		return PersistentSet.this.contains((T)o);

@@ -14,10 +14,13 @@ import java.util.Set;
 import java.util.Stack;
 /**
  * <code>PersistentMap</code> implements a persistent map, based on a
- * persistent randomized treap.
+ * persistent randomized treap.  Unlike the <code>Map</code>s returned
+ * by <code>PersistentMapFactory</code>, <code>PersistentMap</code>
+ * does not implement that standard <code>java.util.Map</code> API
+ * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMap.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: PersistentMap.java,v 1.3 2004-01-30 08:55:19 cananian Exp $
  */
 public class PersistentMap<K,V> implements java.io.Serializable {
     final Node<K,V> root;
@@ -99,6 +102,10 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 	    new PersistentMap<K,V>(new_root, c, allocator);
     }
     
+    /** Cloning takes constant time, regardless of the size of the map. */
+    public PersistentMap<K,V> clone() {
+	return new PersistentMap<K,V>(root, c, allocator);
+    }
     /** Human-readable representation of the map. */
     public String toString() { return asMap().toString(); }
     // fast Map.hashCode implementation.
@@ -108,6 +115,8 @@ public class PersistentMap<K,V> implements java.io.Serializable {
     /** <code>java.util.Collection</code>s view of the mapping. */
     public Map<K,V> asMap() {
 	return new AbstractMap<K,V>() {
+	    // constant-time clone.
+	    public Map<K,V> clone() { return PersistentMap.this.asMap(); }
 	    public boolean containsKey(Object key) {
 		// ack, not safe if key is not a K!
 		return PersistentMap.this.containsKey((K)key);

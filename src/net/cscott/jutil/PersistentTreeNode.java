@@ -11,7 +11,7 @@ import java.util.Iterator;
  * C. R. Aragon and R. G. Seidel, "Randomized search trees", Proc. 30th IEEE
  * FOCS (1989), 540-545.
  * </cite>
- * We use the suggestion of Dan Sleator, mention in the paper on p 543,
+ * We use the suggestion of Dan Sleator, mentioned in the paper on p 543,
  * which avoids the necessity of storing a separate priority field in the
  * nodes of the treap (heap-ordered tree) by using a hash of the key as the
  * priority.  Because in many cases we might expect Object.hashCode() to
@@ -21,7 +21,7 @@ import java.util.Iterator;
  * equality tests for treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentTreeNode.java,v 1.3 2004-01-14 18:44:01 cananian Exp $
+ * @version $Id: PersistentTreeNode.java,v 1.4 2004-01-30 08:55:20 cananian Exp $
  */
 abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     extends AbstractMapEntry<K,V> implements java.io.Serializable {
