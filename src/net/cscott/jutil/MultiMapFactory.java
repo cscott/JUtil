@@ -6,12 +6,13 @@ package net.cscott.jutil;
 import java.util.*;
 /** <code>MultiMapFactory</code> is a <code>MultiMap</code> generator.
  *  Subclasses should implement constructions of specific types of
- *  <code>MultiMap</code>s.
+ *  <code>MultiMap</code>s.  Subclasses *must* implement at least one of
+ *  the <code>makeMultiMap</code> methods.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapFactory.java,v 1.3 2004-06-29 19:44:06 cananian Exp $
+ * @version $Id: MultiMapFactory.java,v 1.4 2005-01-20 01:14:35 cananian Exp $
  */
-public class MultiMapFactory<K,V> extends MapFactory<K,V> {
+public abstract class MultiMapFactory<K,V> extends MapFactory<K,V> {
     
     /** Creates a <code>MultiMapFactory</code>. */
     public MultiMapFactory() {
@@ -21,11 +22,12 @@ public class MultiMapFactory<K,V> extends MapFactory<K,V> {
 	return makeMultiMap();
     }
     public final MultiMap<K,V> makeMap(Map<? extends K,? extends V> map) {
-	return makeMultiMap(map);
+	MultiMap<K,V> mm = makeMap();
+	mm.putAll(map);
+	return mm;
     }
     // MultiMapFactory interface.
-    // XXX: why do we have default implementations here but not in the other
-    //  *Factory classes?
+    /** Create a new, empty, <code>MultiMap</code>. */
     public MultiMap<K,V> makeMultiMap() {
 	return makeMultiMap(Default.<K,V>EMPTY_MULTIMAP());
     }
@@ -33,10 +35,9 @@ public class MultiMapFactory<K,V> extends MapFactory<K,V> {
     /** Creates a new <code>MultiMap</code> initialized with all 
 	of the <code>Map.Entry</code>s in <code>map</code>
     */
-    public MultiMap<K,V> makeMultiMap(Map<? extends K,? extends V> map) {
-	return new GenericMultiMap<K,V>(map);
-    }
-    public MultiMap<K,V> makeMultiMap(MapFactory<K,Collection<V>> mf, CollectionFactory<V> cf) {
-	return new GenericMultiMap<K,V>(mf, cf);
+    public MultiMap<K,V> makeMultiMap(MultiMap<? extends K,? extends V> map) {
+	MultiMap<K,V> mm = makeMultiMap();
+	mm.addAll(map);
+	return mm;
     }
 }

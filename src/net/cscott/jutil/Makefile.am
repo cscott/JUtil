@@ -28,6 +28,7 @@ FilterIterator.java \
 GenericInvertibleMap.java \
 GenericInvertibleMultiMap.java \
 GenericMultiMap.java \
+GenericMultiMapFactory.java \
 HashEnvironment.java \
 Heap.java \
 Indexer.java \

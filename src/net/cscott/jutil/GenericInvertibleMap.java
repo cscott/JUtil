@@ -11,7 +11,7 @@ import java.util.Iterator;
     views of the mappings it maintains.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: GenericInvertibleMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+    @version $Id: GenericInvertibleMap.java,v 1.3 2005-01-20 01:14:34 cananian Exp $
 */
 public class GenericInvertibleMap<K,V>
     extends MapWrapper<K,V> implements InvertibleMap<K,V> {
@@ -21,7 +21,7 @@ public class GenericInvertibleMap<K,V>
     /** Constructs an invertible map backed by a HashMap.
      */
     public GenericInvertibleMap() {
-	this(Factories.<K,V>hashMapFactory(), new MultiMapFactory<V,K>());
+	this(Factories.<K,V>hashMapFactory(), new GenericMultiMapFactory<V,K>());
     }
 
     /** Constructs an invertible map backed by a map constructed by
