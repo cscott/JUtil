@@ -16,7 +16,7 @@ import java.util.Set;
  * a <code>HashMap</code> as the backing store.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: HashEnvironment.java,v 1.2 2004-01-13 21:40:19 cananian Exp $
+ * @version $Id: HashEnvironment.java,v 1.3 2004-01-30 11:57:56 cananian Exp $
  */
 public class HashEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
@@ -28,7 +28,7 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     public HashEnvironment() { }
     /** Creates a <code>HashEnvironment</code> with all the mappings in
      *  the given map. */
-    public <K2 extends K, V2 extends V> HashEnvironment(Map<K2,V2> m) {
+    public HashEnvironment(Map<? extends K,? extends V> m) {
 	this();
 	putAll(m);
     }

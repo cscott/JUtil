@@ -15,7 +15,7 @@ import java.io.Serializable;
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: WorkSet.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: WorkSet.java,v 1.3 2004-01-30 11:57:58 cananian Exp $
  */
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 {
@@ -41,7 +41,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
     }
     /** Constructs a new <code>WorkSet</code> with the contents of the
      *  specified <code>Collection</code>. */
-    public <T extends E> WorkSet(java.util.Collection<T> c) {
+    public WorkSet(java.util.Collection<? extends E> c) {
 	// make hash map about twice as big as the collection.
 	hm = new HashMap<E,EntryList<E>>(Math.max(2*c.size(),11));
 	addAll(c);

@@ -11,7 +11,7 @@ import java.util.EmptyStackException;
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UniqueStack.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: UniqueStack.java,v 1.2 2004-01-30 11:57:57 cananian Exp $
  */
 
 public class UniqueStack<E> extends UniqueVector<E> {
@@ -78,7 +78,7 @@ public class UniqueStack<E> extends UniqueVector<E> {
      *  item returned by the collection iterator will be at the bottom of
      *  the stack, and thus last to be popped. Duplicate elements in
      *  <code>c</code> are skipped. */
-    public <T extends E> UniqueStack(Collection<T> c) {
+    public UniqueStack(Collection<? extends E> c) {
 	super(c);
     }
 }

@@ -18,7 +18,7 @@ import java.util.Set;
  * <p>Conforms to the JDK 1.2 Collections API.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UniqueVector.java,v 1.3 2004-01-13 21:57:14 cananian Exp $
+ * @version $Id: UniqueVector.java,v 1.4 2004-01-30 11:57:57 cananian Exp $
  * @see java.util.Vector
  * @see java.util.Hashtable
  */
@@ -38,9 +38,9 @@ public class UniqueVector<E> extends AbstractList<E>
   /** Constructs a vector containing the elements of the specified 
    *  <code>Collection</code>, in the order they are returned by the
    *  collection's iterator.  Duplicate elements are skipped. */
-  public <T extends E> UniqueVector(Collection<T> c) {
+  public UniqueVector(Collection<? extends E> c) {
     this(c.size());
-    for (T el : c)
+    for (E el : c)
       add(el);
   }
 
