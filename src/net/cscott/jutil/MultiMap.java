@@ -63,27 +63,9 @@ import java.util.Map;
 	 the constraints enforced by the <code>Map</code> interface
 	 does not ever attempt to use a <code>MultiMap</code> when any
 	 of its Keys map to more than one value.
-
-    <P>  FSK: This data type is a bit experimental; a few changes may
-         be coming:<OL>
-	 <LI> We may make it not extend the <code>Map</code>
-	      interface, because it inherently violates the
-	      constraints of the <code>Map</code> interface once
-	      multiple values are added for one key.
-	 </OL>
-
-         <LI> The <code>Collection</code> views returned right now
-	      don't offer very much in terms of modifying the
-	      state of <code>this</code> internally.
-	 <LI> Some of the views returned do not properly reflect
-	      modification in <code>this</code>.  This is a gross
-	      oversight of <code>Collection</code>'s interface
-	      on my part and I need to fix it, which I will do when I
-	      have free time.
-	 </OL> 
     
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MultiMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+    @version $Id: MultiMap.java,v 1.3 2004-02-01 19:44:10 cananian Exp $
  */
 public interface MultiMap<K,V> extends Map<K,V> {
     /** Returns some arbitrary value from the collection of values to
