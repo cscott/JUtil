@@ -15,7 +15,8 @@ import java.io.Serializable;
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: WorkSet.java,v 1.3 2004-01-30 11:57:58 cananian Exp $
+ * @version $Id: WorkSet.java,v 1.4 2004-02-08 02:00:10 cananian Exp $
+ * @deprecated Use {@link java.util.LinkedHashSet LinkedHashSet} instead.
  */
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 {

@@ -22,7 +22,7 @@ import java.util.Arrays;
     even though <code>LinkedList</code> is a subtype of <code>List</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: ListFactory.java,v 1.3 2004-02-08 02:00:10 cananian Exp $
  */
 public abstract class ListFactory<V> extends CollectionFactory<V> {
     
@@ -146,6 +146,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 
     /** Creates and returns an immutable <code>List</code> of one element. 
 	<BR> <B>effects:</B> returns the list [ o ]
+	@deprecated Use {@link java.util.Collections#singletonList(java.lang.Object) Collections.singletonList} instead.
      */
     public static <E> List<E> singleton(final E o) {
 	return new AbstractList<E>() {
