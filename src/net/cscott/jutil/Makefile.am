@@ -48,7 +48,9 @@ MultiMapSet.java \
 PairMapEntry.java \
 PersistentEnvironment.java \
 PersistentMap.java \
+PersistentMapFactory.java \
 PersistentSet.java \
+PersistentSetFactory.java \
 PersistentTreeNode.java \
 RedBlackTree.java \
 ReferenceUnique.java \

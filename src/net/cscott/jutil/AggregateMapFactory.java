@@ -22,13 +22,13 @@ import java.util.Set;
  * <code>HashMap</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateMapFactory.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: AggregateMapFactory.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
  */
 public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     implements java.io.Serializable {
     private static final class ID { }
-    private final Map<Map.Entry<ID,K>,DoublyLinkedList> m =
-	new HashMap<Map.Entry<ID,K>,DoublyLinkedList>();
+    private final Map<Map.Entry<ID,K>,DoublyLinkedList<K,V>> m =
+	new HashMap<Map.Entry<ID,K>,DoublyLinkedList<K,V>>();
 
     /** Creates an <code>AggregateMapFactory</code>. */
     public AggregateMapFactory() { /* nothing to do here */ }
@@ -110,6 +110,8 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 		    }
 		    public int size() { return size; }
 		    public boolean add(Map.Entry<K,V> me) {
+			if (me==null)
+			    throw new UnsupportedOperationException();
 			if (contains(me)) return false; // already here.
 			if (AggregateMap.this.containsKey(me.getKey()))
 			    // this is not a multimap!
@@ -149,12 +151,12 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	}
     }
 
-    static class DoublyLinkedList<K,V> extends PairMapEntry<K,V> {
+    private static class DoublyLinkedList<K,V> extends PairMapEntry<K,V> {
 	DoublyLinkedList<K,V> next, prev;
 	DoublyLinkedList(K key, V value) {
 	    super(key, value);
 	}
     }
-    static abstract class AbstractMapSet<K,V>
+    private static abstract class AbstractMapSet<K,V>
 	extends AbstractSet<Map.Entry<K,V>> implements MapSet<K,V> { }
 }

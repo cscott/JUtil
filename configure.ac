@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
 AC_INIT(JUtil, 1.0, cscott@cscott.net)
 AC_COPYRIGHT(Copyright (c) 2003 C. Scott Ananian)
-AC_REVISION($Revision: 1.2 $)
+AC_REVISION($Revision: 1.3 $)
 AC_CONFIG_SRCDIR(configure.ac) # double check --srcdir validity.
 AC_CONFIG_AUX_DIR(scripts)
 AM_INIT_AUTOMAKE
@@ -15,7 +15,7 @@ JAVAC=not-found
 CLS=f$$
 echo "abstract class $CLS extends java.util.AbstractList<Integer> { }" \
      > /tmp/$CLS.java
-for jc in jikes javac ${HOME}/jsr14_adding_generics-1_{3,2,0}-ea/scripts/javac ; do
+for jc in jikes javac ${HOME}/jsr14_adding_generics-2_0-ea/scripts/javac-novariance-fixed ${HOME}/jsr14_adding_generics-1_{3,2,0}-ea/scripts/javac ; do
     if $jc -d /tmp -source 1.5 /tmp/$CLS.java 1>/dev/null 2>/dev/null; then
       JAVAC="$jc -source 1.5"
       break

@@ -25,7 +25,7 @@ import java.util.HashMap;
     cause <code>IllegalArgumentException</code> to be thrown.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: BitSetFactory.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+    @version $Id: BitSetFactory.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
  */
 public class BitSetFactory<V> extends SetFactory<V> {
     
@@ -121,16 +121,29 @@ public class BitSetFactory<V> extends SetFactory<V> {
 
     private static class BitStringSet<V> extends AbstractSet<V>
 	implements Cloneable {
-	// internal rep for set
-	BitString bs;
+	/** internal representation for set. */
+	final BitString bs;
+	/** Cached hash code for this set (sum of hashcodes of elements). */
+	int hashCode ;
+	/** Is the cached hashCode valid? */
+	boolean hashCodeValid;
 
 	// ensure that sets come from same factory
 	// when doing optimized operations. 
-	BitSetFactory<V> fact; 
+	final BitSetFactory<V> fact; 
 
 	BitStringSet(int size, BitSetFactory<V> fact) {
 	    this.bs = new BitString(size);
 	    this.fact = fact;
+	    this.hashCode = 0;
+	    this.hashCodeValid=true;
+	}
+	/** Clone constructor. */
+	private BitStringSet(BitStringSet<V> s) {
+	    this.bs = s.bs.clone();
+	    this.hashCode = s.hashCode;
+	    this.hashCodeValid = s.hashCodeValid;
+	    this.fact = s.fact;
 	}
 
 	public boolean add(V o) {
@@ -146,6 +159,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		return false;
 	    } else {
 		this.bs.set(ind);
+		if (this.hashCodeValid) this.hashCode += elemHashCode(o);
 		return true;
 	    }
 	}
@@ -154,12 +168,15 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
 		BitStringSet bss = (BitStringSet) c;
+		this.hashCodeValid=false; // invalidate cache.
 		return this.bs.or(bss.bs);
 	    } else return super.addAll(c);
 	}
 	
 	public void clear() {
 	    this.bs.clearAll();
+	    this.hashCode=0;
+	    this.hashCodeValid=true;
 	}
 	
 	public boolean contains(Object o) {
@@ -189,29 +206,27 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	}
 	
 	public BitStringSet<V> clone() {
-	    try {
-		BitStringSet<V> bss = (BitStringSet) super.clone();
-		bss.bs = this.bs.clone();
-		return bss;
-	    } catch (CloneNotSupportedException e) {
-		assert false;
-		return null;
-	    }
+	    return new BitStringSet<V>(this);
 	}
 
 	public boolean equals(Object o) {
 	    if (o==null) return false;
 	    if (o==this) return true;
-	    try {
+	    if (o instanceof BitStringSet) {
 		BitStringSet bss = (BitStringSet) o;
-		return this.bs.equals(bss.bs);
-	    } catch (ClassCastException e) {
-		return false;
+		if (this.fact == bss.fact)
+		    return this.bs.equals(bss.bs);
 	    }
+	    return super.equals(o);
 	}
-	
+	// follow spec for Set.hashCode()
 	public int hashCode() {
-	    return this.bs.hashCode() - 1;
+	    if (!this.hashCodeValid) {
+		// recompute hashcode from scratch.
+		this.hashCode = super.hashCode();
+		this.hashCodeValid=true;
+	    }
+	    return this.hashCode; // valid cached copy.
 	}
 	
 	public boolean isEmpty() {
@@ -234,6 +249,9 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		    if (lastindex<0 || !BitStringSet.this.bs.get(lastindex))
 			throw new IllegalStateException();
 		    BitStringSet.this.bs.clear(lastindex);
+		    if (BitStringSet.this.hashCodeValid)
+			BitStringSet.this.hashCode -= // adjust hashCode
+			    elemHashCode(fact.indexer.getByID(lastindex));
 		}
 	    } : new Iterator<V>() { // slower fall-back
 		    // need to wrap a *modifiable* iterator 
@@ -255,6 +273,9 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		    }
 		    public void remove() {
 			BitStringSet.this.bs.clear(fact.indexer.getID(last));
+			if (BitStringSet.this.hashCodeValid)
+			    BitStringSet.this.hashCode -= // adjust hashCode
+				elemHashCode(last);
 		    }};
 	}
 	
@@ -267,6 +288,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		boolean alreadySet = bs.get(i);
 		if (alreadySet) {
 		    this.bs.clear(i);
+		    if (this.hashCodeValid) this.hashCode -= elemHashCode(o);
 		    return true;
 		} else {
 		    return false;
@@ -277,6 +299,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	public <T> boolean removeAll(Collection<T> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
+		this.hashCodeValid=false;
 		BitStringSet bss = (BitStringSet) c;
 		BitString notBSS = (BitString) bss.bs.clone();
 		notBSS.setAll(); // -> string of ones
@@ -286,7 +309,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		// optimization hack; super.removeAll takes time
 		// proportional to this.size()
 		boolean changed = false;
-		for(Iterator i=c.iterator(); i.hasNext();) {
+		for(Iterator<T> i=c.iterator(); i.hasNext();) {
 		    changed |= remove(i.next());
 		}
 		return changed;
@@ -298,6 +321,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	public <T> boolean retainAll(Collection<T> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
+		this.hashCodeValid=false;
 		BitStringSet bss = (BitStringSet) c;
 		return this.bs.and(bss.bs);
 	    } else {
@@ -313,6 +337,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	// toArray(Object[]) methods from AbstractSet
     }
     
+    private static final int elemHashCode(Object obj) {
+	return (obj==null)?0:obj.hashCode();
+    }
 }
-
-

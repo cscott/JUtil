@@ -18,7 +18,7 @@ import java.util.Vector;
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: TestSet.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: TestSet.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
  */
 class TestSet {
     private final static boolean DEBUG=false;
@@ -33,7 +33,7 @@ class TestSet {
 					   ONE_OF_THESE };
 	TestSet mt;
 	doit(HashSet.class);
-	//doit(TreeSet.class);//sortedmap
+	//doit(TreeSet.class);//sortedset
 	//doit(ArraySet.class);//immutable.
 	//doit(PersistentSet.class);//immutable
 	// these next ones don't handle 'null's.  change NULL to something else
@@ -49,6 +49,17 @@ class TestSet {
 	//doit(new BitSetFactory(new ArraySet(universe)), "BitSetFactory");
 	doit(Factories.synchronizedSetFactory(Factories.hashSetFactory),
 	     "synchronized HashSet");
+	doit(new PersistentSetFactory(new java.util.Comparator() {
+		public int compare(Object o1, Object o2) {
+		    // null is lowest
+		    if (o1==null) return (o2==null)?0:-1;
+		    if (o2==null) return (o1==null)?0: 1;
+		    // now can't be null.
+		    if (o1 instanceof Comparable && o2 instanceof Comparable)
+			return ((Comparable)o1).compareTo(o2);
+		    return o1.hashCode() - o2.hashCode();
+		}
+	    }), "PersistentSetFactory");//sortedset
     }
     public final static TestSet ONE_OF_THESE = new TestSet(null);
     // this next field can be changed for impl's w/ problems w/ real 'null'
