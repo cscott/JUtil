@@ -9,7 +9,7 @@ import java.util.*;
  *  <code>MultiMap</code>s.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: MultiMapFactory.java,v 1.3 2004-06-29 19:44:06 cananian Exp $
  */
 public class MultiMapFactory<K,V> extends MapFactory<K,V> {
     
@@ -27,7 +27,7 @@ public class MultiMapFactory<K,V> extends MapFactory<K,V> {
     // XXX: why do we have default implementations here but not in the other
     //  *Factory classes?
     public MultiMap<K,V> makeMultiMap() {
-	return makeMultiMap(Default.EMPTY_MULTIMAP);
+	return makeMultiMap(Default.<K,V>EMPTY_MULTIMAP());
     }
 
     /** Creates a new <code>MultiMap</code> initialized with all 

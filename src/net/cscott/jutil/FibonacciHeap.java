@@ -19,7 +19,7 @@ import java.util.Map;
  * Algorithms</i> by Cormen, Leiserson, and Riverst, in Chapter 21.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FibonacciHeap.java,v 1.4 2004-06-29 19:23:00 cananian Exp $
+ * @version $Id: FibonacciHeap.java,v 1.5 2004-06-29 19:44:05 cananian Exp $
  */
 public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     private static final boolean debug = false;
@@ -35,10 +35,10 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
      *  to its keys' natural order.  All keys inserted into the new
      *  map must implement the <code>Comparable</code> interface.
      *  O(1) time. */
-    public FibonacciHeap() { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, null); }
+    public FibonacciHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
     /** Creates a new, empty <code>FibonacciHeap</code>, sorted according
      *  to the given <code>Comparator</code>.  O(1) time. */
-    public FibonacciHeap(Comparator<K> c) { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, c); }
+    public FibonacciHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Constructs a new heap with the same entries as the specified
      *  <code>Heap</code>. O(n) time. */
     public FibonacciHeap(Heap<K,? extends V> h) {

@@ -22,7 +22,7 @@ import java.util.Arrays;
     even though <code>LinkedList</code> is a subtype of <code>List</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListFactory.java,v 1.3 2004-02-08 02:00:10 cananian Exp $
+ * @version $Id: ListFactory.java,v 1.4 2004-06-29 19:44:05 cananian Exp $
  */
 public abstract class ListFactory<V> extends CollectionFactory<V> {
     
@@ -45,7 +45,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 
     /** Generates a new, mutable, empty <code>List</code>. */
     public List<V> makeList() {
-	return makeList(Collections.EMPTY_LIST);
+	return makeList(Collections.<V>emptyList());
     }
 
     /** Generates a new, mutable, empty <code>List</code>, using 

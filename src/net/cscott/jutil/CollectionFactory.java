@@ -25,7 +25,7 @@ import java.util.Collections;
     even though <code>Set</code> is a subtype of <code>Collection</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: CollectionFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: CollectionFactory.java,v 1.3 2004-06-29 19:44:04 cananian Exp $
  */
 public abstract class CollectionFactory<V> {
     
@@ -36,7 +36,7 @@ public abstract class CollectionFactory<V> {
     
     /** Generates a new, mutable, empty <code>Collection</code>. */
     public Collection<V> makeCollection() {
-	return makeCollection(Collections.EMPTY_SET);
+	return makeCollection(Collections.<V>emptySet());
     }
 
     /** Generates a new, mutable, empty <code>Collection</code>, using

@@ -18,7 +18,7 @@ import java.util.Map;
  * Leiserson, and Rivest, on page 400 and following.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinomialHeap.java,v 1.5 2004-06-29 19:23:00 cananian Exp $
+ * @version $Id: BinomialHeap.java,v 1.6 2004-06-29 19:44:04 cananian Exp $
  */
 public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     private static final boolean debug=false;
@@ -29,10 +29,10 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     /** Constructs a new, empty <code>BinomialHeap</code>, sorted according
      *  to the keys' natural order. All keys inserted into the new map
      *  must implement the <code>Comparable</code> interface. O(1) time. */
-    public BinomialHeap() { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, null); }
+    public BinomialHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
     /** Constructs a new, empty <code>BinomialHeap</code>, sorted according
      *  to the given comparator. O(1) time. */
-    public BinomialHeap(Comparator<K> c) { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, c); }
+    public BinomialHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Constructs a new binomial heap with the same entries as the specified
      *  <code>Heap</code>. O(n) time. */
     public BinomialHeap(Heap<K,? extends V> h) { this(h.entries(), h.comparator()); }

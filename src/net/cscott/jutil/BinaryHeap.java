@@ -20,7 +20,7 @@ import java.util.Map;
  * Sedgewick's book.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinaryHeap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
+ * @version $Id: BinaryHeap.java,v 1.4 2004-06-29 19:44:04 cananian Exp $
  * @see Heap
  */
 public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
@@ -31,10 +31,10 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     
     /** Creates a new, empty <code>BinaryHeap</code>, which will
      *  use the keys' natural order. */
-    public BinaryHeap() { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, null); }
+    public BinaryHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
     /** Creates a new, empty <code>BinaryHeap</code> with the
      *  specified comparator. */
-    public BinaryHeap(Comparator<K> c) { this(/*XXX:JAVAC?*/(Collection<Map.Entry<K,V>>)Collections.EMPTY_SET, c); }
+    public BinaryHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Builds a binary heap from the given heap, using
      *  the same key comparator as the given heap.  O(n) time. */
     public BinaryHeap(Heap<K,? extends V> h) {

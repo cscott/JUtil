@@ -19,7 +19,7 @@ import java.util.Set;
     even though <code>HashSet</code> is a subtype of <code>Set</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: SetFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: SetFactory.java,v 1.3 2004-06-29 19:44:06 cananian Exp $
  */
 public abstract class SetFactory<V> extends CollectionFactory<V> {
     
@@ -42,7 +42,7 @@ public abstract class SetFactory<V> extends CollectionFactory<V> {
 
     /** Generates a new, mutable, empty <code>Set</code>. */
     public Set<V> makeSet() {
-	return makeSet(Collections.EMPTY_SET);
+	return makeSet(Collections.<V>emptySet());
     }
 
     /** Generates a new, mutable, empty <code>Set</code>, using

@@ -3,6 +3,7 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.util.Collections;
 import java.util.Map;
 
 /** <code>MapFactory</code> is a <code>Map</code> generator.
@@ -17,7 +18,7 @@ import java.util.Map;
     even though <code>HashMap</code> is a subtype of <code>Map</code>.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MapFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+    @version $Id: MapFactory.java,v 1.3 2004-06-29 19:44:06 cananian Exp $
  */
 public abstract class MapFactory<K,V> {
     
@@ -28,7 +29,7 @@ public abstract class MapFactory<K,V> {
 
     /** Generates a new, mutable, empty <code>Map</code>. */
     public Map<K,V> makeMap() {
-	return this.makeMap(Default.EMPTY_MAP);
+	return this.makeMap(Collections.<K,V>emptyMap());
     }
 
     /** Generates a new <code>Map</code>, using the entries of
