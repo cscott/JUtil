@@ -1,0 +1,9 @@
+// -*-java-*-
+package net.cscott.jutil;
+
+public abstract class Version {
+    public static final String PACKAGE_NAME = "@PACKAGE_NAME@";
+    public static final String PACKAGE_VERSION = "@PACKAGE_VERSION@";
+    public static final String PACKAGE_STRING = "@PACKAGE_STRING@";
+    public static final String PACKAGE_BUGREPORT = "@PACKAGE_BUGREPORT@";
+}
