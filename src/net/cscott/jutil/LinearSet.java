@@ -17,7 +17,7 @@ import java.util.Iterator;
  * small.  It is backed by a <code>List</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: LinearSet.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: LinearSet.java,v 1.4 2004-02-07 22:37:16 cananian Exp $
  */
 public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 						      java.io.Serializable {
@@ -117,7 +117,7 @@ public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 	}
     }
 
-    public Object clone() {
+    public LinearSet<E> clone() {
 	return new LinearSet<E>(this);
     }
 }
