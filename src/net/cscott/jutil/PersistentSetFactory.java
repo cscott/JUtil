@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSetFactory.java,v 1.4 2004-01-30 08:55:20 cananian Exp $
+ * @version $Id: PersistentSetFactory.java,v 1.5 2004-03-25 19:17:03 cananian Exp $
  */
 public class PersistentSetFactory<T> extends SetFactory<T> {
     final Allocator<T> allocator = new Allocator<T>();
@@ -127,16 +127,14 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    assert container!=null && subset!=null;
 	    assert container!=subset; // needed for next test to be correct
 	    if (subset.size >= container.size) return false; // pigeonhole
-	    int cmp = comparator.compare(container.key, subset.key);
-	    if (cmp==0)
-		return containsAll(container.left, subset.left) &&
-		    containsAll(container.right, subset.right);
 	    PairList<Node<T>,Node<T>> pair =
 		removeAndSplit(subset, container.key);
 	    return containsAll(container.left, pair.left()) &&
 		containsAll(container.right, pair.right());
 	}
 	PairList<Node<T>,Node<T>> removeAndSplit(Node<T> node, T key) {
+	    if (node==null)
+		return new PairList<Node<T>,Node<T>>(null, null);
 	    int cmp = comparator.compare(node.key, key);
 	    if (cmp==0)
 		return new PairList<Node<T>,Node<T>>(node.left, node.right);
