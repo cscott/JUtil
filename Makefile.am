@@ -22,13 +22,14 @@ run:
 	$(MAKE)
 	java -ea -jar @PACKAGE_TARNAME@.jar
 
-# doesn't work because javadoc doesn't support GJ yet.
-javadoc:
-	$(RM) -rf doc doc-link
-	mkdir -p doc doc-link/net/cscott/jutil
-	cd doc-link/net/cscott/jutil
-#	for f in SUBDIRS; do ln -s ../../../../src/$$f . ; done
-	javadoc -version -author -breakiterator -source 1.5 \
+doc-link:
+	$(RM) -rf doc-link
+	mkdir -p doc doc-link/net/cscott/
+	cd doc-link/net/cscott/ ; ln -s ../../../src jutil
+doc:
+	$(MAKE) doc-link
+	$(RM) -rf doc
+	gjdoc -version -author -breakiterator -source 1.5 \
 	   -doctitle "JUtil documentation" \
 	   -link http://java.sun.com/j2se/1.4/docs/api \
 	   -d doc -sourcepath doc-link \
@@ -61,4 +62,4 @@ needs-cvs:
 	  exit 1; \
 	fi
 
-.PHONY: list update needs-cvs ChangeLog
+.PHONY: list update needs-cvs ChangeLog doc
