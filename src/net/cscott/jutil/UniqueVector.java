@@ -18,7 +18,7 @@ import java.util.Set;
  * <p>Conforms to the JDK 1.2 Collections API.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UniqueVector.java,v 1.2 2004-01-13 21:40:19 cananian Exp $
+ * @version $Id: UniqueVector.java,v 1.3 2004-01-13 21:57:14 cananian Exp $
  * @see java.util.Vector
  * @see java.util.Hashtable
  */
@@ -26,6 +26,8 @@ public class UniqueVector<E> extends AbstractList<E>
   implements Set<E>, Cloneable {
   List<E>  vect;
   Map<E,Integer>   uniq;
+  // if 'asSet' is true, use Set spec for equals/hashCode.  else use List spec.
+  final boolean asSet=true; // TODO: make accessible in constructors?
 
   /** Constructs an empty UniqueVector. */
   public UniqueVector() 
@@ -332,4 +334,22 @@ public class UniqueVector<E> extends AbstractList<E>
    * vector.
    */
   public synchronized void trimToSize() { ((ArrayList<E>) vect).trimToSize(); }
+
+  // hashCode() and equals() either obey the List specs, or the Set specs.
+  public int hashCode() {
+      if (!asSet) return super.hashCode();
+      int hc=0;
+      for (Iterator<E> it=iterator(); it.hasNext(); ) {
+	  E elem = it.next();
+	  hc += (elem==null) ? 0 : elem.hashCode();
+      }
+      return hc;
+  }
+  public boolean equals(Object o) {
+      if (!asSet) return super.equals(o);
+      if (!(o instanceof Set)) return false;
+      Set s = (Set) o;
+      if (hashCode() != s.hashCode()) return false; // "quick" test.
+      return containsAll(s) && s.containsAll(this); // slower accurate test.
+  }
 }

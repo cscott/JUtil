@@ -20,7 +20,7 @@ import java.util.Vector;
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: TestMap.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: TestMap.java,v 1.3 2004-01-13 21:57:14 cananian Exp $
  */
 class TestMap {
     private final static boolean DEBUG=false;
@@ -43,6 +43,17 @@ class TestMap {
 	doit(new AggregateMapFactory(), "AggregateMapFactory");
 	doit(Factories.synchronizedMapFactory(Factories.hashMapFactory),
 	     "synchronized HashMap");
+	doit(new PersistentMapFactory(new java.util.Comparator() {
+		public int compare(Object o1, Object o2) {
+		    // null is lowest
+		    if (o1==null) return (o2==null)?0:-1;
+		    if (o2==null) return (o1==null)?0: 1;
+		    // now can't be null.
+		    if (o1 instanceof Comparable && o2 instanceof Comparable)
+			return ((Comparable)o1).compareTo(o2);
+		    return o1.hashCode() - o2.hashCode();
+		}
+	    }), "PersistentMapFactory");//sortedmap
     }
 
     static void doit(Class c) {

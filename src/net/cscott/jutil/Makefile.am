@@ -9,6 +9,7 @@ JAVAROOT=$(top_builddir)/classes
 DISABLED = \
 PersistentMapFactory.java \
 PersistentSetFactory.java \
+TestMap.java \
 TestSet.java \
 
 noinst_JAVA = \
@@ -62,7 +63,6 @@ ReverseListIterator.java \
 SetFactory.java \
 SetWrapper.java \
 SnapshotIterator.java \
-TestMap.java \
 UniqueStack.java \
 UniqueVector.java \
 UnmodifiableIterator.java \

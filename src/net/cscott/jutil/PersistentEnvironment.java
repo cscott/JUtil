@@ -12,8 +12,11 @@ import java.util.Set;
  * built on a <code>PersistentMap</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentEnvironment.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: PersistentEnvironment.java,v 1.2 2004-01-13 21:57:14 cananian Exp $
  */
+// TODO: reimplement with Map returned by PersistentMapFactory as backing store
+// simply put Map.clone() in the Environment.Mark and replace the delegate
+// on undoToMark().
 public class PersistentEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
     PersistentMap<K,V> m = new PersistentMap<K,V>();
@@ -29,7 +32,7 @@ public class PersistentEnvironment<K,V> extends AbstractMap<K,V>
     // ------------- MAP INTERFACE ---------------
     /** Remove all mappings from this map. */
     public void clear() { this.m = new PersistentMap<K,V>(); }
-    /** Returns <code>true</code> is this map contains no key-value mappings.*/
+    /** Returns <code>true</code> if this map contains no key-value mappings.*/
     public boolean isEmpty() { return m.isEmpty(); }
     /** Returns the numer of key-value mappings in this map. */
     public int size() { return m.size(); }

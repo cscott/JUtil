@@ -22,7 +22,7 @@ import java.util.Set;
  * <code>HashMap</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateMapFactory.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: AggregateMapFactory.java,v 1.4 2004-01-13 21:57:14 cananian Exp $
  */
 public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     implements java.io.Serializable {
@@ -41,6 +41,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	return new AggregateMap(mm);
     }
     class AggregateMap extends AbstractMap<K,V> {
+	// TODO: use list header as IDENTITY object.
 	final ID IDENTITY = new ID();
 	/* backing store for efficient iteration */
 	DoublyLinkedList<K,V> entries=null;
