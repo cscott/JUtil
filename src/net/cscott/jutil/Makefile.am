@@ -6,12 +6,6 @@ AM_JAVACFLAGS = -g #-Xlint:unchecked
 # JAVAROOT directory must exist!
 JAVAROOT=$(top_builddir)/classes
 
-DISABLED = \
-PersistentMapFactory.java \
-PersistentSetFactory.java \
-TestMap.java \
-TestSet.java \
-
 noinst_JAVA = \
 AbstractHeap.java \
 AbstractMapEntry.java \
@@ -54,7 +48,9 @@ MultiMapSet.java \
 PairMapEntry.java \
 PersistentEnvironment.java \
 PersistentMap.java \
+PersistentMapFactory.java \
 PersistentSet.java \
+PersistentSetFactory.java \
 PersistentTreeNode.java \
 RedBlackTree.java \
 ReferenceUnique.java \
@@ -63,6 +59,8 @@ ReverseListIterator.java \
 SetFactory.java \
 SetWrapper.java \
 SnapshotIterator.java \
+TestMap.java \
+TestSet.java \
 UniqueStack.java \
 UniqueVector.java \
 UnmodifiableIterator.java \

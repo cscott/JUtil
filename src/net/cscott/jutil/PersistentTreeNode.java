@@ -21,7 +21,7 @@ import java.util.Iterator;
  * equality tests for treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentTreeNode.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: PersistentTreeNode.java,v 1.3 2004-01-14 18:44:01 cananian Exp $
  */
 abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     extends AbstractMapEntry<K,V> implements java.io.Serializable {
@@ -186,7 +186,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 
 	int r = c.compare(key, n.key);
 	if (r==0) // remove this node.
-	    return merge(n.left, n.right, allocator);
+	    return merge(n.left, n.right, c, allocator);
 	if (r < 0)
 	    return newNode_balanceLeft(n, n.key, n.getValue(),
 				       remove(n.left, c, key, allocator),
@@ -199,22 +199,52 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 					allocator);
 	throw new Error("Impossible!");
     }
+    static class NodePair<N extends PersistentTreeNode<N,K,V>,K,V> {
+	final N left, right; /* equal ends up on right side */
+	NodePair(N left, N right) { this.left = left; this.right = right; }
+	public String toString() { return "["+left+", "+right+"]"; }
+    }
+    private static <N extends PersistentTreeNode<N,K,V>,K,V>
+			      NodePair<N,K,V> partition
+			      (K key, N node, Comparator<K> c,
+			       Allocator<N,K,V> allocator) {
+	if (node==null) return new NodePair<N,K,V>(null, null);
+	int keycmp = c.compare(key, node.key);
+	if (keycmp < 0) {
+	    NodePair<N,K,V> np = partition(key, node.left, c, allocator);
+	    return new NodePair<N,K,V>
+		(np.left,
+		 newNode(node, node.key, node.getValue(), np.right, node.right,
+			 allocator));
+	} else {
+	    NodePair<N,K,V> np = partition(key, node.right, c, allocator);
+	    return new NodePair<N,K,V>
+		(newNode(node, node.key, node.getValue(), node.left, np.left,
+			 allocator),
+		 np.right);
+	}
+    }
+
     /** Merge two nodes into one. The left and right trees have disjoint
      *  sets of keys. */
+    // more efficient than putAll because EVERY elem in left tree is
+    // strictly less than EVERY elem in right tree.
     private static <N extends PersistentTreeNode<N,K,V>,K,V>
 			      N merge(N left, N right,
+				      Comparator<K> c,
 				      Allocator<N,K,V> allocator) {
 	if (left==null) return right;
 	if (right==null) return left;
+	assert c.compare(left.key, right.key) < 0;
 	// the node with the smallest heap key goes on top.
 	// in case of tie, the smallest tree key goes on top (left node)
 	if (heapKey(left.key) > heapKey(right.key))
 	    return newNode(null, right.key, right.getValue(),
-			   merge(left, right.left, allocator), right.right,
+			   merge(left, right.left, c, allocator), right.right,
 			   allocator);
 	else
 	    return newNode(null, left.key, left.getValue(),
-			   left.left, merge(left.right, right, allocator),
+			   left.left, merge(left.right, right, c, allocator),
 			   allocator);
     }
     /** Merge trees with possibly overlapping sets of keys.  The value
@@ -230,7 +260,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	int keycmp = c.compare(origNode.key, newNode.key);
 	if (keycmp==0) {
 	    // delete origNode.key and then do the merge.
-	    return putAll(merge(origNode.left, origNode.right, allocator),
+	    return putAll(merge(origNode.left, origNode.right, c, allocator),
 			  newNode, c, allocator);
 	}
 	// the node with the smallest heap key goes on top.
@@ -240,28 +270,18 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	if (origHeapKey < newHeapKey ||
 	    (origHeapKey == newHeapKey && keycmp < 0)) {
 	    // origNode on top.
-	    if (keycmp < 0) // newNode goes on right hand side
-		return newNode(origNode, origNode.key, origNode.getValue(),
-			       origNode.left,
-			       putAll(origNode.right, newNode, c, allocator),
-			       allocator);
-	    else // newNode goes on left hand side
-		return newNode(origNode, origNode.key, origNode.getValue(),
-			       putAll(origNode.left, newNode, c, allocator),
-			       origNode.right,
-			       allocator);
+	    NodePair<N,K,V> np=partition(origNode.key, newNode, c, allocator);
+	    return newNode(origNode, origNode.key, origNode.getValue(),
+			   putAll(origNode.left, np.left, c, allocator),
+			   putAll(origNode.right, np.right, c, allocator),
+			   allocator);
 	} else {
 	    // newNode on top.
-	    if (keycmp < 0) // origNode goes on left hand side
-		return newNode(newNode, newNode.key, newNode.getValue(),
-			       putAll(origNode, newNode.left, c, allocator),
-			       newNode.right,
-			       allocator);
-	    else // origNode goes on right hand side
-		return newNode(newNode, newNode.key, newNode.getValue(),
-			       newNode.left,
-			       putAll(origNode, newNode.right, c, allocator),
-			       allocator);
+	    NodePair<N,K,V> np=partition(newNode.key, origNode, c, allocator);
+	    return newNode(newNode, newNode.key, newNode.getValue(),
+			   putAll(np.left, newNode.left, c, allocator),
+			   putAll(np.right, newNode.right, c, allocator),
+			   allocator);
 	}
 	// done!
     }

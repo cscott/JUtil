@@ -19,7 +19,7 @@ import java.util.WeakHashMap;
  * also fast.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSetFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: PersistentSetFactory.java,v 1.3 2004-01-14 18:44:01 cananian Exp $
  */
 public class PersistentSetFactory<T> extends SetFactory<T> {
     final Allocator<T> allocator = new Allocator<T>();
@@ -79,10 +79,10 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	public boolean addAll(Collection<? extends T> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
-	    if (c instanceof SetImpl &&
-		factory() == ((SetImpl)c).factory()) {
+	    if (((Collection/*XXX:JAVAC*/)c) instanceof SetImpl &&
+		factory() == ((SetImpl)((Collection/*XXX:JAVAC*/)c)).factory()) {
 		Node<T> old_root = this.root;
-		this.root = Node.putAll(this.root, ((SetImpl)c).root,
+		this.root = Node.putAll(this.root, ((SetImpl)((Collection/*XXX:JAVAC*/)c)).root,
 					comparator, allocator);
 		return old_root!=this.root;
 	    } else // slow case
@@ -91,9 +91,9 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	public boolean containsAll(Collection<?> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
-	    if (c instanceof SetImpl &&
-		factory() == ((SetImpl)c).factory())
-		return containsAll(this.root, ((SetImpl)c).root);
+	    if (((Collection/*XXX:JAVAC*/)c) instanceof SetImpl &&
+		factory() == ((SetImpl)((Collection/*XXX:JAVAC*/)c)).factory())
+		return containsAll(this.root, ((SetImpl)((Collection/*XXX:JAVAC*/)c)).root);
 	    else // slow case
 		return super.containsAll(c);
 	}

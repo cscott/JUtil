@@ -17,7 +17,7 @@ import java.util.WeakHashMap;
  * also fast.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMapFactory.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: PersistentMapFactory.java,v 1.3 2004-01-14 18:44:01 cananian Exp $
  */
 public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();
@@ -91,9 +91,9 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	public void putAll(Map<? extends K,? extends V> mm) {
 	    // special fast case for maps from the same factory
 	    // maps from the same factory can be compared very quickly
-	    if (mm instanceof MapImpl &&
-		factory() == ((MapImpl)mm).factory())
-		this.root = Node.putAll(this.root, ((MapImpl)mm).root,
+	    if (((Map/*XXX:JAVAC*/)mm) instanceof MapImpl &&
+		factory() == ((MapImpl)((Map/*XXX:JAVAC*/)mm)).factory())
+		this.root = Node.putAll(this.root, ((MapImpl)((Map/*XXX:JAVAC*/)mm)).root,
 					comparator, allocator);
 	    else // slow case
 		super.putAll(mm);
@@ -155,6 +155,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    this.size = 1 + // this entry
 		((left==null)?0:left.size) + // size of left tree
 		((right==null)?0:right.size); // size of right tree
+	    //assert this.size == PersistentTreeNode.size(this);
 	}
 	public V getValue() { return value; }
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
@@ -162,7 +163,11 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    if (!(o instanceof Node)) return false;
 	    Node n = (Node) o;
 	    return ((key==null)?n.key==null:key.equals(n.key)) &&
-		value == n.value && left == n.left && right == n.right;
+		// XXX: using value.equals() *may* produce surprising
+		// behavior if equal value objects are distinguishable.
+		// but this is necessary for fast equals/putAll/etc.
+		((value==null)?n.value==null:value.equals(n.value)) &&
+		left == n.left && right == n.right;
 	}
 	public int hashCode() { return mapHashCode; }
 	public int entryHashCode() { return super.hashCode(); }
@@ -179,6 +184,10 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    if (nn==null)
 		hashConsCache.put(n,nn=new WeakReference<Node<K,V>>(n));
 	    return nn.get();
+	}
+
+	public String toString() {
+	    return hashConsCache.toString();
 	}
     }
 }
