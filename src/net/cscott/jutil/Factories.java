@@ -21,7 +21,7 @@ import java.util.TreeSet;
     operate on or return <code>CollectionFactory</code>s. 
  
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: Factories.java,v 1.4 2004-03-28 07:48:14 cananian Exp $
+    @version $Id: Factories.java,v 1.5 2004-06-29 19:23:00 cananian Exp $
  */
 public final class Factories {
     
@@ -96,7 +96,7 @@ public final class Factories {
       return new SerialSetFactory<V>() {
 	public LinearSet<V> makeSet(Collection<? extends V> c) {
 	    LinearSet<V> ls;
-	    if (c instanceof Set<? extends V>) {
+	    if (c instanceof Set) {
 		ls = new LinearSet<V>((Set<? extends V>)c);
 	    } else {
 		ls = new LinearSet<V>(c.size());
@@ -158,7 +158,7 @@ public final class Factories {
 			m.put(me.getKey(), me.getValue());
 
 		    Set<Map.Entry<K,V>> s = m.entrySet();
-		    if (s instanceof MapSet<K,V> && ((MapSet)s).asMap()==m)
+		    if (s instanceof MapSet && ((MapSet)s).asMap()==m)
 			return s; // optimize!
 		    return new MapSetWrapper<K,V>(s) {
 			    public Map<K,V> asMap() { return m; }

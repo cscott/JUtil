@@ -19,7 +19,7 @@ import java.util.WeakHashMap;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMapFactory.java,v 1.4 2004-01-30 08:55:19 cananian Exp $
+ * @version $Id: PersistentMapFactory.java,v 1.5 2004-06-29 19:23:01 cananian Exp $
  */
 public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();
@@ -48,7 +48,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	public int hashCode() { return (root==null)?0:root.mapHashCode; }
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
-	    if (o instanceof MapImpl &&
+	    if (o instanceof PersistentMapFactory.MapImpl &&
 		factory() == ((MapImpl)o).factory())
 		// constant-time!
 		return this.root == ((MapImpl)o).root;
@@ -95,9 +95,9 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	public void putAll(Map<? extends K,? extends V> mm) {
 	    // special fast case for maps from the same factory
 	    // maps from the same factory can be compared very quickly
-	    if (((Map/*XXX:JAVAC*/)mm) instanceof MapImpl &&
-		factory() == ((MapImpl)((Map/*XXX:JAVAC*/)mm)).factory())
-		this.root = Node.putAll(this.root, ((MapImpl)((Map/*XXX:JAVAC*/)mm)).root,
+	    if (mm instanceof PersistentMapFactory.MapImpl &&
+		factory() == ((MapImpl)mm).factory())
+		this.root = Node.putAll(this.root, ((MapImpl)mm).root,
 					comparator, allocator);
 	    else // slow case
 		super.putAll(mm);

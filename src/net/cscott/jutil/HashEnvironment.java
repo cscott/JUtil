@@ -16,7 +16,7 @@ import java.util.Set;
  * a <code>HashMap</code> as the backing store.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: HashEnvironment.java,v 1.3 2004-01-30 11:57:56 cananian Exp $
+ * @version $Id: HashEnvironment.java,v 1.4 2004-06-29 19:23:01 cananian Exp $
  */
 public class HashEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
@@ -67,7 +67,7 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     void pop(K key) {
 	LList<V> l = back.get(key);
 	assert l!=null;
-	assert l instanceof Valued<V> || l.next instanceof Valued<V>;
+	assert l instanceof Valued || l.next instanceof Valued;
 	if (l.next==null) back.remove(key);
 	else back.put(key, l.next);
 	if (l.hasValue()) size--;

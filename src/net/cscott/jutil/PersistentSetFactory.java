@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSetFactory.java,v 1.5 2004-03-25 19:17:03 cananian Exp $
+ * @version $Id: PersistentSetFactory.java,v 1.6 2004-06-29 19:23:01 cananian Exp $
  */
 public class PersistentSetFactory<T> extends SetFactory<T> {
     final Allocator<T> allocator = new Allocator<T>();
@@ -50,7 +50,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	public int hashCode() { return (root==null)?0:root.setHashCode; }
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
-	    if (o instanceof SetImpl &&
+	    if (o instanceof PersistentSetFactory.SetImpl &&
 		factory() == ((SetImpl)o).factory())
 		// constant-time!
 		return this.root == ((SetImpl)o).root;
@@ -83,10 +83,10 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	public boolean addAll(Collection<? extends T> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
-	    if (((Collection/*XXX:JAVAC*/)c) instanceof SetImpl &&
-		factory() == ((SetImpl)((Collection/*XXX:JAVAC*/)c)).factory()) {
+	    if (c instanceof PersistentSetFactory.SetImpl &&
+		factory() == ((SetImpl)c).factory()) {
 		Node<T> old_root = this.root;
-		this.root = Node.putAll(this.root, ((SetImpl)((Collection/*XXX:JAVAC*/)c)).root,
+		this.root = Node.putAll(this.root, ((SetImpl)c).root,
 					comparator, allocator);
 		return old_root!=this.root;
 	    } else // slow case
@@ -95,9 +95,9 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	public boolean containsAll(Collection<?> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
-	    if (((Collection/*XXX:JAVAC*/)c) instanceof SetImpl &&
-		factory() == ((SetImpl)((Collection/*XXX:JAVAC*/)c)).factory())
-		return containsAll(this.root, ((SetImpl)((Collection/*XXX:JAVAC*/)c)).root);
+	    if (c instanceof PersistentSetFactory.SetImpl &&
+		factory() == ((SetImpl)c).factory())
+		return containsAll(this.root, ((SetImpl)c).root);
 	    else // slow case
 		return super.containsAll(c);
 	}
