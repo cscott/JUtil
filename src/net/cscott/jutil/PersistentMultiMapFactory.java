@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 import net.cscott.jutil.FilterIterator.Filter;
@@ -27,7 +28,7 @@ import net.cscott.jutil.FilterIterator.Filter;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMultiMapFactory.java,v 1.2 2005-01-20 21:39:08 cananian Exp $
+ * @version $Id: PersistentMultiMapFactory.java,v 1.3 2005-01-20 21:43:43 cananian Exp $
  */
 public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     final MapAllocator<K,V> mapAllocator = new MapAllocator<K,V>();
@@ -138,7 +139,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return true;
 	}
 
-	public Collection<V> getValues(K key) {
+	public Set<V> getValues(K key) {
 	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, (K)key);
 	    return new ValuesSet(key, np==null?null:np.value);
 	}
