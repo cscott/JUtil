@@ -19,7 +19,7 @@ import java.util.Map;
  * Algorithms</i> by Cormen, Leiserson, and Riverst, in Chapter 21.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FibonacciHeap.java,v 1.5 2004-06-29 19:44:05 cananian Exp $
+ * @version $Id: FibonacciHeap.java,v 1.6 2006-02-20 19:21:12 cananian Exp $
  */
 public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     private static final boolean debug = false;
@@ -90,7 +90,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	    entryComparator().equals(((FibonacciHeap)h).entryComparator()))
 	    // the unsafe cast below from K2 to K and V2 to V should really be
 	    // safe if the entryComparators for the two Heaps are identical.
-	    union((FibonacciHeap)h);
+	    union((FibonacciHeap<? extends K,? extends V>)h);
 	else super.union(h);
     }
     public Map.Entry<K,V> extractMinimum() {

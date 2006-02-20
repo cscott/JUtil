@@ -20,7 +20,7 @@ import java.util.Map;
  * Sedgewick's book.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinaryHeap.java,v 1.4 2004-06-29 19:44:04 cananian Exp $
+ * @version $Id: BinaryHeap.java,v 1.5 2006-02-20 19:21:12 cananian Exp $
  * @see Heap
  */
 public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
@@ -68,7 +68,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     }
     public Map.Entry<K,V> extractMinimum() {
 	if (size() < 1) throw new java.util.NoSuchElementException();
-	Entry min = A.get(1);
+	Entry<K,V> min = A.get(1);
 	set(1, A.get(size()));
 	A.remove(size());
 	downheap(1);
@@ -82,7 +82,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     private void union(Collection<? extends Map.Entry<? extends K,? extends V>> coll) {
 	// this is the BUILD-HEAP function. pg 145 in CLR.
 	for (Map.Entry<? extends K,? extends V> e : coll)
-	    A.add(new Entry(e.getKey(), e.getValue(), A.size()));
+	    A.add(new Entry<K,V>(e.getKey(), e.getValue(), A.size()));
 	// okay, now heapify
 	for (int i=size()/2; i>0; i--)
 	    downheap(i);
@@ -206,7 +206,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 		    public boolean hasNext() { return i<el.length; }
 		    public Map.Entry<Integer,Integer> next() {
 			Integer io = new Integer(el[i++]);
-			return new PairMapEntry(io, io);
+			return new PairMapEntry<Integer,Integer>(io, io);
 		    }
 		};
 	    }

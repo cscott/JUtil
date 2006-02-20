@@ -25,7 +25,7 @@ import java.util.AbstractSet;
  *	 are passed on to 'mm'.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: GenericMultiMap.java,v 1.4 2005-01-20 02:32:31 cananian Exp $ */
+ * @version $Id: GenericMultiMap.java,v 1.5 2006-02-20 19:21:12 cananian Exp $ */
 public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     
     // internal Map[KeyType -> Collection[ ValueType ]]
@@ -306,7 +306,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	public Iterator<Map.Entry<K,V>> iterator() {
 	    return new Iterator<Map.Entry<K,V>>() {
 		    Iterator<Map.Entry<K,Collection<V>>> mapit = internMap.entrySet().iterator();
-		    Iterator<V> setit = Default.nullIterator;
+		    Iterator<V> setit = Default.nullIterator();
 		    Iterator<V> lastit;
 		    K key;
 		    { advance(); }

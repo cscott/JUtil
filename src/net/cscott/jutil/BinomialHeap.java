@@ -18,7 +18,7 @@ import java.util.Map;
  * Leiserson, and Rivest, on page 400 and following.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinomialHeap.java,v 1.6 2004-06-29 19:44:04 cananian Exp $
+ * @version $Id: BinomialHeap.java,v 1.7 2006-02-20 19:21:12 cananian Exp $
  */
 public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     private static final boolean debug=false;
@@ -87,9 +87,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     public void union(Heap<? extends K,? extends V> h) {
 	if (h instanceof BinomialHeap &&
 	    entryComparator().equals(((BinomialHeap)h).entryComparator()))
-	    // the unsafe cast below from K2 to K and V2 to V should really
-	    // be safe if the entryComparators for the two Heaps are identical.
-	    union((BinomialHeap)h);
+	    union((BinomialHeap<? extends K, ? extends V>)h);
 	else { union(h.entries()); h.clear(); }
     }
     // union a set of Map.Entry's

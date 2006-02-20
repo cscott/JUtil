@@ -24,17 +24,18 @@ import java.util.SortedSet;
  * <code>Collection</code>s, and <code>Comparator</code>s.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Default.java,v 1.5 2004-06-29 19:44:05 cananian Exp $
+ * @version $Id: Default.java,v 1.6 2006-02-20 19:21:12 cananian Exp $
  */
 public abstract class Default  {
     /** A <code>Comparator</code> for objects that implement 
      *   <code>Comparable</code> (checked dynamically at run-time). */
-    public static final Comparator comparator = comparator();
+    public static final Comparator comparator =
+	 Default.<Comparable>comparator();
     /** A <code>Comparator</code> for objects that implement 
      *  <code>Comparable</code> (checked dynamically at run-time).
      *  This version is parameterized to play nicely with Java's
      *  type system. */
-    public static final <T> Comparator<T> comparator() {
+    public static final <T extends Comparable<T>> Comparator<T> comparator() {
 	return new SerializableComparator<T>() {
 	    public int compare(T t1, T t2) {
 		if (t1==null && t2==null) return 0;
@@ -42,7 +43,7 @@ public abstract class Default  {
 		if (t1==null) return -1;
 		if (t2==null) return 1;
 		// okay, cast to Comparable.
-		return ((Comparable)t1).compareTo(t2);
+		return t1.compareTo(t2);
 	    }
 	};
     }

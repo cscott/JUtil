@@ -18,7 +18,7 @@ import java.util.Stack;
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSet.java,v 1.4 2005-01-20 02:31:07 cananian Exp $
+ * @version $Id: PersistentSet.java,v 1.5 2006-02-20 19:21:12 cananian Exp $
  */
 public class PersistentSet<T>  {
     final Node<T> root;
@@ -31,7 +31,7 @@ public class PersistentSet<T>  {
      *  required. */
     public PersistentSet() {
 	// cast below is safe iff T implements Comparable.
-	this((Comparator<T>)((Comparator)Default.comparator));
+	this((Comparator<T>)Default.comparator); // safe iff T is Comparable
     }
     /** Creates an empty <code>PersistentSet</code> whose member objects
      *  are ordered by the given <code>Comparator</code>.  Note that
