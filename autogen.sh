@@ -5,10 +5,10 @@ test -f ChangeLog || touch ChangeLog
 rm INSTALL COPYING scripts/{install-sh,mkinstalldirs,missing}
 
 libtoolize --automake
-aclocal-1.6
+aclocal-1.9
 #autoheader
-automake-1.6 --add-missing
-autoconf2.50
+automake-1.9 --add-missing
+autoconf
 test -f config.cache && rm -f config.cache
 set +x
 
