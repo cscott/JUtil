@@ -7,7 +7,7 @@ EXTRA_DIST = autogen.sh classes/README
 
 SUBDIRS = src
 
-pkgdata_DATA = @PACKAGE_TARNAME@.jar
+pkgdata_DATA = @PACKAGE_TARNAME@.jar @PACKAGE_TARNAME@-source.jar
 
 # used to be $(shell find classes -name "*.class") 
 @PACKAGE_TARNAME@.jar: $(shell find classes -type f)
@@ -17,6 +17,10 @@ pkgdata_DATA = @PACKAGE_TARNAME@.jar
 	echo "Implementation-Version: $(VERSION)" >> manifest
 	cd classes && $(JAR) -cfm ../$@ ../manifest net
 	-$(RM) manifest
+@PACKAGE_TARNAME@-source.jar: $(shell find src -name "*.java")
+	$(MAKE) doc-link
+	cd doc-link && $(JAR) -cf ../$@ net
+	$(RM) -rf doc-link
 
 run:
 	$(MAKE)
