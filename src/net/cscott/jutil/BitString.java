@@ -29,7 +29,7 @@ package net.cscott.jutil;
  * and is defined independently of implementation.
  *
  * @author  John Whaley <jwhaley@alum.mit.edu>
- * @version $Id: BitString.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: BitString.java,v 1.2 2006-10-08 19:35:22 cananian Exp $
  */
 
 public final class BitString implements Cloneable, java.io.Serializable {
@@ -270,7 +270,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
   
   /**
    * Check if the intersection of the two sets is empty
-   * @param set the set to check intersection with
+   * @param other the set to check intersection with
    */
   public boolean intersectionEmpty(BitString other) {
     int n = bits.length;

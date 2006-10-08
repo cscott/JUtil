@@ -29,7 +29,7 @@ doc-link:
 doc:
 	$(MAKE) doc-link
 	$(RM) -rf doc
-	gjdoc -version -author -breakiterator -source 1.5 \
+	javadoc -version -author -breakiterator -source 1.5 \
 	   -windowtitle "@PACKAGE_STRING@ documentation" \
 	   -doctitle "@PACKAGE_STRING@ documentation" \
 	   -header "@PACKAGE_STRING@" \

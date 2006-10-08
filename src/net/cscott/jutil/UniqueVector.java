@@ -18,7 +18,7 @@ import java.util.Set;
  * <p>Conforms to the JDK 1.2 Collections API.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UniqueVector.java,v 1.4 2004-01-30 11:57:57 cananian Exp $
+ * @version $Id: UniqueVector.java,v 1.5 2006-10-08 19:35:22 cananian Exp $
  * @see java.util.Vector
  * @see java.util.Hashtable
  */
@@ -58,7 +58,8 @@ public class UniqueVector<E> extends AbstractList<E>
    * Inserts the specified element at the specified position in this list.
    * To maintain uniqueness, any previous instance of this element in the
    * vector is removed prior to insertion.
-   * @param obj the element to be inserted.
+   * @param index the specified position.
+   * @param element the element to be inserted.
    */
   public void add(int index, E element) {
     if (element==null) throw new NullPointerException();
