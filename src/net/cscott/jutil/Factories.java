@@ -6,6 +6,8 @@ package net.cscott.jutil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,7 +23,7 @@ import java.util.TreeSet;
     operate on or return <code>CollectionFactory</code>s. 
  
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: Factories.java,v 1.5 2004-06-29 19:23:00 cananian Exp $
+    @version $Id: Factories.java,v 1.6 2006-10-28 04:03:19 cananian Exp $
  */
 public final class Factories {
     
@@ -49,6 +51,18 @@ public final class Factories {
 	    }
 	};
     }
+
+    /** A <code>MapFactory</code> that generates <code>EnumMap</code>s. */ 
+    public static final <K extends Enum<K>,V> MapFactory<K,V> enumMapFactory
+                                                   (final Class<K> enumClass) {
+        return new SerialMapFactory<K,V>() {
+            public EnumMap<K,V> makeMap(Map<? extends K,? extends V> map) {
+                EnumMap<K,V> m = new EnumMap<K,V>(enumClass);
+                m.putAll(map);
+                return m;
+            }
+        };
+    }
     
     /** A <code>SetFactory</code> that generates <code>HashSet</code>s. */
     public static final SetFactory hashSetFactory = hashSetFactory();
@@ -74,6 +88,21 @@ public final class Factories {
 		return new LinkedHashSet<V>(i);
 	    }
 	};
+    }
+    /** A <code>SetFactory</code> that generates <code>EnumSet</code>s. */
+    public static final <V extends Enum<V>> SetFactory<V> enumSetFactory
+                                                   (final Class<V> enumClass) {
+        return new SerialSetFactory<V>() {
+            public EnumSet<V> makeSet(Collection<? extends V> c) {
+                EnumSet<V> s = makeSet(0);
+                s.addAll(c);
+                return s;
+            }
+            public EnumSet<V> makeSet(int i) {
+                // ignore the 'i' parameter.
+                return EnumSet.noneOf(enumClass);
+            }
+        };
     }
     
     /** A <code>SetFactory</code> that generates <code>WorkSet</code>s. */
