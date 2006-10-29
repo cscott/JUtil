@@ -1,10 +1,5 @@
 This directory contains java sources for the JUtil java utility classes.
 
-If you've grabbed the sources from CVS, you'll want to run ./autogen.sh
-to let autoheader/autoconf/automake do their thing.  This is not necessary
-if you're using a release distributed as a .tar.gz file.
+This project can be build with either Eclipse or Ant.
 
 A Java 1.5 compiler is required.
-
-See the INSTALL file for generic build instructions;
-the BUILDING file has more specific information.
