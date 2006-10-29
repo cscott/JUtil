@@ -11,24 +11,27 @@ import java.util.Map;
     one particular <code>Map</code> implementation. 
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MapWrapper.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+    @version $Id: MapWrapper.java,v 1.3 2006-10-29 20:15:48 cananian Exp $
 */
-public class MapWrapper<K,V> implements Map<K,V> {
-    private Map<K,V> map;
-    public MapWrapper(Map<K,V> map) { this.map = map; }
-    public int size() { return map.size(); }
-    public boolean isEmpty() { return map.isEmpty(); }
-    public boolean containsKey(Object o) { return map.containsKey(o); }
-    public boolean containsValue(Object o) { return map.containsValue(o); }
-    public V get(Object o) { return map.get(o); }
-    public V put(K k, V v) { return map.put(k, v); }
-    public V remove(Object o) { return map.remove(o); }
-    public void putAll(Map<? extends K,? extends V> m) { map.putAll(m); }
-    public void clear() { map.clear(); }
-    public java.util.Set<K> keySet() { return map.keySet(); }
-    public java.util.Set<Map.Entry<K,V>> entrySet() { return map.entrySet(); }
-    public java.util.Collection<V> values() { return map.values(); }
-    public String toString() { return map.toString(); }
-    public boolean equals(Object o) { return map.equals(o); }
-    public int hashCode() { return map.hashCode(); }
+public abstract class MapWrapper<K,V> implements Map<K,V> {
+    public MapWrapper() { }
+    protected abstract Map<K,V> wrapped();
+    public int size() { return wrapped().size(); }
+    public boolean isEmpty() { return wrapped().isEmpty(); }
+    public boolean containsKey(Object o) { return wrapped().containsKey(o); }
+    public boolean containsValue(Object o) { return wrapped().containsValue(o); }
+    public V get(Object o) { return wrapped().get(o); }
+    public V put(K k, V v) { return wrapped().put(k, v); }
+    public V remove(Object o) { return wrapped().remove(o); }
+    public void putAll(Map<? extends K,? extends V> m) { wrapped().putAll(m); }
+    public void clear() { wrapped().clear(); }
+    public java.util.Set<K> keySet() { return wrapped().keySet(); }
+    public java.util.Set<Map.Entry<K,V>> entrySet() { return wrapped().entrySet(); }
+    public java.util.Collection<V> values() { return wrapped().values(); }
+    @Override
+    public String toString() { return wrapped().toString(); }
+    @Override
+    public boolean equals(Object o) { return wrapped().equals(o); }
+    @Override
+    public int hashCode() { return wrapped().hashCode(); }
 }

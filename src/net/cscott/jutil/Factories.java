@@ -23,7 +23,7 @@ import java.util.TreeSet;
     operate on or return <code>CollectionFactory</code>s. 
  
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: Factories.java,v 1.6 2006-10-28 04:03:19 cananian Exp $
+    @version $Id: Factories.java,v 1.7 2006-10-29 20:15:48 cananian Exp $
  */
 public final class Factories {
     
@@ -186,17 +186,18 @@ public final class Factories {
 		    for (Map.Entry<? extends K,? extends V> me : c)
 			m.put(me.getKey(), me.getValue());
 
-		    Set<Map.Entry<K,V>> s = m.entrySet();
-		    if (s instanceof MapSet && ((MapSet)s).asMap()==m)
+		    final Set<Map.Entry<K,V>> s = m.entrySet();
+		    if (s instanceof MapSet && ((MapSet<K,V>)s).asMap()==m)
 			return s; // optimize!
-		    return new MapSetWrapper<K,V>(s) {
+		    return new MapSetWrapper<K,V>() {
+                            protected Set<Map.Entry<K,V>> wrapped() {return s;}
 			    public Map<K,V> asMap() { return m; }
 			};
 		}
 	    };
     }
     static abstract class MapSetWrapper<K,V> extends SetWrapper<Map.Entry<K,V>> implements MapSet<K,V> {
-	MapSetWrapper(Set<Map.Entry<K,V>> set) { super(set); }
+	protected MapSetWrapper() { }
     }
 
     /** Returns a <code>SetFactory</code> that generates
@@ -213,12 +214,12 @@ public final class Factories {
 		    for (Map.Entry<? extends K,? extends V> me : c)
 			m.add(me.getKey(), me.getValue());
 
-		    Set<Map.Entry<K,V>> s = m.entrySet();
+		    final Set<Map.Entry<K,V>> s = m.entrySet();
 		    if (s instanceof MultiMapSet &&
-			((MultiMapSet)s).asMultiMap()==m)
+			((MultiMapSet<K,V>)s).asMultiMap()==m)
 			return s; // optimize!
-		    return new MultiMapSetWrapper<K,V>(s) {
-			    public MultiMap<K,V> asMap() { return asMultiMap(); }
+		    return new MultiMapSetWrapper<K,V>() {
+                            protected Set<Map.Entry<K,V>> wrapped() {return s;}
 			    public MultiMap<K,V> asMultiMap() { return m; }
 			};
 		}
@@ -226,7 +227,8 @@ public final class Factories {
     }
     static abstract class MultiMapSetWrapper<K,V> extends SetWrapper<Map.Entry<K,V>>
 	implements MultiMapSet<K,V> {
-	MultiMapSetWrapper(Set<Map.Entry<K,V>> set) { super(set); }
+        protected MultiMapSetWrapper() { }
+        public final MultiMap<K,V> asMap() { return asMultiMap(); }
     }
 
     /** Returns a <code>CollectionFactory</code> that generates
@@ -296,7 +298,8 @@ public final class Factories {
 	    public Collection<V> makeCollection(final Collection<? extends V> c) {
 		assert noNull(c);
 		final Collection<V> back = cf.makeCollection(c);
-		return new CollectionWrapper<V>(back) {
+		return new CollectionWrapper<V>() {
+                    protected Collection<V> wrapped() { return back; }
 		    public boolean add(V o) {
 			assert o != null;
 			return super.add(o);

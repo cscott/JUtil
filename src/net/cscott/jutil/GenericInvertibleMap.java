@@ -11,10 +11,12 @@ import java.util.Iterator;
     views of the mappings it maintains.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: GenericInvertibleMap.java,v 1.3 2005-01-20 01:14:34 cananian Exp $
+    @version $Id: GenericInvertibleMap.java,v 1.4 2006-10-29 20:15:47 cananian Exp $
 */
 public class GenericInvertibleMap<K,V>
     extends MapWrapper<K,V> implements InvertibleMap<K,V> {
+    // original map
+    private Map<K,V> map;
     // inverted map
     private MultiMap<V,K> imap;
 
@@ -29,8 +31,8 @@ public class GenericInvertibleMap<K,V>
 	<code>mmf</code>. 
      */
     public GenericInvertibleMap(MapFactory<K,V> mf, MultiMapFactory<V,K> mmf) {
-	super(mf.makeMap());
-	imap = mmf.makeMultiMap();
+	this.map = mf.makeMap();
+	this.imap = mmf.makeMultiMap();
     }
 
     public GenericInvertibleMap(Map<K,V> m) {
@@ -38,6 +40,9 @@ public class GenericInvertibleMap<K,V>
 	putAll(m);
     }
 
+    @Override
+    protected Map<K,V> wrapped() { return map; }
+    
     /** Returns an unmodifiable inverted view of <code>this</code>.
      */
     public MultiMap<V,K> invert() {

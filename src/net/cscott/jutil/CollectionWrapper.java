@@ -15,79 +15,76 @@ import java.util.Collection;
  * AbstractCollection's interface
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: CollectionWrapper.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: CollectionWrapper.java,v 1.3 2006-10-29 20:15:47 cananian Exp $
  */
-public class CollectionWrapper<E> implements Collection<E> {
-    
-    /** Collection backing <code>this</code>. */
-    protected final Collection<E> b; 
+public abstract class CollectionWrapper<E> implements Collection<E> {
+    /** Implementations should return the wrapped {@link Collection} here. */
+    protected abstract Collection<E> wrapped();
 
     /** Creates a <code>CollectionWrapper</code>. */
-    public CollectionWrapper(Collection<E> c) {
-        this.b = c;
-    }
+    protected CollectionWrapper() { }
     
     public boolean add(E o) {
-	return b.add(o);
+	return wrapped().add(o);
     }
 
     public boolean addAll(Collection<? extends E> c) {
-	return b.addAll(c);
+	return wrapped().addAll(c);
     }
 
     public void clear() {
-	b.clear();
+	wrapped().clear();
     }
     
     public boolean contains(Object o) {
-	return b.contains(o);
+	return wrapped().contains(o);
     }
     
     public boolean containsAll(Collection<?> c) {
-	return b.containsAll(c);
+	return wrapped().containsAll(c);
     }
 
     public boolean isEmpty() {
-	return b.isEmpty();
+	return wrapped().isEmpty();
     }
 
     public Iterator<E> iterator() {
-	return b.iterator();
+	return wrapped().iterator();
     }
 
     public boolean remove(Object o) {
-	return b.remove(o);
+	return wrapped().remove(o);
     }
     
     public boolean removeAll(Collection<?> c) {
-	return b.removeAll(c);
+	return wrapped().removeAll(c);
     }
 
     public boolean retainAll(Collection<?> c) {
-	return b.retainAll(c);
+	return wrapped().retainAll(c);
     }
 
     public int size() {
-	return b.size();
+	return wrapped().size();
     }
 
     public Object[] toArray() {
-	return b.toArray();
+	return wrapped().toArray();
     }
     
     public <T> T[] toArray(T[] a) {
-	return b.toArray(a);
+	return wrapped().toArray(a);
     }
-    
+    @Override
     public String toString() {
-	return b.toString();
+	return wrapped().toString();
     }
-
+    @Override
     public boolean equals(Object o) {
-	return b.equals(o);
+	return wrapped().equals(o);
     }
-
+    @Override
     public int hashCode() {
-	return b.hashCode();
+	return wrapped().hashCode();
     }
 }

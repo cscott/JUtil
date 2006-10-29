@@ -6,59 +6,59 @@ package net.cscott.jutil;
 import java.util.List;
 
 /**
- * <code>ListWrapper</code>
+ * <code>ListWrapper</code> is an abstract class designed to make it easier
+ * to write wrappers around {@link List}s.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListWrapper.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: ListWrapper.java,v 1.3 2006-10-29 20:15:48 cananian Exp $
  */
-public class ListWrapper<E> extends CollectionWrapper<E>
+public abstract class ListWrapper<E> extends CollectionWrapper<E>
     implements List<E> {
-    final List<E> b;
+    /** Implementations should return the wrapped {@link List} here. */
+    @Override
+    protected abstract List<E> wrapped();
     
     /** Creates a <code>ListWrapper</code>. */
-    public ListWrapper(List<E> l) {
-        super(l);
-	this.b = l;
-    }
+    protected ListWrapper() { }
     
     public List<E> subList(int i, int j) {
-	return b.subList(i, j);
+	return wrapped().subList(i, j);
     }
 
     public E get(int i) {
-	return b.get(i);
+	return wrapped().get(i);
     }
 
     public E set(int i, E o) {
-	return b.set(i, o);
+	return wrapped().set(i, o);
     }
 
     public E remove(int i) {
-	return b.remove(i);
+	return wrapped().remove(i);
     }
 
     public java.util.ListIterator<E> listIterator(int i) {
-	return b.listIterator(i);
+	return wrapped().listIterator(i);
     }
     
     public java.util.ListIterator<E> listIterator() {
-	return b.listIterator();
+	return wrapped().listIterator();
     }
 
     public int lastIndexOf(Object o) {
-	return b.lastIndexOf(o);
+	return wrapped().lastIndexOf(o);
     }
 
     public int indexOf(Object o) {
-	return b.indexOf(o);
+	return wrapped().indexOf(o);
     }
 
     public boolean addAll(int i, java.util.Collection<? extends E> c) {
-	return b.addAll(i, c);
+	return wrapped().addAll(i, c);
     }
 
     public void add(int i, E o) {
-	b.add(i, o);
+	wrapped().add(i, o);
     }
 
 }
