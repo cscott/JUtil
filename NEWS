@@ -10,4 +10,6 @@ Version 1.3 - October 2006, by C. Scott Ananian
 
 Repackaged to build with ant and/or eclipse.  Several factories updated to
 take advantage of new classes introduced in Java 1.5 (for example, EnumSet).
-Several new classes (PersistentMap/Set/MultiMap, etc).
+Several new classes (PersistentMap/Set/MultiMap, etc).  CollectionWrapper
+classes made abstract, with a virtual 'wrapped()' method to allow greater type
+safety.  UnmodifiableMultiMap wrapper made safe.
