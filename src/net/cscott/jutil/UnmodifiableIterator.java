@@ -12,9 +12,20 @@ import java.util.Iterator;
  * <code>java.util.Collections</code> and etc.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UnmodifiableIterator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: UnmodifiableIterator.java,v 1.2 2006-10-29 20:10:08 cananian Exp $
  */
 public abstract class UnmodifiableIterator<E> implements Iterator<E> {
+    /** Create an {@link UnmodifiableIterator} from the given (potentailly
+     * modifiable) {@link Iterator}.
+     */
+    public static <E> UnmodifiableIterator<E> proxy(final Iterator<E> it) {
+        return new UnmodifiableIterator<E>() {
+            @Override
+            public boolean hasNext() { return it.hasNext(); }
+            @Override
+            public E next() { return it.next(); }
+        };
+    }
     /** Returns <code>true</code> if the iteration has more elements.
      * @return <code>true</code> if the iterator has more elements.
      */
