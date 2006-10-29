@@ -2,16 +2,30 @@
     <echo message="Please run: $ ant -v -projecthelp"/>
 </target>
 
-    <target name="javadoc" depends="init,build"
-            description="Generates javadoc in api/">
-	<mkdir dir="api" />
-	<javadoc sourcepath="src"
-		 packagenames="net.cscott.*"
-		 destdir="api"
-		 doctitle="${ant.project.name}"
-		 access="protected" nodeprecated="false"
-		 author="true" use="true" version="true"
-		 source="1.5" classpath="bin">
-            <link href="http://java.sun.com/javase/6/docs/api"/>
-	</javadoc>
-    </target>
+<target name="javadoc" depends="init,build"
+        description="Generates javadoc in api/">
+    <mkdir dir="api" />
+    <javadoc sourcepath="src"
+             packagenames="net.cscott.*"
+             destdir="api"
+             doctitle="${ant.project.name}"
+             access="protected" nodeprecated="false"
+             author="true" use="true" version="true"
+             source="1.5" classpath="bin">
+        <link href="http://java.sun.com/javase/6/docs/api"/>
+    </javadoc>
+</target>
+
+<!-- export the project as a jar -->
+<target name="jar" depends="init,build"
+        description="Exports the project as a jar">
+    <jar destfile="jutil.jar"
+         update="true" manifest="${ant.project.name}.Manifest">
+        <fileset dir="bin" />
+    </jar>
+    <!-- source jar in the formation Eclipse likes -->
+    <jar destfile="jutil-source.jar" update="true">
+        <fileset dir="src" />
+    </jar>
+</target>
+    
