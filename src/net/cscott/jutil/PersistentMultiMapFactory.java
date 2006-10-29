@@ -4,10 +4,9 @@
 package net.cscott.jutil;
 
 import java.lang.ref.WeakReference;
-import java.util.AbstractCollection;
 import java.util.AbstractSet;
-import java.util.Comparator;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,7 +27,7 @@ import net.cscott.jutil.FilterIterator.Filter;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMultiMapFactory.java,v 1.3 2005-01-20 21:43:43 cananian Exp $
+ * @version $Id: PersistentMultiMapFactory.java,v 1.4 2006-10-29 16:27:21 cananian Exp $
  */
 public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     final MapAllocator<K,V> mapAllocator = new MapAllocator<K,V>();

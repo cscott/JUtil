@@ -3,22 +3,10 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import java.io.PrintWriter;
-
-import java.lang.reflect.Array;
-
-
 /** 
  * Miscellaneous static utility functions.
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Util.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: Util.java,v 1.2 2006-10-29 16:27:20 cananian Exp $
  */
 public abstract class Util {
   /** Repeat a given string a certain number of times.

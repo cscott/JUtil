@@ -6,12 +6,9 @@ package net.cscott.jutil;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Comparator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 /**
  * <code>PersistentMap</code> implements a persistent map, based on a
  * persistent randomized treap.  Unlike the <code>Map</code>s returned
@@ -20,7 +17,7 @@ import java.util.Stack;
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMap.java,v 1.5 2006-02-20 19:21:12 cananian Exp $
+ * @version $Id: PersistentMap.java,v 1.6 2006-10-29 16:27:21 cananian Exp $
  */
 public class PersistentMap<K,V> implements java.io.Serializable {
     final Node<K,V> root;

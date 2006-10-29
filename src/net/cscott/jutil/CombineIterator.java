@@ -3,7 +3,6 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,7 +11,7 @@ import java.util.NoSuchElementException;
  * <code>Iterator</code>s into one.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: CombineIterator.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: CombineIterator.java,v 1.3 2006-10-29 16:27:21 cananian Exp $
  */
 
 public class CombineIterator<E> implements Iterator<E> {

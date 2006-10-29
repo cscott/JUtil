@@ -5,11 +5,9 @@ package net.cscott.jutil;
 
 import java.util.AbstractCollection;
 import java.util.AbstractList;
-import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,7 @@ import java.util.SortedSet;
  * <code>Collection</code>s, and <code>Comparator</code>s.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Default.java,v 1.6 2006-02-20 19:21:12 cananian Exp $
+ * @version $Id: Default.java,v 1.7 2006-10-29 16:27:21 cananian Exp $
  */
 public abstract class Default  {
     /** A <code>Comparator</code> for objects that implement 

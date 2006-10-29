@@ -6,7 +6,6 @@ package net.cscott.jutil;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.List;
 
 /**
  * A <code>SnapshotIterator</code> takes a "snapshot" of an iterator,
@@ -19,7 +18,7 @@ import java.util.List;
  * the collection as it operates.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: SnapshotIterator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: SnapshotIterator.java,v 1.2 2006-10-29 16:27:21 cananian Exp $
  */
 public class SnapshotIterator<E> extends UnmodifiableIterator<E> {
     final ArrayList<E> l = new ArrayList<E>();

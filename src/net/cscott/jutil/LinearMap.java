@@ -5,7 +5,6 @@ package net.cscott.jutil;
 
 import java.util.AbstractMap;
 import java.util.AbstractSet;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +15,7 @@ import java.util.Set;
  * small.  It is backed by a <code>LinearSet</code>.
  *
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: LinearMap.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: LinearMap.java,v 1.3 2006-10-29 16:27:20 cananian Exp $
  */
 public class LinearMap<K,V> extends AbstractMap<K,V> {
     private LinearSet<Map.Entry<K,V>> set;

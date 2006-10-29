@@ -7,7 +7,6 @@ import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -22,7 +21,7 @@ import java.util.Set;
  * <code>HashMap</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateMapFactory.java,v 1.4 2004-01-13 21:57:14 cananian Exp $
+ * @version $Id: AggregateMapFactory.java,v 1.5 2006-10-29 16:27:20 cananian Exp $
  */
 public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     implements java.io.Serializable {

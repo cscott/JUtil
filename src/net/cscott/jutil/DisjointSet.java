@@ -5,7 +5,6 @@ package net.cscott.jutil;
 
 import java.util.AbstractMap;
 import java.util.AbstractSet;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.Set;
  * function.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: DisjointSet.java,v 1.2 2004-01-13 21:40:19 cananian Exp $
+ * @version $Id: DisjointSet.java,v 1.3 2006-10-29 16:27:20 cananian Exp $
  */
 public class DisjointSet<E>  {
     private final Map<E,Node<E>> elmap = new HashMap<E,Node<E>>();

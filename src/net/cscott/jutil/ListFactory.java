@@ -3,11 +3,10 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.AbstractList;
-import java.util.Arrays;
 
 /** <code>ListFactory</code> is a <code>List</code> generator.
     Subclasses should implement constructions of specific types of  
@@ -22,7 +21,7 @@ import java.util.Arrays;
     even though <code>LinkedList</code> is a subtype of <code>List</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListFactory.java,v 1.4 2004-06-29 19:44:05 cananian Exp $
+ * @version $Id: ListFactory.java,v 1.5 2006-10-29 16:27:22 cananian Exp $
  */
 public abstract class ListFactory<V> extends CollectionFactory<V> {
     

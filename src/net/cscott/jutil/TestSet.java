@@ -9,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -18,7 +17,7 @@ import java.util.Vector;
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: TestSet.java,v 1.2 2004-01-13 01:28:37 cananian Exp $
+ * @version $Id: TestSet.java,v 1.3 2006-10-29 16:27:22 cananian Exp $
  */
 class TestSet {
     private final static boolean DEBUG=false;

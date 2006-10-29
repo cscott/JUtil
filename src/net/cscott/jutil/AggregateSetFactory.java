@@ -4,11 +4,9 @@
 package net.cscott.jutil;
 
 import java.util.AbstractSet;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -20,7 +18,7 @@ import java.util.Set;
  * the standard <code>Factories.hashSetFactory</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateSetFactory.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
+ * @version $Id: AggregateSetFactory.java,v 1.4 2006-10-29 16:27:20 cananian Exp $
  */
 public class AggregateSetFactory<V> extends SetFactory<V>
     implements java.io.Serializable {

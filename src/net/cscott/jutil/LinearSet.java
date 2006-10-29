@@ -4,12 +4,11 @@
 package net.cscott.jutil;
 
 import java.util.AbstractSet;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Collection;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <code>LinearSet</code> is a simplistic light-weight
@@ -17,7 +16,7 @@ import java.util.Iterator;
  * small.  It is backed by a <code>List</code>.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: LinearSet.java,v 1.4 2004-02-07 22:37:16 cananian Exp $
+ * @version $Id: LinearSet.java,v 1.5 2006-10-29 16:27:20 cananian Exp $
  */
 public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 						      java.io.Serializable {

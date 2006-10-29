@@ -10,13 +10,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 /**
  * A <code>HashEnvironment</code> is an <code>Environment</code> using
  * a <code>HashMap</code> as the backing store.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: HashEnvironment.java,v 1.4 2004-06-29 19:23:01 cananian Exp $
+ * @version $Id: HashEnvironment.java,v 1.5 2006-10-29 16:27:21 cananian Exp $
  */
 public class HashEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {

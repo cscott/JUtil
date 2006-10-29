@@ -3,17 +3,16 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.Map;
 import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Map;
 
 /** <code>UnmodifiableMultiMap</code> is an abstract superclass to
     save developers the trouble of implementing the various mutator
     methds of the <code>MultiMap</code> interface.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: UnmodifiableMultiMap.java,v 1.2 2004-01-13 20:47:05 cananian Exp $
+    @version $Id: UnmodifiableMultiMap.java,v 1.3 2006-10-29 16:27:21 cananian Exp $
 */
 public abstract class UnmodifiableMultiMap<K,V> 
     extends AbstractMap<K,V> implements MultiMap<K,V> {

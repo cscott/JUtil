@@ -3,10 +3,8 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.List;
 
 /**
  * A <code>ReverseIterator</code> iterates through an <code>Iterator</code>
@@ -15,7 +13,7 @@ import java.util.List;
  * is complete.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: ReverseIterator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: ReverseIterator.java,v 1.2 2006-10-29 16:27:20 cananian Exp $
  */
 public class ReverseIterator<E> extends SnapshotIterator<E> {
     /** Creates a <code>ReverseIterator</code> of <code>Iterator</code>

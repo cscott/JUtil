@@ -19,10 +19,9 @@ import java.util.Map;
  * Algorithms</i> by Cormen, Leiserson, and Riverst, in Chapter 21.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FibonacciHeap.java,v 1.6 2006-02-20 19:21:12 cananian Exp $
+ * @version $Id: FibonacciHeap.java,v 1.7 2006-10-29 16:27:21 cananian Exp $
  */
 public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
-    private static final boolean debug = false;
 
     Node<K,V> min=null;
     /** Number of nodes in this heap. */

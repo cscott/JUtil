@@ -5,7 +5,6 @@ package net.cscott.jutil;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Map;
 /**
  * <code>AbstractHeap</code> provides a skeletal implementation of
@@ -13,7 +12,7 @@ import java.util.Map;
  * to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractHeap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
+ * @version $Id: AbstractHeap.java,v 1.4 2006-10-29 16:27:21 cananian Exp $
  */
 public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     /** A comparator for the keys in <code>Map.Entry</code>s, based

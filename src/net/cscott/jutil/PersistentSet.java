@@ -5,11 +5,8 @@ package net.cscott.jutil;
 
 import java.util.AbstractSet;
 import java.util.Comparator;
-import java.util.Set;
-import java.util.NoSuchElementException;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Stack;
 /**
  * <code>PersistentSet</code> implements a persistent set, based on a
  * persistent randomized treap.  Unlike the <code>Set</code>s returned
@@ -18,7 +15,7 @@ import java.util.Stack;
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSet.java,v 1.5 2006-02-20 19:21:12 cananian Exp $
+ * @version $Id: PersistentSet.java,v 1.6 2006-10-29 16:27:21 cananian Exp $
  */
 public class PersistentSet<T>  {
     final Node<T> root;

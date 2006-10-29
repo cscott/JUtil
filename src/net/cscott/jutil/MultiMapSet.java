@@ -3,7 +3,6 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.util.Collection;
 /**
  * A <code>MultiMapSet</code> is a <code>java.util.Set</code> of
  * <code>Map.Entry</code>s which can also be accessed as a
@@ -11,7 +10,7 @@ import java.util.Collection;
  * of the <code>MultiMap</code> to get back the <code>MultiMapSet</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapSet.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: MultiMapSet.java,v 1.2 2006-10-29 16:27:22 cananian Exp $
  */
 public interface MultiMapSet<K,V> extends MapSet<K,V> {
     public MultiMap<K,V> asMap();
