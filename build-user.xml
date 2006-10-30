@@ -8,9 +8,12 @@
     <javadoc sourcepath="src"
              packagenames="net.cscott.*"
              destdir="api"
-             doctitle="${ant.project.name}"
+             windowtitle="${ant.project.name} documentation"
+             doctitle="${ant.project.name} documentation"
+             header="${ant.project.name}"
+             bottom="Copyright (c) 2006 C. Scott Ananian"
              access="protected" nodeprecated="false"
-             author="true" use="true" version="true"
+             author="true" use="true" version="true" breakiterator="true"
              source="1.5" classpath="bin">
         <link href="http://java.sun.com/javase/6/docs/api"/>
     </javadoc>
@@ -27,5 +30,23 @@
     <jar destfile="jutil-source.jar" update="true">
         <fileset dir="src" />
     </jar>
+</target>
+
+<!-- bundle up all files for distribution -->
+<property name="version" value="1.3" />
+<property name="package" value="jutil" />
+
+<target name="dist" depends="init,build,jar,javadoc">
+  <delete file="ChangeLog" />
+  <exec executable="cvs2cl" />
+  <tar destfile="${package}-${version}.tar.gz" compression="gzip">
+    <tarfileset dir="src" prefix="${package}-${version}/src"
+                includes="**/*.java **/*.html" />
+    <tarfileset dir="api" prefix="${package}-${version}/api" />
+    <tarfileset dir="." prefix="${package}-${version}"
+     includes="README AUTHORS COPYING ChangeLog NEWS JUtil.Manifest
+               build*.xml .classpath .project .settings/**/* jutil.jar"
+    />
+  </tar>
 </target>
     
