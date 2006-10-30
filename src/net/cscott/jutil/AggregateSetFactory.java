@@ -15,10 +15,10 @@ import java.util.Set;
  * as backing store for the many smaller {@link Set}s created
  * by this {@link SetFactory}.  This means that we use much
  * less space and rehash less frequently than if we were using
- * the standard <code>Factories.hashSetFactory</code>.
+ * the standard {@link Factories#hashSetFactory()}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateSetFactory.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
+ * @version $Id: AggregateSetFactory.java,v 1.6 2006-10-30 20:14:41 cananian Exp $
  */
 public class AggregateSetFactory<V> extends SetFactory<V>
     implements java.io.Serializable {

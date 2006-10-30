@@ -13,7 +13,7 @@ import java.util.AbstractMap;
  * interface, to minimize the effort requires to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractMultiMap.java,v 1.3 2006-10-30 19:58:05 cananian Exp $ */
+ * @version $Id: AbstractMultiMap.java,v 1.4 2006-10-30 20:14:41 cananian Exp $ */
 public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     implements MultiMap<K,V> {
 
@@ -115,7 +115,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	<code>mm</code>, mapping each Key to one of the Values it
 	mapped to in <code>mm</code>.  To add all of the mappings from
 	another {@link MultiMap}, use
-	<code>addAll(MultiMap)</code>.  */
+	{@link #addAll(MultiMap)}.  */
     public void putAll(Map<? extends K,? extends V> t) {
 	for (Map.Entry<? extends K, ? extends V> e : t.entrySet())
 	    this.put( e.getKey(), e.getValue() );

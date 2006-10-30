@@ -12,13 +12,13 @@ package net.cscott.jutil;
  * <code>m.invert().contains(b, a)</code>.
  *
  * If the {@link InvertibleMultiMap} is mutable, the
- * {@link InvertibleMultiMap} returned by its <code>invert()</code>
+ * {@link InvertibleMultiMap} returned by its {@link #invert()}
  * method should also be mutable.  Moreover, for any
  * {@link InvertibleMultiMap}, 
  * <code>this.invert().invert()==this</code>.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: InvertibleMultiMap.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
+ * @version $Id: InvertibleMultiMap.java,v 1.3 2006-10-30 20:14:41 cananian Exp $
  */
 public interface InvertibleMultiMap<K,V>
     extends MultiMap<K,V>, InvertibleMap<K,V> {

@@ -6,13 +6,13 @@ package net.cscott.jutil;
 import java.util.Iterator;
 /**
  * {@link UnmodifiableIterator} is an abstract superclass to save
- * you the trouble of implementing the <code>remove()</code> method
+ * you the trouble of implementing the {@link #remove()} method
  * over and over again for those iterators which don't implement it.
  * The name's a bit clunky, but fits with the JDK naming in
  * {@link java.util.Collections} and etc.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UnmodifiableIterator.java,v 1.3 2006-10-30 19:58:07 cananian Exp $
+ * @version $Id: UnmodifiableIterator.java,v 1.4 2006-10-30 20:14:41 cananian Exp $
  */
 public abstract class UnmodifiableIterator<E> implements Iterator<E> {
     /** Create an {@link UnmodifiableIterator} from the given (potentailly

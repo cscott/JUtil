@@ -12,12 +12,12 @@ import java.util.Map;
  * to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractHeap.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
+ * @version $Id: AbstractHeap.java,v 1.6 2006-10-30 20:14:40 cananian Exp $
  */
 public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     /** A comparator for the keys in {@link java.util.Map.Entry}s, based
      *  on the key comparator given to the constructor.  But
-     *  <code>keyComparator</code> is never null! */
+     *  {@link #keyComparator} is never null! */
     private final Comparator<K> keyComparator;
     /** A comparator for {@link java.util.Map.Entry}s, based on the
      *  key comparator given to the constructor. */
@@ -50,14 +50,14 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     /** This method should insert the specified {@link java.util.Map.Entry},
      *  which is not currently in the {@link Heap}, into the
      *  {@link Heap}.  Implementation is optional, but it is required
-     *  if you use the default implementation of <code>updateKey()</code>. */
+     *  if you use the default implementation of {@code updateKey()}. */
     protected void insert(Map.Entry<K,V> me) {
 	throw new UnsupportedOperationException();
     }
     /** This method should set the key for the specified
      *  {@link java.util.Map.Entry} to the given <code>newkey</code>.
      *  Implementation is optional, but it is required if you use the
-     *  default implementation of <code>updateKey()</code>. */
+     *  default implementation of {@code updateKey()}. */
     protected K setKey(Map.Entry<K,V> me, K newkey) {
 	throw new UnsupportedOperationException();
     }

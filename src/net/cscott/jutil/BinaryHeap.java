@@ -14,13 +14,13 @@ import java.util.Map;
  * {@link BinaryHeap} is an implementation of a binary heap.
  * The implementation in CLR is followed, except the comparisons
  * are reversed to keep the <b>minimum</b> element on the top of
- * the heap.  In addition, the function names <code>downheap()</code>
- * (for what CLR calls 'heapify') and <code>upheap()</code> (which
+ * the heap.  In addition, the function names {@link #downheap(int)}
+ * (for what CLR calls 'heapify') and {@link #upheap(int)} (which
  * is part of the INSERT operation) have been adopted from
  * Sedgewick's book.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinaryHeap.java,v 1.6 2006-10-30 19:58:05 cananian Exp $
+ * @version $Id: BinaryHeap.java,v 1.7 2006-10-30 20:14:41 cananian Exp $
  * @see Heap
  */
 public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {

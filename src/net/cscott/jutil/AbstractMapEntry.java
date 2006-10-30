@@ -7,19 +7,19 @@ import java.util.Map;
 /**
  * An {@link AbstractMapEntry} takes care of most of the grunge
  * work involved in subclassing {@link java.util.Map.Entry}.  For
- * an immutable entry, you need only implement <code>getKey()</code>
- * and <code>getValue()</code>.  For a modifiable entry, you must also
- * implement <code>setValue()</code>; the default implementation throws
+ * an immutable entry, you need only implement {@link #getKey()}
+ * and {@link #getValue()}.  For a modifiable entry, you must also
+ * implement {@link #setValue(Object)}; the default implementation throws
  * an {@link UnsupportedOperationException}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractMapEntry.java,v 1.2 2006-10-30 19:58:05 cananian Exp $ */
+ * @version $Id: AbstractMapEntry.java,v 1.3 2006-10-30 20:14:40 cananian Exp $ */
 public abstract class AbstractMapEntry<K,V> implements Map.Entry<K,V> {
     /** Returns the key corresponding to this entry. */
     public abstract K getKey();
     /** Returns the value corresponding to this entry.  If the mapping
      *  has been removed from the backing map (by the iterator's
-     *  <code>remove()</code> operation), the results of this call are
+     *  {@code remove()} operation), the results of this call are
      *  undefined. */
     public abstract V getValue();
     /** Replaces the value corresponding to this entry with the specified

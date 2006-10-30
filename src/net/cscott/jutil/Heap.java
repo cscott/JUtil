@@ -105,7 +105,7 @@ import java.util.Map;
  * them; there's nothing you can do about that.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Heap.java,v 1.3 2006-10-30 19:58:05 cananian Exp $
+ * @version $Id: Heap.java,v 1.4 2006-10-30 20:14:41 cananian Exp $
  * @see BinaryHeap
  * @see BinomialHeap
  * @see FibonacciHeap
@@ -157,12 +157,12 @@ public interface Heap<K,V> {
     public Collection<Map.Entry<K,V>> entries();
     /** Returns the hash code for this heap.  The hash code for this
      *  heap will be one greater than the hash code for the
-     *  {@link Collection} returned by <code>entries()</code>. */
+     *  {@link Collection} returned by {@link #entries()}. */
     public int hashCode();
     /** Compares the specified object with this heap for equality.
      *  Returns <code>true</code> iff the given object is also a
      *  {@link Heap} and the {@link Collection}s returned
-     *  by their <code>entries()</code> methods are equal using
+     *  by their {@link #entries()} methods are equal using
      *  the <code>equals()</code> method of {@link Collection}.
      */
     public boolean equals(Object o);

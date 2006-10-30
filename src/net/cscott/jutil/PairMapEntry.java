@@ -10,7 +10,7 @@ package net.cscott.jutil;
  * statement.
  *
  * Note that {@link PairMapEntry}s <b>are</b> mutable:
- * <code>setValue(Object)</code> is defined in this class.
+ * {@link #setValue(Object)} is defined in this class.
  *
  * Using <code>null</code> as a key or value will not cause this class 
  * or {@link AbstractMapEntry} to fail, but be warned that
@@ -18,7 +18,7 @@ package net.cscott.jutil;
  * <code>null</code>s in their internal structures.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: PairMapEntry.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
+ * @version $Id: PairMapEntry.java,v 1.3 2006-10-30 20:14:41 cananian Exp $
  */
 public class PairMapEntry<K,V> extends AbstractMapEntry<K,V> {
     private K key;

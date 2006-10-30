@@ -20,13 +20,13 @@ import java.util.HashMap;
     intersection, and difference operations that, while still O(n),
     have <b>blazingly</b> low constant factors.
 
-    The addition operations (<code>Set.add(Object)</code> and its
+    The addition operations ({@link Set#add(Object)} and its
     cousins) are only defined for objects that are part of the
     universe of values given to the constructor; other Objects will
     cause {@link IllegalArgumentException} to be thrown.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: BitSetFactory.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
+    @version $Id: BitSetFactory.java,v 1.6 2006-10-30 20:14:41 cananian Exp $
  */
 public class BitSetFactory<V> extends SetFactory<V> {
     
