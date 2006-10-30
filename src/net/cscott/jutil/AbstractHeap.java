@@ -7,19 +7,19 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 /**
- * <code>AbstractHeap</code> provides a skeletal implementation of
- * the <code>Heap</code> interface, to minimize the effort required
+ * {@link AbstractHeap} provides a skeletal implementation of
+ * the {@link Heap} interface, to minimize the effort required
  * to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractHeap.java,v 1.4 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: AbstractHeap.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
  */
 public abstract class AbstractHeap<K,V> implements Heap<K,V> {
-    /** A comparator for the keys in <code>Map.Entry</code>s, based
+    /** A comparator for the keys in {@link java.util.Map.Entry}s, based
      *  on the key comparator given to the constructor.  But
      *  <code>keyComparator</code> is never null! */
     private final Comparator<K> keyComparator;
-    /** A comparator for <code>Map.Entry</code>s, based on the
+    /** A comparator for {@link java.util.Map.Entry}s, based on the
      *  key comparator given to the constructor. */
     private final EntryComparator<K,V> entryComparator;
     /** Sole constructor, for invocation by subclass constructors. */
@@ -47,15 +47,15 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
 	setKey(me, newkey);
 	insert(me);
     }
-    /** This method should insert the specified <code>Map.Entry</code>,
-     *  which is not currently in the <code>Heap</code>, into the
-     *  <code>Heap</code>.  Implementation is optional, but it is required
+    /** This method should insert the specified {@link java.util.Map.Entry},
+     *  which is not currently in the {@link Heap}, into the
+     *  {@link Heap}.  Implementation is optional, but it is required
      *  if you use the default implementation of <code>updateKey()</code>. */
     protected void insert(Map.Entry<K,V> me) {
 	throw new UnsupportedOperationException();
     }
     /** This method should set the key for the specified
-     *  <code>Map.Entry</code> to the given <code>newkey</code>.
+     *  {@link java.util.Map.Entry} to the given <code>newkey</code>.
      *  Implementation is optional, but it is required if you use the
      *  default implementation of <code>updateKey()</code>. */
     protected K setKey(Map.Entry<K,V> me, K newkey) {
@@ -78,17 +78,17 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
 	return false;
     }
     public String toString() { return entries().toString(); }
-    /** Returns the comparator used to compare keys in this <code>Heap</code>,
+    /** Returns the comparator used to compare keys in this {@link Heap},
      *  or <code>null</code> if the keys' natural ordering is used. */
     public Comparator<K> comparator() { return entryComparator.cc; }
-    /** Returns the comparator used to compare keys in this <code>Heap</code>.
+    /** Returns the comparator used to compare keys in this {@link Heap}.
      *  <strong>Will never return <code>null</code>.</strong> */
     protected Comparator<K> keyComparator() { return keyComparator; }
     /** Returns a comparator which can be used to compare
-     *  <code>Map.Entry</code>s. Will never return <code>null</code>. */
+     *  {@link java.util.Map.Entry}s. Will never return <code>null</code>. */
     protected Comparator<Map.Entry<K,V>> entryComparator() { return entryComparator; }
 
-    /** Compares <code>Map.Entry</code>s by key. */
+    /** Compares {@link java.util.Map.Entry}s by key. */
     private static class EntryComparator<K,V> implements Comparator<Map.Entry<K,V>> {
 	final Comparator<K> cc;
 	EntryComparator(Comparator<K> cc) { this.cc = cc; }

@@ -13,28 +13,28 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.WeakHashMap;
 /**
- * A <code>PersistentSetFactory</code> uses hash-consing to ensure that
- * the <code>Set</code>s created by it maximally reuse space.
- * Equality tests between <code>Set</code>s created by this factory are
- * constant-time.  Cloning a <code>Set</code> created by this factory is
+ * A {@link PersistentSetFactory} uses hash-consing to ensure that
+ * the {@link Set}s created by it maximally reuse space.
+ * Equality tests between {@link Set}s created by this factory are
+ * constant-time.  Cloning a {@link Set} created by this factory is
  * also constant-time.  The implementation is based on persistent
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSetFactory.java,v 1.7 2005-01-20 02:31:07 cananian Exp $
+ * @version $Id: PersistentSetFactory.java,v 1.8 2006-10-30 19:58:06 cananian Exp $
  */
 public class PersistentSetFactory<T> extends SetFactory<T> {
     final Allocator<T> allocator = new Allocator<T>();
     final Comparator<T> comparator;
 
-    /** Creates a <code>PersistentSetFactory</code>. Note that the elements
+    /** Creates a {@link PersistentSetFactory}. Note that the elements
      *  must implement a good hashcode as well as being comparable. */
     public PersistentSetFactory(Comparator<T> comparator) {
 	this.comparator = comparator;
     }
 
-    /** Generates a new unsynchronized mutable <code>Set</code> which
-     *  is based on persistent randomized treaps.  All <code>Set</code>s
+    /** Generates a new unsynchronized mutable {@link Set} which
+     *  is based on persistent randomized treaps.  All {@link Set}s
      *  created by this factory maximally reuse space, and have very
      *  fast equality-test and clone operations. */
     public Set<T> makeSet(Collection<? extends T> c) {
@@ -157,7 +157,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
     // PersistentTreeNode subclass
     private static class Node<T>
 	extends PersistentTreeNode<Node<T>,T,T> {
-	/** The hash code of a <code>java.util.Set</code> with the
+	/** The hash code of a {@link java.util.Set} with the
 	 *  contents of the tree rooted at this node. */
 	final int setHashCode;
 	/** Size of the tree rooted at this node. */
@@ -181,7 +181,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	}
 	public int hashCode() { return setHashCode; }
     }
-    /** Allocator uses a <code>WeakHashMap</code> to do hash consing. */
+    /** Allocator uses a {@link WeakHashMap} to do hash consing. */
     static class Allocator<T>
 	extends PersistentTreeNode.Allocator<Node<T>,T,T> {
 	final WeakHashMap<Node<T>,WeakReference<Node<T>>> hashConsCache =

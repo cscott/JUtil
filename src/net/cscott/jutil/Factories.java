@@ -19,11 +19,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-/** <code>Factories</code> consists exclusively of static methods that
-    operate on or return <code>CollectionFactory</code>s. 
+/** {@link Factories} consists exclusively of static methods that
+    operate on or return {@link CollectionFactory}s. 
  
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: Factories.java,v 1.7 2006-10-29 20:15:48 cananian Exp $
+    @version $Id: Factories.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
  */
 public final class Factories {
     
@@ -32,7 +32,7 @@ public final class Factories {
         
     }
     
-    /** A <code>MapFactory</code> that generates <code>HashMap</code>s. */ 
+    /** A {@link MapFactory} that generates {@link HashMap}s. */ 
     public static final MapFactory hashMapFactory = hashMapFactory();
     public static final <K,V> MapFactory<K,V> hashMapFactory() {
 	return new SerialMapFactory<K,V>() {
@@ -42,7 +42,7 @@ public final class Factories {
 	};
     }
     
-    /** A <code>MapFactory</code> that generates <code>LinkedHashMap</code>s. */ 
+    /** A {@link MapFactory} that generates {@link LinkedHashMap}s. */ 
     public static final MapFactory linkedHashMapFactory = linkedHashMapFactory();
     public static final <K,V> MapFactory<K,V> linkedHashMapFactory() {
 	return new SerialMapFactory<K,V>() {
@@ -52,7 +52,7 @@ public final class Factories {
 	};
     }
 
-    /** A <code>MapFactory</code> that generates <code>EnumMap</code>s. */ 
+    /** A {@link MapFactory} that generates {@link EnumMap}s. */ 
     public static final <K extends Enum<K>,V> MapFactory<K,V> enumMapFactory
                                                    (final Class<K> enumClass) {
         return new SerialMapFactory<K,V>() {
@@ -64,7 +64,7 @@ public final class Factories {
         };
     }
     
-    /** A <code>SetFactory</code> that generates <code>HashSet</code>s. */
+    /** A {@link SetFactory} that generates {@link HashSet}s. */
     public static final SetFactory hashSetFactory = hashSetFactory();
     public static final <V> SetFactory<V> hashSetFactory() {
 	return new SerialSetFactory<V>() {
@@ -77,7 +77,7 @@ public final class Factories {
 	};
     }
     
-    /** A <code>SetFactory</code> that generates <code>LinkedHashSet</code>s. */
+    /** A {@link SetFactory} that generates {@link LinkedHashSet}s. */
     public static final SetFactory linkedHashSetFactory = linkedHashSetFactory();
     public static final <V> SetFactory<V> linkedHashSetFactory() {
 	return new SerialSetFactory<V>() {
@@ -89,7 +89,7 @@ public final class Factories {
 	    }
 	};
     }
-    /** A <code>SetFactory</code> that generates <code>EnumSet</code>s. */
+    /** A {@link SetFactory} that generates {@link EnumSet}s. */
     public static final <V extends Enum<V>> SetFactory<V> enumSetFactory
                                                    (final Class<V> enumClass) {
         return new SerialSetFactory<V>() {
@@ -105,7 +105,7 @@ public final class Factories {
         };
     }
     
-    /** A <code>SetFactory</code> that generates <code>WorkSet</code>s. */
+    /** A {@link SetFactory} that generates {@link WorkSet}s. */
     public static final SetFactory workSetFactory = workSetFactory();
     public static final <V> SetFactory<V> workSetFactory() {
 	return new SerialSetFactory<V>() {
@@ -118,8 +118,8 @@ public final class Factories {
 	};
     }
     
-    /** A <code>SetFactory</code> that generates
-	<code>LinearSet</code>s backed by <code>ArrayList</code>s. */
+    /** A {@link SetFactory} that generates
+	{@link LinearSet}s backed by {@link ArrayList}s. */
     public static final SetFactory linearSetFactory = linearSetFactory();
     public static final <V> SetFactory<V> linearSetFactory() {
       return new SerialSetFactory<V>() {
@@ -139,7 +139,7 @@ public final class Factories {
       };
     }
 
-    /** A <code>SetFactory</code> that generates <code>TreeSet</code>s. */
+    /** A {@link SetFactory} that generates {@link TreeSet}s. */
     public static final SetFactory treeSetFactory = treeSetFactory();
     public static final <V> SetFactory<V> treeSetFactory() {
 	return new SerialSetFactory<V>() {
@@ -149,7 +149,7 @@ public final class Factories {
 	};
     }
     
-    /** A <code>ListFactory</code> that generates <code>LinkedList</code>s. */
+    /** A {@link ListFactory} that generates {@link LinkedList}s. */
     public static final ListFactory linkedListFactory = linkedListFactory();
     public static final <V> ListFactory<V> linkedListFactory() {
 	return new SerialListFactory<V>() {
@@ -159,8 +159,8 @@ public final class Factories {
 	};
     }
 
-    /** Returns a <code>ListFactory</code> that generates
-	<code>ArrayList</code>s. */
+    /** Returns a {@link ListFactory} that generates
+	{@link ArrayList}s. */
     public static final ListFactory arrayListFactory = arrayListFactory();
     public static final <V> ListFactory<V> arrayListFactory() {
 	return new SerialListFactory<V>() {
@@ -173,9 +173,9 @@ public final class Factories {
 	};
     }
 
-    /** Returns a <code>SetFactory</code> that generates <code>MapSet</code>
-     *  views of maps generated by the given <code>MapFactory</code>.  These
-     *  can be passed in as arguments to a <code>GenericMultiMap</code>,
+    /** Returns a {@link SetFactory} that generates {@link MapSet}
+     *  views of maps generated by the given {@link MapFactory}.  These
+     *  can be passed in as arguments to a {@link GenericMultiMap},
      *  for example, to make a multimap of maps. */
     public static <K,V> SetFactory<Map.Entry<K,V>> mapSetFactory(final MapFactory<K,V> mf) {
 	return new SerialSetFactory<Map.Entry<K,V>>() {
@@ -200,10 +200,10 @@ public final class Factories {
 	protected MapSetWrapper() { }
     }
 
-    /** Returns a <code>SetFactory</code> that generates
-     *  <code>MultiMapSet</code> views of <code>MultiMap</code>s
-     *  generated by the given <code>MultiMapFactory</code>.  These can be
-     *  passed in as arguments to a <code>GenericMultiMap</code>, for
+    /** Returns a {@link SetFactory} that generates
+     *  {@link MultiMapSet} views of {@link MultiMap}s
+     *  generated by the given {@link MultiMapFactory}.  These can be
+     *  passed in as arguments to a {@link GenericMultiMap}, for
      *  example, to make a multimap of multimaps. */
     public static <K,V> SetFactory<Map.Entry<K,V>> multiMapSetFactory(final MultiMapFactory<K,V> mf) {
 	return new SerialSetFactory<Map.Entry<K,V>>() {
@@ -231,10 +231,10 @@ public final class Factories {
         public final MultiMap<K,V> asMap() { return asMultiMap(); }
     }
 
-    /** Returns a <code>CollectionFactory</code> that generates
-	synchronized (thread-safe) <code>Collection</code>s.  
-	The <code>Collection</code>s generated are backed by the 
-	<code>Collection</code>s generated by <code>cf</code>. 
+    /** Returns a {@link CollectionFactory} that generates
+	synchronized (thread-safe) {@link Collection}s.  
+	The {@link Collection}s generated are backed by the 
+	{@link Collection}s generated by <code>cf</code>. 
 	@see Collections#synchronizedCollection
     */
     public static <V> CollectionFactory<V>
@@ -247,9 +247,9 @@ public final class Factories {
 	};
     }
 
-    /** Returns a <code>SetFactory</code> that generates synchronized
-	(thread-safe) <code>Set</code>s.  The <code>Set</code>s
-	generated are backed by the <code>Set</code>s generated by
+    /** Returns a {@link SetFactory} that generates synchronized
+	(thread-safe) {@link Set}s.  The {@link Set}s
+	generated are backed by the {@link Set}s generated by
 	<code>sf</code>. 
 	@see Collections#synchronizedSet
     */
@@ -262,9 +262,9 @@ public final class Factories {
 	};
     }
 
-    /** Returns a <code>ListFactory</code> that generates synchronized
-	(thread-safe) <code>List</code>s.   The <code>List</code>s
-	generated are backed by the <code>List</code>s generated by
+    /** Returns a {@link ListFactory} that generates synchronized
+	(thread-safe) {@link List}s.   The {@link List}s
+	generated are backed by the {@link List}s generated by
 	<code>lf</code>. 
 	@see Collections#synchronizedList
     */
@@ -277,9 +277,9 @@ public final class Factories {
 	};
     }
 
-    /** Returns a <code>MapFactory</code> that generates synchronized
-	(thread-safe) <code>Map</code>s.  The <code>Map</code>s
-	generated are backed by the <code>Map</code> generated by
+    /** Returns a {@link MapFactory} that generates synchronized
+	(thread-safe) {@link Map}s.  The {@link Map}s
+	generated are backed by the {@link Map} generated by
 	<code>mf</code>.
 	@see Collections#synchronizedMap
     */

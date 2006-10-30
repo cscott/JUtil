@@ -6,7 +6,7 @@ package net.cscott.jutil;
 import java.util.Comparator;
 import java.util.Iterator;
 /**
- * <code>PersistentTreeNode</code>s are nodes of a persistent randomized
+ * {@link PersistentTreeNode}s are nodes of a persistent randomized
  * search tree.  This is the representation from: <cite>
  * C. R. Aragon and R. G. Seidel, "Randomized search trees", Proc. 30th IEEE
  * FOCS (1989), 540-545.
@@ -21,7 +21,7 @@ import java.util.Iterator;
  * equality tests for treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentTreeNode.java,v 1.5 2005-01-20 21:39:08 cananian Exp $
+ * @version $Id: PersistentTreeNode.java,v 1.6 2006-10-30 19:58:06 cananian Exp $
  */
 abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     extends AbstractMapEntry<K,V> implements java.io.Serializable {
@@ -141,7 +141,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	    return newNode(n, key, value, left, right, allocator);
 	}
     }
-    /** Returns the <code>PersistentTreeNode</code> matching <code>key</code>
+    /** Returns the {@link PersistentTreeNode} matching <code>key</code>
      *  if any, else <code>null</code>. */
     static <N extends PersistentTreeNode<N,K,V>,K,V>
 		      N get(N n, Comparator<K> c, K key) {
@@ -312,7 +312,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 			     Iterator<N> iterator(N root) {
 	return new NodeIterator<N,K,V>(root);
     }
-    /** An iterator class over a tree of <code>PersistentTreeNode</code>s. */
+    /** An iterator class over a tree of {@link PersistentTreeNode}s. */
     private static class NodeIterator<N extends PersistentTreeNode<N,K,V>,K,V>
 	extends UnmodifiableIterator<N> {
 	NodeList<N,K,V> stack = null;
@@ -346,7 +346,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
      *  of <code>key.hashCode()</code> around.  This, hopefully,
      *  results in an heap ordering relation based on hash values which is
      *  uncorrelated with the tree ordering relation based on the
-     *  <code>Comparator</code> for the key type. */
+     *  {@link Comparator} for the key type. */
     public static final <K> int heapKey(K treeKey) {
 	int hash = (treeKey==null)?0:treeKey.hashCode();
 	// permute bits
@@ -415,7 +415,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	// done with shuffle/permute initialization.
     }
 
-    /** Sample implementation of <code>PersistentTreeNode</code>.
+    /** Sample implementation of {@link PersistentTreeNode}.
      *  Note how we implement a fast 'hashCode' method. */
     private static class WithValue<K,V>
 	extends PersistentTreeNode<WithValue<K,V>,K,V> {
@@ -431,7 +431,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 		((right==null)?0:right.mapHashCode); // hash of right tree
 	}
 	public V getValue() { return value; }
-	/** Return the hash code of a <code>java.util.Map</code> with the
+	/** Return the hash code of a {@link java.util.Map} with the
 	 *  contents of the tree rooted at this node. */
 	int mapHashCode() { return mapHashCode; }
 	static class Allocator<K,V>

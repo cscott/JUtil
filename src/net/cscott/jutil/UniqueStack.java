@@ -6,12 +6,12 @@ package net.cscott.jutil;
 import java.util.Collection;
 import java.util.EmptyStackException;
 /**
- * The <code>UniqueStack</code> class represents a last-in-first-out
+ * The {@link UniqueStack} class represents a last-in-first-out
  * stack of <b>unique</b> objects.
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UniqueStack.java,v 1.2 2004-01-30 11:57:57 cananian Exp $
+ * @version $Id: UniqueStack.java,v 1.3 2006-10-30 19:58:07 cananian Exp $
  */
 
 public class UniqueStack<E> extends UniqueVector<E> {
@@ -68,12 +68,12 @@ public class UniqueStack<E> extends UniqueVector<E> {
 	return -1;
     }
 
-    /** Creates a <code>UniqueStack</code>. */
+    /** Creates a {@link UniqueStack}. */
     public UniqueStack() {
         super();
     }
-    /** Constructs a <code>UniqueStack</code> containing the elements of
-     *  the specified <code>Collection</code>, in the order they are returned
+    /** Constructs a {@link UniqueStack} containing the elements of
+     *  the specified {@link Collection}, in the order they are returned
      *  by the collection's iterator in LIFO order.  That is, the first
      *  item returned by the collection iterator will be at the bottom of
      *  the stack, and thus last to be popped. Duplicate elements in

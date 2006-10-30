@@ -6,15 +6,15 @@ package net.cscott.jutil;
 import java.util.Enumeration;
 import java.util.Iterator;
 /**
- * An <code>IteratorEnumerator</code> converts an <code>Iterator</code>
- * into an <code>Enumeration</code>.
+ * An {@link IteratorEnumerator} converts an {@link Iterator}
+ * into an {@link Enumeration}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: IteratorEnumerator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: IteratorEnumerator.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
  */
 public class IteratorEnumerator<E> implements Enumeration<E> {
     private final Iterator<E> i;
-    /** Creates a <code>IteratorEnumerator</code>. */
+    /** Creates a {@link IteratorEnumerator}. */
     public IteratorEnumerator(Iterator<E> i) { this.i = i; }
     public boolean hasMoreElements() { return i.hasNext(); }
     public E nextElement() { return i.next(); }

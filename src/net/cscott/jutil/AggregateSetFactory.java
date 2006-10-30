@@ -11,28 +11,28 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 /**
- * <code>AggregateSetFactory</code> uses a single <code>HashMap</code>
- * as backing store for the many smaller <code>Set</code>s created
- * by this <code>SetFactory</code>.  This means that we use much
+ * {@link AggregateSetFactory} uses a single {@link HashMap}
+ * as backing store for the many smaller {@link Set}s created
+ * by this {@link SetFactory}.  This means that we use much
  * less space and rehash less frequently than if we were using
  * the standard <code>Factories.hashSetFactory</code>.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateSetFactory.java,v 1.4 2006-10-29 16:27:20 cananian Exp $
+ * @version $Id: AggregateSetFactory.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
  */
 public class AggregateSetFactory<V> extends SetFactory<V>
     implements java.io.Serializable {
     private final Map<EntryList<V>,EntryList<V>> m =
 	new HashMap<EntryList<V>,EntryList<V>>();
 
-    /** Creates an <code>AggregateSetFactory</code>. */
+    /** Creates an {@link AggregateSetFactory}. */
     public AggregateSetFactory() { /* nothing to do here */ }
 
-    /** Generates a new mutable <code>Set</code> which is a 
+    /** Generates a new mutable {@link Set} which is a 
      *  subset of the backing set of this
-     *  <code>AggregateSetFactory</code>.
+     *  {@link AggregateSetFactory}.
      *  <b>WARNING:</b>
-     *  The <code>remove()</code> method of the returned <code>Set</code>
+     *  The <code>remove()</code> method of the returned {@link Set}
      *  is very slow.
      */
     public Set<V> makeSet(Collection<? extends V> c) {

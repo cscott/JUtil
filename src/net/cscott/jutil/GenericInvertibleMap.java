@@ -6,12 +6,12 @@ package net.cscott.jutil;
 import java.util.Map;
 import java.util.Iterator;
 
-/** <code>GenericInvertibleMap</code> is a default implementation of
-    <code>InvertibleMap</code>.  It returns unmodifiable inverted
+/** {@link GenericInvertibleMap} is a default implementation of
+    {@link InvertibleMap}.  It returns unmodifiable inverted
     views of the mappings it maintains.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: GenericInvertibleMap.java,v 1.4 2006-10-29 20:15:47 cananian Exp $
+    @version $Id: GenericInvertibleMap.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
 */
 public class GenericInvertibleMap<K,V>
     extends MapWrapper<K,V> implements InvertibleMap<K,V> {

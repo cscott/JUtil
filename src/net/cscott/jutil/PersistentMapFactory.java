@@ -11,28 +11,28 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
 /**
- * A <code>PersistentMapFactory</code> uses hash-consing to ensure that
- * the <code>Map</code>s created by it maximally reuse space.
- * Equality tests between <code>Map</code>s created by this factory are
- * constant-time.  Cloning a <code>Map</code> created by this factory is
+ * A {@link PersistentMapFactory} uses hash-consing to ensure that
+ * the {@link Map}s created by it maximally reuse space.
+ * Equality tests between {@link Map}s created by this factory are
+ * constant-time.  Cloning a {@link Map} created by this factory is
  * also constant-time.  The implementation is based on persistent
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMapFactory.java,v 1.6 2005-01-20 02:31:07 cananian Exp $
+ * @version $Id: PersistentMapFactory.java,v 1.7 2006-10-30 19:58:06 cananian Exp $
  */
 public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();
     final Comparator<K> comparator;
 
-    /** Creates a <code>PersistentMapFactory</code>.  Note that the keys
+    /** Creates a {@link PersistentMapFactory}.  Note that the keys
      *  must implement a good hashcode as well as being comparable. */
     public PersistentMapFactory(Comparator<K> comparator) {
 	this.comparator = comparator;
     }
 
-    /** Generates a new unsynchronized mutable <code>Map</code> which
-     *  is based on persistent randomized treaps.  All <code>Map</code>s
+    /** Generates a new unsynchronized mutable {@link Map} which
+     *  is based on persistent randomized treaps.  All {@link Map}s
      *  created by this factory maximally reuse space, and have very
      *  fast comparison operations. */
     public Map<K,V> makeMap(Map<? extends K,? extends V> mm) {
@@ -127,7 +127,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    }
 	}
 	/** Wrapper for 'Node' which restores the proper 'equals' and
-	 *  'hashCode' semantics for a <code>Map.Entry</code>. */
+	 *  'hashCode' semantics for a {@link java.util.Map.Entry}. */
 	private class NodeWrapper extends AbstractMapEntry<K,V> {
 	    Node<K,V> node;
 	    NodeWrapper(Node<K,V> node) { this.node = node; }
@@ -146,7 +146,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     private static class Node<K,V>
 	extends PersistentTreeNode<Node<K,V>,K,V> {
 	final V value;
-	/** The hash code of a <code>java.util.Map</code> with the
+	/** The hash code of a {@link java.util.Map} with the
 	 *  contents of the tree rooted at this node. */
 	final int mapHashCode;
 	/** Size of the tree rooted at this node. */
@@ -177,7 +177,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	public int hashCode() { return mapHashCode; }
 	public int entryHashCode() { return super.hashCode(); }
     }
-    /** Allocator uses a <code>WeakHashMap</code> to do hash consing. */
+    /** Allocator uses a {@link WeakHashMap} to do hash consing. */
     static class Allocator<K,V>
 	extends PersistentTreeNode.Allocator<Node<K,V>,K,V> {
 	final WeakHashMap<Node<K,V>,WeakReference<Node<K,V>>> hashConsCache =

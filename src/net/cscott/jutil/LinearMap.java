@@ -10,17 +10,17 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <code>LinearMap</code> is a simplistic light-weight
- * <code>Map</code> designed for use when the number of entries is
- * small.  It is backed by a <code>LinearSet</code>.
+ * {@link LinearMap} is a simplistic light-weight
+ * {@link Map} designed for use when the number of entries is
+ * small.  It is backed by a {@link LinearSet}.
  *
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: LinearMap.java,v 1.3 2006-10-29 16:27:20 cananian Exp $
+ * @version $Id: LinearMap.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
  */
 public class LinearMap<K,V> extends AbstractMap<K,V> {
     private LinearSet<Map.Entry<K,V>> set;
 
-    /** Creates a <code>LinearMap</code>. */
+    /** Creates a {@link LinearMap}. */
     public LinearMap() {
         set = new LinearSet<Map.Entry<K,V>>();
     }
@@ -29,7 +29,7 @@ public class LinearMap<K,V> extends AbstractMap<K,V> {
 	set = new LinearSet<Map.Entry<K,V>>(map.entrySet());
     }
 
-    /** Creates a <code>LinearMap</code> with specified capacity. */
+    /** Creates a {@link LinearMap} with specified capacity. */
     public LinearMap(int capacity) {
         set = new LinearSet<Map.Entry<K,V>>(capacity);
     }

@@ -5,7 +5,7 @@ package net.cscott.jutil;
 
 import java.util.Comparator;
 
-/** A <code>RedBlackTree</code> is a <code>BinaryTree</code> that uses
+/** A {@link RedBlackTree} is a {@link BinaryTree} that uses
     red-black properties to maintain a balanced form.
     
     @see "CLR section 14, (page 263)."
@@ -36,7 +36,7 @@ public class RedBlackTree extends BinaryTree {
     private static final int RED = 0;
     private static final int BLACK = 1;
 
-    /** A <code>RBNode</code> is an element of this tree.
+    /** A {@link RBNode} is an element of this tree.
      */
     protected class RBNode extends Node {
 	private int color = BLACK;
@@ -46,10 +46,10 @@ public class RedBlackTree extends BinaryTree {
 	}
     }
     
-    /** Factory method for <code>Node</code>.  Every construction of a
-	<code>Node</code> takes place through this method; thus
-	subclasses of <code>RedBlackTree</code> can associate new data
-	with their own nodes by extending the <code>Node</code> class
+    /** Factory method for {@link Node}.  Every construction of a
+	{@link Node} takes place through this method; thus
+	subclasses of {@link RedBlackTree} can associate new data
+	with their own nodes by extending the {@link Node} class
 	and overriding this method. */
     protected Node makeNode(Object o) { return new RBNode(o); }
 

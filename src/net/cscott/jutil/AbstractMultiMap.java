@@ -9,11 +9,11 @@ import java.util.Collection;
 import java.util.AbstractMap;
 
 /**
- * This class provides a skeletal implementation of the <code>MultiMap</code>
+ * This class provides a skeletal implementation of the {@link MultiMap}
  * interface, to minimize the effort requires to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractMultiMap.java,v 1.2 2005-01-20 20:54:41 cananian Exp $ */
+ * @version $Id: AbstractMultiMap.java,v 1.3 2006-10-30 19:58:05 cananian Exp $ */
 public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     implements MultiMap<K,V> {
 
@@ -42,7 +42,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     /** Ensures that <code>this</code> contains an association from
 	<code>key</code> to <code>value</code>.
 
-	(<code>MultiMap</code> specific operation).
+	({@link MultiMap} specific operation).
 
 	@return <code>true</code> if this mapping changed as a result of
 	        the call
@@ -54,7 +54,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     /** Adds to the current mappings: associations for
 	<code>key</code> to each value in <code>values</code>.  
 
-	(<code>MultiMap</code> specific operation). 
+	({@link MultiMap} specific operation). 
 
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
@@ -74,7 +74,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     /** Removes from the current mappings: associations for
 	<code>key</code> to any value not in <code>values</code>. 
 
-	(<code>MultiMap</code> specific operation). 
+	({@link MultiMap} specific operation). 
 
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
@@ -86,7 +86,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     /** Removes from the current mappings: associations for
 	<code>key</code> to any value in <code>values</code>.
 
-	(<code>MultiMap</code> specific operation). 
+	({@link MultiMap} specific operation). 
 
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
@@ -110,11 +110,11 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	map.  These mappings will replace any mappings that this map
 	had for any of the keys currently in the specified map.  Note
 	that <code>putAll(mm)</code> where <code>mm</code> is a
-	<code>MultiMap</code> will NOT add all of the mappings in
+	{@link MultiMap} will NOT add all of the mappings in
 	<code>mm</code>; it will only add all of the Keys in
 	<code>mm</code>, mapping each Key to one of the Values it
 	mapped to in <code>mm</code>.  To add all of the mappings from
-	another <code>MultiMap</code>, use
+	another {@link MultiMap}, use
 	<code>addAll(MultiMap)</code>.  */
     public void putAll(Map<? extends K,? extends V> t) {
 	for (Map.Entry<? extends K, ? extends V> e : t.entrySet())

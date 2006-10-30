@@ -4,19 +4,19 @@
 package net.cscott.jutil;
 
 /**
- * <code>BitString</code> implements a vector of bits
+ * {@link BitString} implements a vector of bits
  * <!--that grows as needed-->;
- * much like <code>java.util.BitSet</code>... except that this implementation
- * actually works.  Also, <code>BitString</code> has some groovy features
- * which <code>BitSet</code> doesn't; mostly related to efficient iteration
+ * much like {@link java.util.BitSet}... except that this implementation
+ * actually works.  Also, {@link BitString} has some groovy features
+ * which {@link java.util.BitSet} doesn't; mostly related to efficient iteration
  * over <code>true</code> and <code>false</code> components, I think.
  * <p>
- * Each component of the <code>BitString</code> has a boolean value.
- * The bits of a <code>BitString</code> are indexed by non-negative
+ * Each component of the {@link BitString} has a boolean value.
+ * The bits of a {@link BitString} are indexed by non-negative
  * integers (that means they are zero-based, of course).  Individual
  * indexed bits can be examined, set, or cleared.  One
- * <code>BitString</code> may be used to modify the contents of another
- * <code>BitString</code> through logical AND, logical inclusive OR,
+ * {@link BitString} may be used to modify the contents of another
+ * {@link BitString} through logical AND, logical inclusive OR,
  * and logical exclusive OR operations.
  * <p>
  * By default, all bits in the set initially have the value 
@@ -29,7 +29,7 @@ package net.cscott.jutil;
  * and is defined independently of implementation.
  *
  * @author  John Whaley <jwhaley@alum.mit.edu>
- * @version $Id: BitString.java,v 1.2 2006-10-08 19:35:22 cananian Exp $
+ * @version $Id: BitString.java,v 1.3 2006-10-30 19:58:05 cananian Exp $
  */
 
 public final class BitString implements Cloneable, java.io.Serializable {
@@ -293,7 +293,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
   
   /**
    * Returns a hash code value for this bit string whose value depends
-   * only on which bits have been set within this <code>BitString</code>.
+   * only on which bits have been set within this {@link BitString}.
    */
   public int hashCode() {
     int h = 1234 * bits.length;
@@ -304,16 +304,16 @@ public final class BitString implements Cloneable, java.io.Serializable {
   }
   
   /**
-   * Returns the "logical size" of this <code>BitString</code>: the
-   * index of the highest set bit in the <code>BitString</code> plus
-   * one.  Returns zero if the <code>BitString</code> contains no
+   * Returns the "logical size" of this {@link BitString}: the
+   * index of the highest set bit in the {@link BitString} plus
+   * one.  Returns zero if the {@link BitString} contains no
    * set bits.
    */
   public int length() { return lastSet()+1; }
 
   /**
    * Returns the number of bits of space actually in use by this
-   * <code>BitString</code> to represent bit values.
+   * {@link BitString} to represent bit values.
    * The maximum element in the set is the size - 1st element.
    * The minimum element in the set is the zero'th element.
    */

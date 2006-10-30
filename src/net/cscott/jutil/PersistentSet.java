@@ -8,49 +8,49 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 /**
- * <code>PersistentSet</code> implements a persistent set, based on a
- * persistent randomized treap.  Unlike the <code>Set</code>s returned
- * by <code>PersistentSetFactory</code>, <code>PersistentSet</code>
- * does not implement that standard <code>java.util.Set</code> API
+ * {@link PersistentSet} implements a persistent set, based on a
+ * persistent randomized treap.  Unlike the {@link Set}s returned
+ * by {@link PersistentSetFactory}, {@link PersistentSet}
+ * does not implement that standard {@link java.util.Set} API
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSet.java,v 1.7 2006-10-30 03:25:32 cananian Exp $
+ * @version $Id: PersistentSet.java,v 1.8 2006-10-30 19:58:06 cananian Exp $
  */
 public class PersistentSet<T>  implements Iterable<T> {
     final Node<T> root;
     final Comparator<T> c;
     final Node.Allocator<T> allocator;
 
-    /** Creates an empty <code>PersistentSet</code> whose member objects
-     *  will all implement <code>java.lang.Comparable</code>. Note that
+    /** Creates an empty {@link PersistentSet} whose member objects
+     *  will all implement {@link java.lang.Comparable}. Note that
      *  good hashcode implementations for the member objects are still
      *  required. */
     public PersistentSet() {
 	// cast below is safe iff T implements Comparable.
 	this((Comparator<T>)Default.comparator); // safe iff T is Comparable
     }
-    /** Creates an empty <code>PersistentSet</code> whose member objects
-     *  are ordered by the given <code>Comparator</code>.  Note that
+    /** Creates an empty {@link PersistentSet} whose member objects
+     *  are ordered by the given {@link Comparator}.  Note that
      *  good hashcode implementations for the member objects are still
      *  required.
      */
     public PersistentSet(Comparator<T> c) {
 	this(null, c, new Node.Allocator<T>());
     }
-    /** Creates a <code>PersistentSet</code> from a root <code>Node</code>
-     *  and a <code>Comparator</code>.*/
+    /** Creates a {@link PersistentSet} from a root {@link Node}
+     *  and a {@link Comparator}.*/
     private PersistentSet(Node<T> root, Comparator<T> c, Node.Allocator<T> a) {
 	this.root = root; this.c = c; this.allocator = a;
     }
 
-    /** Determines if this <code>PersistentSet</code> has any members. */
+    /** Determines if this {@link PersistentSet} has any members. */
     public boolean isEmpty() { return (root==null); }
 
-    /** Count the number of elements in this <code>PersistentSet</code>. */
+    /** Count the number of elements in this {@link PersistentSet}. */
     public int size() { return (root==null)?0:root.size; }
 
-    /** Creates and returns a new <code>PersistantSet</code> identical to
+    /** Creates and returns a new {@link PersistentSet} identical to
      *  this one, except it contains <code>element</code>. */
     public PersistentSet<T> add(T element) {
 	Node<T> new_root =
@@ -64,7 +64,7 @@ public class PersistentSet<T>  implements Iterable<T> {
 	return (PersistentTreeNode.get(this.root, this.c, element)!=null);
     }
 
-    /** Make a new <code>PersistentSet</code> identical to this one,
+    /** Make a new {@link PersistentSet} identical to this one,
      *  except that it does not contain <code>element</code>. */
     public PersistentSet<T> remove(T element) {
 	Node<T> new_root = 
@@ -113,7 +113,7 @@ public class PersistentSet<T>  implements Iterable<T> {
     }
     
     /*---------------------------------------------------------------*/
-    /** <code>java.util.Collection</code>s view of the set. */
+    /** {@link java.util.Collection}s view of the set. */
     public Set<T> asSet() {
 	return new AbstractSet<T>() {
 	    // constant-time clone.
@@ -153,7 +153,7 @@ public class PersistentSet<T>  implements Iterable<T> {
     // PersistentTreeNode subclass
     private static class Node<T>
 	extends PersistentTreeNode<Node<T>,T,T> {
-	/** The hash code of a <code>java.util.Set</code> with the
+	/** The hash code of a {@link java.util.Set} with the
 	 *  contents of the tree rooted at this node. */
 	final int setHashCode;
 	/** Size of the tree rooted at this node. */

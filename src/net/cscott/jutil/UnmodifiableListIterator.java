@@ -5,15 +5,15 @@ package net.cscott.jutil;
 
 import java.util.ListIterator;
 /**
- * <code>UnmodifiableListIterator</code> is an abstract superclass to
+ * {@link UnmodifiableListIterator} is an abstract superclass to
  * save you the trouble of implementing the <code>remove()</code>,
  * <code>add()</code> and <code>set()</code> methods over and over again
  * for those list iterators which don't implement them.  The name's a
  * bit clunky, but fits with the JDK naming in
- * <code>java.util.Collections</code> and such.
+ * {@link java.util.Collections} and such.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UnmodifiableListIterator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: UnmodifiableListIterator.java,v 1.2 2006-10-30 19:58:07 cananian Exp $
  */
 public abstract class UnmodifiableListIterator<E> implements ListIterator<E> {
     /** Returns <code>true</code> if the list iterator has more elements
@@ -50,19 +50,19 @@ public abstract class UnmodifiableListIterator<E> implements ListIterator<E> {
      *  list iterator is at the beginning of the list.)
      */
     public int previousIndex() { return nextIndex()-1; }
-    /** Always throws an <code>UnsupportedOperationException</code>.
+    /** Always throws an {@link UnsupportedOperationException}.
      * @exception UnsupportedOperationException always.
      */
     public final void remove() {
 	throw new UnsupportedOperationException("Unmodifiable ListIterator");
     }
-    /** Always throws an <code>UnsupportedOperationException</code>.
+    /** Always throws an {@link UnsupportedOperationException}.
      * @exception UnsupportedOperationException always.
      */
     public final void set(E o) {
 	throw new UnsupportedOperationException("Unmodifiable ListIterator");
     }
-    /** Always throws an <code>UnsupportedOperationException</code>.
+    /** Always throws an {@link UnsupportedOperationException}.
      * @exception UnsupportedOperationException always.
      */
     public final void add(E o) {

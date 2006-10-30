@@ -3,19 +3,21 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import java.io.Serializable;
+import java.util.Set;
+import java.util.Stack;
 
 /**
- * A <code>WorkSet</code> is a <code>Set</code> offering constant-time
+ * A {@link WorkSet} is a {@link Set} offering constant-time
  * access to the first/last element inserted, and an iterator whose speed
  * is not dependent on the total capacity of the underlying hashtable.
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: WorkSet.java,v 1.4 2004-02-08 02:00:10 cananian Exp $
+ * @version $Id: WorkSet.java,v 1.5 2006-10-30 19:58:07 cananian Exp $
  * @deprecated Use {@link java.util.LinkedHashSet LinkedHashSet} instead.
  */
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
@@ -25,23 +27,23 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
     private EntryList<E> listfoot = listhead.next;
     private final static boolean debug=false; // turn on consistency checks.
     
-    /** Creates a new, empty <code>WorkSet</code> with a default capacity
+    /** Creates a new, empty {@link WorkSet} with a default capacity
      *  and load factor. */
     public WorkSet() {
 	hm = new HashMap<E,EntryList<E>>();
     }
-    /** Constructs a new, empty <code>WorkSet</code> with the specified
+    /** Constructs a new, empty {@link WorkSet} with the specified
      *  initial capacity and default load factor. */
     public WorkSet(int initialCapacity) {
 	hm = new HashMap<E,EntryList<E>>(initialCapacity);
     }
-    /** Constructs a new, empty <code>WorkSet</code> with the specified
+    /** Constructs a new, empty {@link WorkSet} with the specified
      *  initial capacity and the specified load factor. */
     public WorkSet(int initialCapacity, float loadFactor) {
 	hm = new HashMap<E,EntryList<E>>(initialCapacity, loadFactor);
     }
-    /** Constructs a new <code>WorkSet</code> with the contents of the
-     *  specified <code>Collection</code>. */
+    /** Constructs a new {@link WorkSet} with the contents of the
+     *  specified {@link Collection}. */
     public WorkSet(java.util.Collection<? extends E> c) {
 	// make hash map about twice as big as the collection.
 	hm = new HashMap<E,EntryList<E>>(Math.max(2*c.size(),11));
@@ -103,18 +105,18 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	return o;
     }
 
-    /** Looks at the object as the top of this <code>WorkSet</code>
-     *  (treating it as a <code>Stack</code>) without removing it
+    /** Looks at the object as the top of this {@link WorkSet}
+     *  (treating it as a {@link Stack}) without removing it
      *  from the set/stack. */
     public E peek() { return getLast(); }
 
-    /** Removes the item at the top of this <code>WorkSet</code>
-     *  (treating it as a <code>Stack</code>) and returns that object
+    /** Removes the item at the top of this {@link WorkSet}
+     *  (treating it as a {@link Stack}) and returns that object
      *  as the value of this function. */
     public E pop() { return removeLast(); }
 
-    /** Pushes item onto the top of this <code>WorkSet</code> (treating
-     *  it as a <code>Stack</code>), if it is not already there.
+    /** Pushes item onto the top of this {@link WorkSet} (treating
+     *  it as a {@link Stack}), if it is not already there.
      *  If the <code>item</code> is already in the set/on the stack,
      *  then this method does nothing.
 	<BR> <B>modifies:</B> <code>this</code>

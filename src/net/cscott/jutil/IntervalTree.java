@@ -6,19 +6,19 @@ package net.cscott.jutil;
 import java.util.Comparator;
 import java.util.Iterator;
 
-/** An <code>IntervalTree</code> is a mutable collection
-    of <code>Interval</code>s.  <code>IntervalTree</code>s support 
+/** An {@link IntervalTree} is a mutable collection
+    of {@link Interval}s.  {@link IntervalTree}s support 
     efficient lookup of overlapping elements.
 
-    <p> Every element in an <code>IntervalTree</code> must be an
-    <code>Interval</code>.  Thus element lookup is done based upon
-    <code>Interval</code>s, not on the datum assocatied with each
-    <code>Interval</code>.
+    <p> Every element in an {@link IntervalTree} must be an
+    {@link Interval}.  Thus element lookup is done based upon
+    {@link Interval}s, not on the datum assocatied with each
+    {@link Interval}.
     
     <p> The intervals maintained by this structure are considered to
     be closed intervals.
 
-    <p> To make use of an <code>IntervalTree</code> cleaner, a
+    <p> To make use of an {@link IntervalTree} cleaner, a
     convenience method, <code>addInterval</code> is provided.
     @see IntervalTree#addInterval
 
@@ -59,7 +59,7 @@ public class IntervalTree extends RedBlackTree {
 		this.max = i.high;
 	}
     }
-    /** requires: o is-a <code>Interval</code>. */
+    /** requires: o is-a {@link Interval}. */
     protected Node makeNode(Object o) { return new IntervalNode(o); }
 
     protected Node setLeft(Node p, Node l) { 
@@ -87,10 +87,10 @@ public class IntervalTree extends RedBlackTree {
     private Interval interval(Node n) { return (Interval) n.key; }
     private int max(Node n) { return ((IntervalNode) n).max; }
 
-    /** Constructs a new empty <code>IntervalTree</code>. */
+    /** Constructs a new empty {@link IntervalTree}. */
     public IntervalTree() { super(Interval.COMPARE); }
     
-    /** Returns some <code>Interval</code> in <code>this</code> which
+    /** Returns some {@link Interval} in <code>this</code> which
 	overlaps the bounds defined by the argument interval
 	<code>i</code>, or <code>null</code> if no such interval
 	exists.  
@@ -115,7 +115,7 @@ public class IntervalTree extends RedBlackTree {
 	    return interval(x);
     }
 
-    /** Returns an <code>Iterator</code> over <code>Intervals</code> that 
+    /** Returns an {@link Iterator} over {@link Interval}s that 
 	yields every interval in this that overlaps <code>i</code>. 
     */
     public Iterator allOverlapping(Interval i) {
@@ -140,7 +140,7 @@ public class IntervalTree extends RedBlackTree {
 	    return allOverlapping(x.right(), i);
 	}
     }
-    /** Constructs a new <code>Interval</code> <i>i</i> and adds
+    /** Constructs a new {@link Interval} <i>i</i> and adds
 	<i>i</i> to <code>this</code>. 
 	Convenience method.
 	Requires: high > low.

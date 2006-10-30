@@ -4,13 +4,13 @@
 package net.cscott.jutil;
 
 /**
- * A <code>MultiMapSet</code> is a <code>java.util.Set</code> of
- * <code>Map.Entry</code>s which can also be accessed as a
- * <code>MultiMap</code>.  Use the <code>entrySet()</code> method
- * of the <code>MultiMap</code> to get back the <code>MultiMapSet</code>.
+ * A {@link MultiMapSet} is a {@link java.util.Set} of
+ * {@link java.util.Map.Entry}s which can also be accessed as a
+ * {@link MultiMap}.  Use the <code>entrySet()</code> method
+ * of the {@link MultiMap} to get back the {@link MultiMapSet}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapSet.java,v 1.2 2006-10-29 16:27:22 cananian Exp $
+ * @version $Id: MultiMapSet.java,v 1.3 2006-10-30 19:58:06 cananian Exp $
  */
 public interface MultiMapSet<K,V> extends MapSet<K,V> {
     public MultiMap<K,V> asMap();

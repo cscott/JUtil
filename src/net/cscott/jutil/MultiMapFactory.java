@@ -4,17 +4,17 @@
 package net.cscott.jutil;
 
 import java.util.*;
-/** <code>MultiMapFactory</code> is a <code>MultiMap</code> generator.
+/** {@link MultiMapFactory} is a {@link MultiMap} generator.
  *  Subclasses should implement constructions of specific types of
- *  <code>MultiMap</code>s.  Subclasses *must* implement at least one of
+ *  {@link MultiMap}s.  Subclasses *must* implement at least one of
  *  the <code>makeMultiMap</code> methods.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapFactory.java,v 1.4 2005-01-20 01:14:35 cananian Exp $
+ * @version $Id: MultiMapFactory.java,v 1.5 2006-10-30 19:58:06 cananian Exp $
  */
 public abstract class MultiMapFactory<K,V> extends MapFactory<K,V> {
     
-    /** Creates a <code>MultiMapFactory</code>. */
+    /** Creates a {@link MultiMapFactory}. */
     public MultiMapFactory() {
     }
     // MapFactory interface
@@ -27,13 +27,13 @@ public abstract class MultiMapFactory<K,V> extends MapFactory<K,V> {
 	return mm;
     }
     // MultiMapFactory interface.
-    /** Create a new, empty, <code>MultiMap</code>. */
+    /** Create a new, empty, {@link MultiMap}. */
     public MultiMap<K,V> makeMultiMap() {
 	return makeMultiMap(Default.<K,V>EMPTY_MULTIMAP());
     }
 
-    /** Creates a new <code>MultiMap</code> initialized with all 
-	of the <code>Map.Entry</code>s in <code>map</code>
+    /** Creates a new {@link MultiMap} initialized with all 
+	of the {@link java.util.Map.Entry}s in <code>map</code>
     */
     public MultiMap<K,V> makeMultiMap(MultiMap<? extends K,? extends V> map) {
 	MultiMap<K,V> mm = makeMultiMap();

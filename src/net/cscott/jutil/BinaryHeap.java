@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 /**
- * <code>BinaryHeap</code> is an implementation of a binary heap.
+ * {@link BinaryHeap} is an implementation of a binary heap.
  * The implementation in CLR is followed, except the comparisons
  * are reversed to keep the <b>minimum</b> element on the top of
  * the heap.  In addition, the function names <code>downheap()</code>
@@ -20,7 +20,7 @@ import java.util.Map;
  * Sedgewick's book.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinaryHeap.java,v 1.5 2006-02-20 19:21:12 cananian Exp $
+ * @version $Id: BinaryHeap.java,v 1.6 2006-10-30 19:58:05 cananian Exp $
  * @see Heap
  */
 public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
@@ -29,10 +29,10 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     final ArrayList<Entry<K,V>> A;
     final Comparator<Map.Entry<K,V>> c;
     
-    /** Creates a new, empty <code>BinaryHeap</code>, which will
+    /** Creates a new, empty {@link BinaryHeap}, which will
      *  use the keys' natural order. */
     public BinaryHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
-    /** Creates a new, empty <code>BinaryHeap</code> with the
+    /** Creates a new, empty {@link BinaryHeap} with the
      *  specified comparator. */
     public BinaryHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Builds a binary heap from the given heap, using
@@ -40,7 +40,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     public BinaryHeap(Heap<K,? extends V> h) {
 	this(h.entries(), h.comparator());
     }
-    /** Builds a binary heap from a collection of <code>Map.Entry</code>s
+    /** Builds a binary heap from a collection of {@link java.util.Map.Entry}s
      *  and a key comparator.
      *  O(n) time. */
     public BinaryHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
@@ -78,7 +78,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     public void union(Heap<? extends K,? extends V> h) {
 	union(h.entries());
     }
-    /** Union a collection of <code>Map.Entry</code>s, using BUILD-HEAP. */
+    /** Union a collection of {@link java.util.Map.Entry}s, using BUILD-HEAP. */
     private void union(Collection<? extends Map.Entry<? extends K,? extends V>> coll) {
 	// this is the BUILD-HEAP function. pg 145 in CLR.
 	for (Map.Entry<? extends K,? extends V> e : coll)
@@ -175,7 +175,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	    assert c.compare(A.get(PARENT(i)), A.get(i)) <= 0;
     }
 
-    /** Our <code>BinaryHeap</code> <code>Map.Entry</code>s look like this: */
+    /** Our {@link BinaryHeap} {@link java.util.Map.Entry}s look like this: */
     private static class Entry<K,V> extends PairMapEntry<K,V> {
 	int index;
 	Entry(K key, V value, int index) {

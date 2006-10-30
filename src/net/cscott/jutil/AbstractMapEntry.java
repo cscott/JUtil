@@ -5,15 +5,15 @@ package net.cscott.jutil;
 
 import java.util.Map;
 /**
- * An <code>AbstractMapEntry</code> takes care of most of the grunge
- * work involved in subclassing <code>java.util.Map.Entry</code>.  For
+ * An {@link AbstractMapEntry} takes care of most of the grunge
+ * work involved in subclassing {@link java.util.Map.Entry}.  For
  * an immutable entry, you need only implement <code>getKey()</code>
  * and <code>getValue()</code>.  For a modifiable entry, you must also
  * implement <code>setValue()</code>; the default implementation throws
- * an <code>UnsupportedOperationException</code>.
+ * an {@link UnsupportedOperationException}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractMapEntry.java,v 1.1 2003-03-20 01:58:20 cananian Exp $ */
+ * @version $Id: AbstractMapEntry.java,v 1.2 2006-10-30 19:58:05 cananian Exp $ */
 public abstract class AbstractMapEntry<K,V> implements Map.Entry<K,V> {
     /** Returns the key corresponding to this entry. */
     public abstract K getKey();

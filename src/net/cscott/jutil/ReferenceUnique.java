@@ -4,15 +4,15 @@
 package net.cscott.jutil;
 
 /**
- * <code>ReferenceUnique</code> is a property indicating that, for
+ * {@link ReferenceUnique} is a property indicating that, for
  * all instances of a class, <code>(a==b)==(a.equals(b))</code>.
  * That is, two equal objects are always reference equal.
  * <p>
- * Tagging classes with <code>ReferenceUnique</code> allows
+ * Tagging classes with {@link ReferenceUnique} allows
  * automated checkers to more accurately discrimate legitimate
  * uses of <code>==</code> on objects from unsafe uses.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: ReferenceUnique.java,v 1.1 2003-03-20 01:59:48 cananian Exp $
+ * @version $Id: ReferenceUnique.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
  */
 public interface ReferenceUnique { }

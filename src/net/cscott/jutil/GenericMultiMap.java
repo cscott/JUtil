@@ -3,16 +3,18 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.util.Map;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Collection;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * <code>GenericMultiMap</code> is a default implementation of a
- * <code>MultiMap</code>.  
+ * {@link GenericMultiMap} is a default implementation of a
+ * {@link MultiMap}.  
  *
  * <P>   FSK: right now the implementation tries to preserve the
  *       property that if a key 'k' maps to an empty collection 'c' in
@@ -25,7 +27,7 @@ import java.util.AbstractSet;
  *	 are passed on to 'mm'.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: GenericMultiMap.java,v 1.5 2006-02-20 19:21:12 cananian Exp $ */
+ * @version $Id: GenericMultiMap.java,v 1.6 2006-10-30 19:58:05 cananian Exp $ */
 public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     
     // internal Map[KeyType -> Collection[ ValueType ]]
@@ -37,27 +39,27 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     // used by identity constructor
     private MapFactory<K,Collection<V>> mf;
 
-    /** Creates a <code>MultiMap</code> using a <code>HashMap</code> for
-	the map and <code>HashSet</code>s for the value collections.
+    /** Creates a {@link MultiMap} using a {@link HashMap} for
+	the map and {@link HashSet}s for the value collections.
 	To gain more control over the specific sets/map used in
 	internal representation of <code>this</code>, use the more
 	specific {@link GenericMultiMap#GenericMultiMap(MapFactory,CollectionFactory) constructor }
-	that takes <code>CollectionFactory</code>s.
+	that takes {@link CollectionFactory}s.
     */
     public GenericMultiMap() {
 	this(Factories.<K,Collection<V>>hashMapFactory(), Factories.<V>hashSetFactory());
     }
 
-    /** Creates a <code>MultiMap</code> using a <code>HashMap</code> for
-     *  the map and the specified <code>CollectionFactory</code> to
+    /** Creates a {@link MultiMap} using a {@link HashMap} for
+     *  the map and the specified {@link CollectionFactory} to
      *  create the value collections. */
     public GenericMultiMap(CollectionFactory<V> cf) {
 	this(Factories.<K,Collection<V>>hashMapFactory(), cf);
     }
 
-    /** Creates a <code>MultiMap</code> using the specified
-     *  <code>MapFactory</code> to create the map and the specified
-     *  <code>CollectionFactory</code> to create the value collections.
+    /** Creates a {@link MultiMap} using the specified
+     *  {@link MapFactory} to create the map and the specified
+     *  {@link CollectionFactory} to create the value collections.
     */
     public GenericMultiMap(MapFactory<K,Collection<V>> mf, CollectionFactory<V> cf) {
 	this.internMap = mf.makeMap();
@@ -65,8 +67,8 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	this.mf = mf;
     }
     
-    /** Creates a <code>GenericMultiMap</code> from another
-	<code>GenericMultiMap</code>.
+    /** Creates a {@link GenericMultiMap} from another
+	{@link GenericMultiMap}.
 	
 	NOTE: I would make this ctor public, but I need to eliminate
 	any issues with the Collection-values being shared between
@@ -79,8 +81,8 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	this.internMap = this.mf.makeMap(mm.internMap);
     }
 	
-    /** Makes a new <code>MultiMap</code> initialized with all of the
-	<code>Map.Entry</code>s in <code>m</code>.
+    /** Makes a new {@link MultiMap} initialized with all of the
+	{@link java.util.Map.Entry}s in <code>m</code>.
     */
     GenericMultiMap(Map<? extends K,? extends V> m) { 
 	this();
@@ -128,7 +130,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	
 	Note that if only the <code>put</code> method is used to
 	modify <code>this</code>, then <code>get</code> will operate
-	just as it would in any other <code>Map</code>.
+	just as it would in any other {@link Map}.
     */
     public V get(Object key) {
 	Collection<V> s = internMap.get(key);
@@ -168,11 +170,11 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 
     /** Returns the collection of Values associated with
 	<code>key</code>.  Modifications to the returned
-	<code>Collection</code> affect <code>this</code> as well.  If 
+	{@link Collection} affect <code>this</code> as well.  If 
 	there are no Values currently associated with
 	<code>key</code>, constructs a new, mutable, empty
-	<code>Collection</code> and returns it.
-	(<code>MultiMap</code> specific operation). 
+	{@link Collection} and returns it.
+	({@link MultiMap} specific operation). 
     */
     public Collection<V> getValues(final K key) {
 	Collection<V> c = internMap.get(key);
@@ -185,7 +187,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 
     /** Returns true if <code>a</code> has a mapping to <code>b</code>
 	in <code>this</code>.
-	(<code>MultiMap</code> specific operation). 
+	({@link MultiMap} specific operation). 
     */
     public boolean contains(Object a, Object b) {
 	Collection<V> c = internMap.get(a);
@@ -211,9 +213,9 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 
     /** Returns a set view of the mappings contained in this map.
 	This view is fully modifiable; the elements are
-	<code>Map.Entry</code>s.  The returned set is actually a
-	<code>MultiMapSet</code>, from which you can get back the
-	original <code>MultiMap</code>.
+	{@link java.util.Map.Entry}s.  The returned set is actually a
+	{@link MultiMapSet}, from which you can get back the
+	original {@link MultiMap}.
     */
     public MultiMapSet<K,V> entrySet() {
 	return entrySet;

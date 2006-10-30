@@ -11,14 +11,14 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 /**
- * A <code>BinomialHeap</code> allows
+ * A {@link BinomialHeap} allows
  * O(lg n) time bounds for insert, minimum, extract-min, union,
  * decrease-key, and delete operations.  Implementation is based on
  * the description in <i>Introduction to Algorithms</i> by Cormen,
  * Leiserson, and Rivest, on page 400 and following.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinomialHeap.java,v 1.7 2006-02-20 19:21:12 cananian Exp $
+ * @version $Id: BinomialHeap.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
  */
 public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     private static final boolean debug=false;
@@ -26,18 +26,18 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     Node<K,V> head=null;
     final Comparator<Map.Entry<K,V>> c; // convenience field.
     
-    /** Constructs a new, empty <code>BinomialHeap</code>, sorted according
+    /** Constructs a new, empty {@link BinomialHeap}, sorted according
      *  to the keys' natural order. All keys inserted into the new map
-     *  must implement the <code>Comparable</code> interface. O(1) time. */
+     *  must implement the {@link Comparable} interface. O(1) time. */
     public BinomialHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
-    /** Constructs a new, empty <code>BinomialHeap</code>, sorted according
+    /** Constructs a new, empty {@link BinomialHeap}, sorted according
      *  to the given comparator. O(1) time. */
     public BinomialHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Constructs a new binomial heap with the same entries as the specified
-     *  <code>Heap</code>. O(n) time. */
+     *  {@link Heap}. O(n) time. */
     public BinomialHeap(Heap<K,? extends V> h) { this(h.entries(), h.comparator()); }
     /** Constructs a binomial heap from a collection of
-     *  <code>Map.Entry</code>s and a key comparator.  O(n) time. */
+     *  {@link java.util.Map.Entry}s and a key comparator.  O(n) time. */
     public BinomialHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
 	super(comparator);
 	c = entryComparator();
@@ -81,7 +81,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     }
     /** Add all the entries from the given heap to this one.
      *  The given heap will be empty on return.  Takes
-     *  O(lg n) time if the given heap is a <code>BinomialHeap</code>
+     *  O(lg n) time if the given heap is a {@link BinomialHeap}
      *  and its entry comparator is the same as this one's.
      *  Otherwise, it takes O(n) time. */
     public void union(Heap<? extends K,? extends V> h) {
@@ -150,7 +150,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
      *  If the map previously contained a mapping for this key, the old
      *  value is <b>not replaced</b>; both mappings will be present after
      *  the <code>insert()</code>.  O(lg n) time.
-     * @return The <code>Map.Entry</code> added.
+     * @return The {@link java.util.Map.Entry} added.
      */
     public Map.Entry<K,V> insert(K key, V value) { // binomial-heap-insert
 	if (debug) checkHeap();
@@ -222,7 +222,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	}
 	return y;
     }
-    /** Exchange the <code>Entry</code>s in two nodes. */
+    /** Exchange the {@link Entry}s in two nodes. */
     private void _exchange(Node<K,V> a, Node<K,V> b) {
 	Entry<K,V> ea = a.entry, eb = b.entry;
 	a.entry = eb; eb.node = a;
@@ -298,7 +298,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	return nn;
     }
 
-    /** Lookup a <code>Map.Entry</code> in the heap with key equal to
+    /** Lookup a {@link java.util.Map.Entry} in the heap with key equal to
      *  the specified key.  O(n), although pruning is done on subtrees
      *  with root larger than the specified key.  What this means is
      *  that the smaller the key is, the faster this will run. */
@@ -321,7 +321,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	return find(n.child, key);
     }
 
-    /** The underlying <code>Map.Entry</code> representation. */
+    /** The underlying {@link java.util.Map.Entry} representation. */
     static final class Entry<K,V> extends PairMapEntry<K,V> {
 	Node<K,V> node;
 	Entry(K key, V value) { super(key, value); }

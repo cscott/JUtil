@@ -8,19 +8,19 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-/** <code>UnmodifiableMultiMap</code> is an abstract superclass to
+/** {@link UnmodifiableMultiMap} is an abstract superclass to
     save developers the trouble of implementing the various mutator
-    methds of the <code>MultiMap</code> interface.
+    methds of the {@link MultiMap} interface.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: UnmodifiableMultiMap.java,v 1.4 2006-10-29 20:15:47 cananian Exp $
+    @version $Id: UnmodifiableMultiMap.java,v 1.5 2006-10-30 19:58:07 cananian Exp $
 */
 public abstract class UnmodifiableMultiMap<K,V> 
     extends UnmodifiableMap<K,V> implements MultiMap<K,V> {
     protected UnmodifiableMultiMap() { }
     // narrow type
     protected abstract MultiMap<K,V> wrapped();
-    /** Constructs and returns an unmodifiable <code>MultiMap</code>
+    /** Constructs and returns an unmodifiable {@link MultiMap}
 	backed by <code>mmap</code>.
     */
     public static <K,V> MultiMap<K,V> proxy(final MultiMap<K,V> mmap) {
@@ -53,8 +53,8 @@ public abstract class UnmodifiableMultiMap<K,V>
             public UnmodifiableMultiMapSet<K, V> entrySet() { return mapSet; }
         };
     }
-    /** Returns a <code>Set</code> view that allows you to recapture
-     *  the <code>MultiMap</code> view. */
+    /** Returns a {@link Set} view that allows you to recapture
+     *  the {@link MultiMap} view. */
     public abstract UnmodifiableMultiMapSet<K,V> entrySet();
     public Collection<V> getValues(K key) {
         return Collections.unmodifiableCollection(wrapped().getValues(key));

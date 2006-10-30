@@ -5,50 +5,51 @@ package net.cscott.jutil;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
-/** <code>MultiMap</code> maps a key to a collection of values.  These
+/** {@link MultiMap} maps a key to a collection of values.  These
     collections are created as needed using a
-    <code>CollectionFactory</code>.  Any constraints on the
+    {@link CollectionFactory}.  Any constraints on the
     collections produced by this factory thus hold for the values that
     <code>this</code> maps to.
 
     <BR> Formally, a MultiMap is a <i>Multiple Associative
     Container</i>.  It associates key objects with value objects.  The
-    difference between a <code>MultiMap</code> and a standard 
-    <code>Map</code> is that <code>MultiMap</code> extends the
-    <code>Map</code> interface to allow for the same key to map to
+    difference between a {@link MultiMap} and a standard 
+    {@link Map} is that {@link MultiMap} extends the
+    {@link Map} interface to allow for the same key to map to
     multiple values. 
 
     <BR> Thus, the type signature for a MultiMap is :: 
          Map[keytype -> [valtype] ]
     
     <BR> Note that an association (known as a (Key, Value) pair or a 
-         <code>Map.Entry</code> in the Java Collections API) is only 
+         {@link java.util.Map.Entry} in the Java Collections API) is only 
 	 defined to exist if the collection of objects mapped to by
 	 some key is non-empty. 
     
 	 This has a number of implications for the behavior of
-	 <code>MultiMap</code>:
+	 {@link MultiMap}:
 
     <BR> Let <OL>
-         <LI> <code>mm</code> be a <code>MultiMap</code>,
-	 <LI> <code>k</code> be an <code>Object</code> (which may or may
+         <LI> <code>mm</code> be a {@link MultiMap},
+	 <LI> <code>k</code> be an {@link Object} (which may or may
 	          not be a Key in <code>mm</code>)
-	 <LI> <code>c</code> be the <code>Collection</code> returned by
+	 <LI> <code>c</code> be the {@link Collection} returned by
 	          <code>mm.getValues(k)</code>.
     </OL>
     <BR> Then <code>c</code> will either be a non-empty
-         <code>Collection</code> (the case where <code>k</code> is a
+         {@link Collection} (the case where <code>k</code> is a
 	 Key in <code>mm</code>) or it will be an empty collection (the
 	 case where <code>k</code> is not a Key in <code>mm</code>).
 	 In the latter case, however, <code>k</code> is still
 	 considered to not be a Key in <code>mm</code> until
 	 <code>c</code> is made non-empty.  We chose to return an
-	 empty <code>Collection</code> instead of <code>null</code> to
+	 empty {@link Collection} instead of <code>null</code> to
 	 allow for straightforward addition to the collection of
 	 values mapped to by <code>k</code>.
 
-    <BR> To conform to the <code>Map</code> interface, the
+    <BR> To conform to the {@link Map} interface, the
          <code>put(key, value)</code> method has a non-intuitive
 	 behavior; it throws away all values previously associated
 	 with <code>key</code> and creates a new mapping from
@@ -56,16 +57,16 @@ import java.util.Map;
 	 <code>value</code>.  Use <code>add(key, value)</code> to
 	 preserve the old collection of associative mappings.
 
-    <P>  Note that the behavior of <code>MultiMap</code> is
-         indistinquishable from that of a <code>Map</code> if none of
-	 the extensions of <code>MultiMap</code> are utilized.  Thus,
+    <P>  Note that the behavior of {@link MultiMap} is
+         indistinquishable from that of a {@link Map} if none of
+	 the extensions of {@link MultiMap} are utilized.  Thus,
 	 users should take care to ensure that other code relying on
-	 the constraints enforced by the <code>Map</code> interface
-	 does not ever attempt to use a <code>MultiMap</code> when any
+	 the constraints enforced by the {@link Map} interface
+	 does not ever attempt to use a {@link MultiMap} when any
 	 of its Keys map to more than one value.
     
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MultiMap.java,v 1.3 2004-02-01 19:44:10 cananian Exp $
+    @version $Id: MultiMap.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
  */
 public interface MultiMap<K,V> extends Map<K,V> {
     /** Returns some arbitrary value from the collection of values to
@@ -77,7 +78,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	
 	Note that if only the <code>put</code> method is used to
 	modify <code>this</code>, then <code>get</code> will operate
-	just as it would in any other <code>Map</code>.  
+	just as it would in any other {@link Map}.  
     */
     public V get(Object key);
 
@@ -90,21 +91,21 @@ public interface MultiMap<K,V> extends Map<K,V> {
 
     /** Copies the mappings from the specified map to this
 	map, after removing all old values associated with the key.  Note
-	that <code>putAll(mm)</code> where <code>mm</code> is a
-	<code>MultiMap</code> will NOT add all of the mappings in
+	that {@code putAll(mm)} where <code>mm</code> is a
+	{@link MultiMap} will NOT add all of the mappings in
 	<code>mm</code>; it will only add all of the Keys in
 	<code>mm</code>, mapping each Key to one of the Values it
 	mapped to in <code>mm</code>.  To add all of the mappings from
-	another <code>MultiMap</code>, use
-	<code>addAll(MultiMap)</code>.
+	another {@link MultiMap}, use
+	{@link #addAll(MultiMap)}.
     */
     public void putAll(Map<? extends K,? extends V> t);
 
     /** Removes mappings from key to all associated values from this map.
-     *  This is consistent with the <code>Map</code> definition of
+     *  This is consistent with the {@link Map} definition of
      *  <code>remove</code>.
      *  @return one of the previous values associated with the key,
-     *  or <code>null</code> if <code>Map</code> associated
+     *  or <code>null</code> if {@link Map} associated
      *  no values with the key.  Note that a zero-sized collection
      *  is <i>not</i> returned in the latter case, and that a
      *  <code>null</code> return value may be ambiguous if the map
@@ -115,7 +116,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
 
     /** Removes a mapping from key to value from this map if present.
 
-	(<code>MultiMap</code> specific operation).
+	({@link MultiMap} specific operation).
 
 	Note that if multiple mappings from key to value are permitted
 	by this map, then only one is guaranteed to be removed.
@@ -127,7 +128,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
     /** Ensures that <code>this</code> contains an association from
 	<code>key</code> to <code>value</code>.
 
-	(<code>MultiMap</code> specific operation).
+	({@link MultiMap} specific operation).
 
 	@return <code>true</code> if this mapping changed as a result of
 	        the call
@@ -137,7 +138,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
     /** Adds to the current mappings: associations for
 	<code>key</code> to each value in <code>values</code>.  
 
-	(<code>MultiMap</code> specific operation). 
+	({@link MultiMap} specific operation). 
 
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
@@ -150,7 +151,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
     /** Removes from the current mappings: associations for
 	<code>key</code> to any value not in <code>values</code>. 
 
-	(<code>MultiMap</code> specific operation). 
+	({@link MultiMap} specific operation). 
 
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
@@ -160,7 +161,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
     /** Removes from the current mappings: associations for
 	<code>key</code> to any value in <code>values</code>.
 
-	(<code>MultiMap</code> specific operation). 
+	({@link MultiMap} specific operation). 
 
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
@@ -169,17 +170,17 @@ public interface MultiMap<K,V> extends Map<K,V> {
 
     /** Returns the collection of Values associated with
 	<code>key</code>.  Modifications to the returned
-	<code>Collection</code> affect <code>this</code> as well.  If 
+	{@link Collection} affect <code>this</code> as well.  If 
 	there are no Values currently associated with
 	<code>key</code>, constructs a new, potentially mutable, empty
-	<code>Collection</code> and returns it.
-	(<code>MultiMap</code> specific operation). 
+	{@link Collection} and returns it.
+	({@link MultiMap} specific operation). 
     */
     Collection<V> getValues(K key);
 
     /** Returns true if <code>a</code> has a mapping to <code>b</code>
 	in <code>this</code>.
-	(<code>MultiMap</code> specific operation).
+	({@link MultiMap} specific operation).
     */
     public boolean contains(Object a, Object b);
 
@@ -187,8 +188,8 @@ public interface MultiMap<K,V> extends Map<K,V> {
      *  map to multiple values count multiple times). */
     public int size();
 
-    /** Returns a <code>Set</code> view that allows you to recapture
-     *  the <code>MultiMap</code> view. */
+    /** Returns a {@link Set} view that allows you to recapture
+     *  the {@link MultiMap} view. */
     public MultiMapSet<K,V> entrySet();
 } 
 

@@ -11,15 +11,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <code>GenericInvertibleMultiMap</code> is a default implementation of
- * <code>InvertibleMultiMap</code>.  It returns modifiable inverted
+ * {@link GenericInvertibleMultiMap} is a default implementation of
+ * {@link InvertibleMultiMap}.  It returns modifiable inverted
  * views of the mappings it maintains.  Note that a
- * <code>GenericInvertibleMultiMap</code> can directly replace a
- * <code>GenericInvertibleMap</code>, because <code>MultiMap</code>
- * correctly extends <code>Map</code>.
+ * {@link GenericInvertibleMultiMap} can directly replace a
+ * {@link GenericInvertibleMap}, because {@link MultiMap}
+ * correctly extends {@link Map}.
  *
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: GenericInvertibleMultiMap.java,v 1.3 2004-01-13 21:40:19 cananian Exp $
+ * @version $Id: GenericInvertibleMultiMap.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
  */
 public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     private final MultiMap<K,V> map;
@@ -92,8 +92,8 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     public boolean containsValue(Object value) {
 	return imap.containsKey(value);
     }
-    /** The <code>Set</code> returned by this method is actually an
-     *  instance of <code>MultiMapSet</code>. */
+    /** The {@link Set} returned by this method is actually an
+     *  instance of {@link MultiMapSet}. */
     public MultiMapSet<K,V> entrySet() {
 	// value field of entry set contains a single value.
 	return new AbstractMultiMapSet<K,V>() {

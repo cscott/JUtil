@@ -12,26 +12,26 @@ import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/** <code>BitSetFactory</code> is a <code>SetFactory</code> that,
+/** {@link BitSetFactory} is a {@link SetFactory} that,
     given a complete universe of possible values, produces low space
-    overhead representations of <code>Set</code>s. 
+    overhead representations of {@link Set}s. 
     
-    Notably, the <code>Set</code>s produced should have union,
+    Notably, the {@link Set}s produced should have union,
     intersection, and difference operations that, while still O(n),
     have <b>blazingly</b> low constant factors.
 
     The addition operations (<code>Set.add(Object)</code> and its
     cousins) are only defined for objects that are part of the
     universe of values given to the constructor; other Objects will
-    cause <code>IllegalArgumentException</code> to be thrown.
+    cause {@link IllegalArgumentException} to be thrown.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: BitSetFactory.java,v 1.4 2006-10-30 03:24:35 cananian Exp $
+    @version $Id: BitSetFactory.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
  */
 public class BitSetFactory<V> extends SetFactory<V> {
     
     /** Maps each object in the universe for <code>this</code> to an
-	index in the <code>BitString</code> for the <code>Set</code>s
+	index in the {@link BitString} for the {@link Set}s
 	produced.
     */
     private Indexer<V> indexer;
@@ -49,8 +49,8 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	for makeFullSet). */
     private BitStringSet<V> bitUniverse = null;
     
-    /** Creates a <code>BitSetFactory</code>, given a
-	<code>universe</code> of values and an <code>Indexer</code>
+    /** Creates a {@link BitSetFactory}, given a
+	<code>universe</code> of values and an {@link Indexer}
 	for the elements of <code>universe</code>. 
     */
     public BitSetFactory(final Collection<V> universe, final Indexer<V> indexer) {
@@ -65,10 +65,10 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	this.bitStringSize = max+1;
     }
 
-    /** Creates a <code>BitSetFactory</code>, given a
+    /** Creates a {@link BitSetFactory}, given a
 	<code>universe</code> of values.  Makes a new
-	<code>Indexer</code> for <code>universe</code>; the
-	created <code>Indexer</code> will implement the
+	{@link Indexer} for <code>universe</code>; the
+	created {@link Indexer} will implement the
 	<code>Indexer.getByID()</code> method to allow
 	efficient iteration over sets.
     */
@@ -96,13 +96,13 @@ public class BitSetFactory<V> extends SetFactory<V> {
 
     }
     
-    /** Generates a new mutable <code>Set</code>, using the elements
+    /** Generates a new mutable {@link Set}, using the elements
 	of <code>c</code> as a template for its initial contents. 
 	<BR> <B>requires:</B> All of the elements of <code>c</code>
 	     must have been part of the universe for
 	     <code>this</code>. 
 	<BR> <B>effects:</B> Constructs a lightweight
-	     <code>Set</code> with the elements from <code>c</code>.
+	     {@link Set} with the elements from <code>c</code>.
     */ 
     public BitStringSet<V> makeSet(Collection<? extends V> c) {
 	BitStringSet<V> bss = new BitStringSet<V>(bitStringSize, this);
@@ -110,7 +110,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	return bss;
     }
     
-    /** Generates a new mutable <code>Set</code>, using the elements
+    /** Generates a new mutable {@link Set}, using the elements
 	of the universe for <code>this</code> as its initial contents.
     */
     public Set<V> makeFullSet() {

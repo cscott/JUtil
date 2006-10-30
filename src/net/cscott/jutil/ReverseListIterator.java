@@ -3,20 +3,21 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 /**
- * <code>ReverseListIterator</code> takes a <code>List</code> and gives
- * you an <code>Iterator</code> that traverses the list in reverse
+ * {@link ReverseListIterator} takes a {@link List} and gives
+ * you an {@link Iterator} that traverses the list in reverse
  * order.  Similar to using <code>ReverseIterator(l.iterator())</code>
  * but more efficient as it does not need to create a snapshot.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: ReverseListIterator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: ReverseListIterator.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
  */
 public class ReverseListIterator<E> implements ListIterator<E> {
     private final ListIterator<E> it;
-    /** Creates a <code>ReverseListIterator</code>. */
+    /** Creates a {@link ReverseListIterator}. */
     public ReverseListIterator(List<E> l) {
 	this.it = l.listIterator(l.size());
     }

@@ -6,33 +6,33 @@ package net.cscott.jutil;
 import java.util.Collections;
 import java.util.Map;
 
-/** <code>MapFactory</code> is a <code>Map</code> generator.
+/** {@link MapFactory} is a {@link Map} generator.
     Subclasses should implement constructions of specific types of
-    <code>Map</code>s.
+    {@link Map}s.
      <p>
     Note also that the current limitations on parametric types in
     Java mean that we can't easily type this class as
     <code>MapFactory&lt;M extends Map&lt;K,V&gt;,K,V&gt;</code>,
     as <code>MapFactory&lt;HashMap&lt;K,V&gt;,K,V&gt;</code> is not
     a subtype of <code>MapFactory&lt;Map&lt;K,V&gt;,K,V&gt;</code>,
-    even though <code>HashMap</code> is a subtype of <code>Map</code>.
+    even though {@link java.util.HashMap} is a subtype of {@link Map}.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MapFactory.java,v 1.3 2004-06-29 19:44:06 cananian Exp $
+    @version $Id: MapFactory.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
  */
 public abstract class MapFactory<K,V> {
     
-    /** Creates a <code>MapFactory</code>. */
+    /** Creates a {@link MapFactory}. */
     public MapFactory() {
         
     }
 
-    /** Generates a new, mutable, empty <code>Map</code>. */
+    /** Generates a new, mutable, empty {@link Map}. */
     public Map<K,V> makeMap() {
 	return this.makeMap(Collections.<K,V>emptyMap());
     }
 
-    /** Generates a new <code>Map</code>, using the entries of
+    /** Generates a new {@link Map}, using the entries of
 	<code>map</code> as a template for its initial mappings. 
     */
     public abstract Map<K,V> makeMap(Map<? extends K,? extends V> map);

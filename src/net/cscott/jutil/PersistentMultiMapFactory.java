@@ -16,18 +16,18 @@ import java.util.WeakHashMap;
 import net.cscott.jutil.FilterIterator.Filter;
 
 /**
- * A <code>PersistentMultiMapFactory</code> uses hash-consing to ensure that
- * the <code>MultiMap</code>s created by it maximally reuse space.
- * Equality tests between <code>MultiMap</code>s created by this factory are
- * constant-time.  Cloning a <code>MultiMap</code> created by this factory is
- * also constant-time.  The generated <code>MultiMap</code>s are
- * <code>Map</code>s of (Persistent)<code>Set</code>s, not <code>Map</code>s of
- * generalized <code>Collection</code>s (ie, no duplicate &lt;key,value&gt;
+ * A {@link PersistentMultiMapFactory} uses hash-consing to ensure that
+ * the {@link MultiMap}s created by it maximally reuse space.
+ * Equality tests between {@link MultiMap}s created by this factory are
+ * constant-time.  Cloning a {@link MultiMap} created by this factory is
+ * also constant-time.  The generated {@link MultiMap}s are
+ * {@link Map}s of (Persistent)<code>Set</code>s, not {@link Map}s of
+ * generalized {@link Collection}s (ie, no duplicate &lt;key,value&gt;
  * mappings are allowed).  The implementation is based on persistent
  * randomized treaps.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMultiMapFactory.java,v 1.4 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: PersistentMultiMapFactory.java,v 1.5 2006-10-30 19:58:06 cananian Exp $
  */
 public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     final MapAllocator<K,V> mapAllocator = new MapAllocator<K,V>();
@@ -35,15 +35,15 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     final Comparator<K> keyComparator;
     final Comparator<V> valueComparator;
 
-    /** Creates a <code>PersistentMultiMapFactory</code>. */
+    /** Creates a {@link PersistentMultiMapFactory}. */
     public PersistentMultiMapFactory(Comparator<K> keyComparator,
 				     Comparator<V> valueComparator) {
 	this.keyComparator = keyComparator;
 	this.valueComparator = valueComparator;
     }
 
-    /** Generates a new unsynchronized mutable <code>MultiMap</code> which
-     *  is based on persistent randomized treaps.  All <code>MultiMap</code>s
+    /** Generates a new unsynchronized mutable {@link MultiMap} which
+     *  is based on persistent randomized treaps.  All {@link MultiMap}s
      *  created by this factory maximally reuse space, and have very
      *  fast comparison operations. */
     public MultiMap<K,V> makeMultiMap() {
@@ -297,7 +297,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    }
 	}
 	/** Wrapper for 'Node' which restores the proper 'equals' and
-	 *  'hashCode' semantics for a <code>MultiMap.Entry</code>. */
+	 *  'hashCode' semantics for a {@link MultiMap.Entry}. */
 	private class NodeWrapper extends PairMapEntry<K,V> {
 	    NodeWrapper(K k, V v) { super(k, v); }
 	    // whee, side-effect impervious!
@@ -312,7 +312,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     private static class MapNode<K,V>
 	extends PersistentTreeNode<MapNode<K,V>,K,SetNode<V>> {
 	final SetNode<V> value;
-	/** The hash code of a <code>java.util.MultiMap</code> with the
+	/** The hash code of a {@link java.util.MultiMap} with the
 	 *  contents of the tree rooted at this node. */
 	final int mapHashCode;
 	/** Size of the tree rooted at this node. */
@@ -347,7 +347,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     }
     private static class SetNode<V>
 	extends PersistentTreeNode<SetNode<V>,V,V> {
-	/** The hash code of a <code>java.util.Set</code> with the
+	/** The hash code of a {@link java.util.Set} with the
 	 *  contents of the tree rooted at this node. */
 	final int setHashCode;
 	/** Size of the tree rooted at this node. */
@@ -372,7 +372,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	public int size() { return size; }
 	public int hashCode() { return setHashCode; }
     }
-    /** Allocator uses a <code>WeakHashMap</code> to do hash consing. */
+    /** Allocator uses a {@link WeakHashMap} to do hash consing. */
     static class MapAllocator<K,V>
 	extends PersistentTreeNode.Allocator<MapNode<K,V>,K,SetNode<V>> {
 	final WeakHashMap<MapNode<K,V>,WeakReference<MapNode<K,V>>> hashConsCache =
@@ -390,7 +390,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return hashConsCache.toString();
 	}
     }
-    /** Allocator uses a <code>WeakHashMap</code> to do hash consing. */
+    /** Allocator uses a {@link WeakHashMap} to do hash consing. */
     static class SetAllocator<V>
 	extends PersistentTreeNode.Allocator<SetNode<V>,V,V> {
 	final WeakHashMap<SetNode<V>,WeakReference<SetNode<V>>> hashConsCache =

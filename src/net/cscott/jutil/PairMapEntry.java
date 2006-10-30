@@ -4,27 +4,27 @@
 package net.cscott.jutil;
 
 /**
- * <code>PairMapEntry</code> is the easiest implementation of a
- * <code>Map.Entry</code> ever: a pair!  Basically saves coders the
+ * {@link PairMapEntry} is the easiest implementation of a
+ * {@link java.util.Map.Entry} ever: a pair!  Basically saves coders the
  * drugery of writing an inner class at the expense of an import
  * statement.
  *
- * Note that <code>PairMapEntry</code>s <b>are</b> mutable:
+ * Note that {@link PairMapEntry}s <b>are</b> mutable:
  * <code>setValue(Object)</code> is defined in this class.
  *
  * Using <code>null</code> as a key or value will not cause this class 
- * or <code>AbstractMapEntry</code> to fail, but be warned that
- * several <code>Map</code> implementations do not like 
+ * or {@link AbstractMapEntry} to fail, but be warned that
+ * several {@link java.util.Map} implementations do not like 
  * <code>null</code>s in their internal structures.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: PairMapEntry.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: PairMapEntry.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
  */
 public class PairMapEntry<K,V> extends AbstractMapEntry<K,V> {
     private K key;
     private V value;
 
-    /** Creates a <code>PairMapEntry</code>. */
+    /** Creates a {@link PairMapEntry}. */
     public PairMapEntry(K key, V value) {
         this.key = key;
 	this.value = value;

@@ -5,13 +5,13 @@ package net.cscott.jutil;
 
 import java.util.Map;
 
-/** <code>MapWrapper</code> is a class that acts as a proxy for
+/** {@link MapWrapper} is a class that acts as a proxy for
     another backing map, to allow for easy extension of
-    <code>Map</code> functionality while not restricting developers to
-    one particular <code>Map</code> implementation. 
+    {@link Map} functionality while not restricting developers to
+    one particular {@link Map} implementation. 
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MapWrapper.java,v 1.3 2006-10-29 20:15:48 cananian Exp $
+    @version $Id: MapWrapper.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
 */
 public abstract class MapWrapper<K,V> implements Map<K,V> {
     public MapWrapper() { }

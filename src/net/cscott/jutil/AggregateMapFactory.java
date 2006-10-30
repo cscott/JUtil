@@ -12,16 +12,16 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * <code>AggregateMapFactory</code> uses a single <code>HashMap</code>
- * as backing store for the many smaller <code>Map</code>s created
- * by this <code>MapFactory</code>.  This means that we use much
+ * {@link AggregateMapFactory} uses a single {@link HashMap}
+ * as backing store for the many smaller {@link Map}s created
+ * by this {@link MapFactory}.  This means that we use much
  * less space and rehash less frequently than if we were using
- * the standard <code>Factories.hashMapFactory</code>.
+ * the standard {@link Factories#hashMapFactory()}.
  * The iterators of the submaps are fast, unlike those of
- * <code>HashMap</code>.
+ * {@link HashMap}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateMapFactory.java,v 1.5 2006-10-29 16:27:20 cananian Exp $
+ * @version $Id: AggregateMapFactory.java,v 1.6 2006-10-30 19:58:05 cananian Exp $
  */
 public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     implements java.io.Serializable {
@@ -29,12 +29,12 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     private final Map<Map.Entry<ID,K>,DoublyLinkedList<K,V>> m =
 	new HashMap<Map.Entry<ID,K>,DoublyLinkedList<K,V>>();
 
-    /** Creates an <code>AggregateMapFactory</code>. */
+    /** Creates an {@link AggregateMapFactory}. */
     public AggregateMapFactory() { /* nothing to do here */ }
 
-    /** Generates a new mutable <code>Map</code> which is a 
+    /** Generates a new mutable {@link Map} which is a 
      *  subset of the backing set of this
-     *  <code>AggregateMapFactory</code>.
+     *  {@link AggregateMapFactory}.
      */
     public Map<K,V> makeMap(final Map<? extends K,? extends V> mm) {
 	return new AggregateMap(mm);

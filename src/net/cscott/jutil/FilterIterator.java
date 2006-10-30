@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * A <code>FilterIterator</code> filters and maps a source
- * <code>Iterator</code> to generate a new one.
+ * A {@link FilterIterator} filters and maps a source
+ * {@link Iterator} to generate a new one.
  *
  * Note that this implementation reads one element ahead, so if the
  * Filter changes for an object 'o' between the time that is read
@@ -19,12 +19,12 @@ import java.util.NoSuchElementException;
  * Filters which remain consistent throughout the iteration be used. 
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FilterIterator.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: FilterIterator.java,v 1.2 2006-10-30 19:58:05 cananian Exp $
  */
 public class FilterIterator<A,B> extends UnmodifiableIterator<B> {
     final Iterator<A> i;
     final Filter<A,B> f;
-    /** Creates a <code>FilterIterator</code>. */
+    /** Creates a {@link FilterIterator}. */
     public FilterIterator(Iterator<A> i, Filter<A,B> f) {
         this.i = i; this.f = f; advance();
     }
@@ -54,7 +54,7 @@ public class FilterIterator<A,B> extends UnmodifiableIterator<B> {
 	    included in the filtered enumeration. 
 	 
 	    <BR> Default implementation returns true for all
-	    <code>Object</code>s (no filter).   
+	    {@link Object}s (no filter).   
 	 */
 	public boolean isElement(A o) { return true; }
 

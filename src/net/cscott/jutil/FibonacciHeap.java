@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 /**
- * A <code>FibonacciHeap</code> allows amortized O(1) time bounds for
+ * A {@link FibonacciHeap} allows amortized O(1) time bounds for
  * create, insert, minimum, union, and decrease-key operations, and
  * amortized O(lg n) run times for extract-min and delete.
  * <p>
@@ -19,7 +19,7 @@ import java.util.Map;
  * Algorithms</i> by Cormen, Leiserson, and Riverst, in Chapter 21.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FibonacciHeap.java,v 1.7 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: FibonacciHeap.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
  */
 public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 
@@ -30,21 +30,21 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     int D=0;
     final Comparator<Map.Entry<K,V>> c; // convenience field.
     
-    /** Creates a new, empty <code>FibonacciHeap</code>, sorted according
+    /** Creates a new, empty {@link FibonacciHeap}, sorted according
      *  to its keys' natural order.  All keys inserted into the new
-     *  map must implement the <code>Comparable</code> interface.
+     *  map must implement the {@link Comparable} interface.
      *  O(1) time. */
     public FibonacciHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
-    /** Creates a new, empty <code>FibonacciHeap</code>, sorted according
-     *  to the given <code>Comparator</code>.  O(1) time. */
+    /** Creates a new, empty {@link FibonacciHeap}, sorted according
+     *  to the given {@link Comparator}.  O(1) time. */
     public FibonacciHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Constructs a new heap with the same entries as the specified
-     *  <code>Heap</code>. O(n) time. */
+     *  {@link Heap}. O(n) time. */
     public FibonacciHeap(Heap<K,? extends V> h) {
 	this(h.entries(), h.comparator());
     }
     /** Constructs a new heap from a collection of
-     *  <code>Map.Entry</code>s and a key comparator. O(n) time. */
+     *  {@link java.util.Map.Entry}s and a key comparator. O(n) time. */
     public FibonacciHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
 	super(comparator);
 	c = entryComparator();
@@ -238,7 +238,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	return null;
     }
 
-    /** The underlying <code>Map.Entry</code> representation. */
+    /** The underlying {@link java.util.Map.Entry} representation. */
     static final class Entry<K,V> extends PairMapEntry<K,V> {
 	Node<K,V> node;
 	Entry(K key, V value) { super(key, value); }

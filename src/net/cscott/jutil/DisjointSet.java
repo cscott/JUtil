@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 /**
- * <code>DisjointSet</code> is an implementation of disjoint-set forests
+ * {@link DisjointSet} is an implementation of disjoint-set forests
  * using the path compression and union-by-rank heuristics to achieve
  * O(m * alpha(m, n)) runtime, where 'm' is the total number of
  * operations, 'n' is the total number of elements in the set, and
@@ -18,12 +18,12 @@ import java.util.Set;
  * function.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: DisjointSet.java,v 1.3 2006-10-29 16:27:20 cananian Exp $
+ * @version $Id: DisjointSet.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
  */
 public class DisjointSet<E>  {
     private final Map<E,Node<E>> elmap = new HashMap<E,Node<E>>();
 
-    /** Creates a <code>DisjointSet</code>. */
+    /** Creates a {@link DisjointSet}. */
     public DisjointSet() { }
 
     /** Unites the dynamic sets that contain <code>o1</code> and
@@ -77,7 +77,7 @@ public class DisjointSet<E>  {
 		y.rank++;
 	}
     }
-    /** Returns an unmodifiable <code>Map</code> view of the disjoint
+    /** Returns an unmodifiable {@link Map} view of the disjoint
      *  set, where every element is mapped to its canonical representative.
      */
     public Map<E,E> asMap() {

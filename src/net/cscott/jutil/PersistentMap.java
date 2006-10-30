@@ -10,22 +10,22 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 /**
- * <code>PersistentMap</code> implements a persistent map, based on a
- * persistent randomized treap.  Unlike the <code>Map</code>s returned
- * by <code>PersistentMapFactory</code>, <code>PersistentMap</code>
- * does not implement that standard <code>java.util.Map</code> API
+ * {@link PersistentMap} implements a persistent map, based on a
+ * persistent randomized treap.  Unlike the {@link Map}s returned
+ * by {@link PersistentMapFactory}, {@link PersistentMap}
+ * does not implement that standard {@link java.util.Map} API
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMap.java,v 1.6 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: PersistentMap.java,v 1.7 2006-10-30 19:58:06 cananian Exp $
  */
 public class PersistentMap<K,V> implements java.io.Serializable {
     final Node<K,V> root;
     final Comparator<K> c;
     final Node.Allocator<K,V> allocator;
 
-    /** Creates an empty <code>PersistentMap</code> whose
-     *  key objects will all implement <code>java.lang.Comparable</code>. 
+    /** Creates an empty {@link PersistentMap} whose
+     *  key objects will all implement {@link java.lang.Comparable}. 
      *  Note that good hashcode implementations for the key objects are
      *  still required.
      */
@@ -33,29 +33,29 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 	// cast below is safe iff K implements Comparable.
 	this((Comparator<K>)Default.comparator); // safe iff K is Comparable
     }
-    /** Creates an empty <code>PersistentMap</code> whose
-     *  key objects are ordered by the given <code>Comparator</code>.
+    /** Creates an empty {@link PersistentMap} whose
+     *  key objects are ordered by the given {@link Comparator}.
      *  Note that good hashcode implementations for the key objects are
      *  still required.
      */
     public PersistentMap(Comparator<K> c) {
 	this(null, c, new Node.Allocator<K,V>());
     }
-    /** Creates a <code>PersistentMap</code> from a root <code>Node</code>
-     *  and a <code>Comparator</code>.*/
+    /** Creates a {@link PersistentMap} from a root {@link Node}
+     *  and a {@link Comparator}.*/
     private PersistentMap(Node<K,V> root, Comparator<K> c,
 			  Node.Allocator<K,V> allocator) {
 	this.root = root; this.c = c; this.allocator = allocator;
     }
 
-    /** Determines if this <code>PersistentMap</code> has any mappings. */
+    /** Determines if this {@link PersistentMap} has any mappings. */
     public boolean isEmpty() { return (root==null); }
 
     /** Count the number of key->value mappings in this
-     *  <code>PersistentMap</code>. */
+     *  {@link PersistentMap}. */
     public int size() { return (root==null)?0:root.size; }
 
-    /** Creates and returns a new <code>PersistantMap</code> identical to
+    /** Creates and returns a new {@link PersistentMap} identical to
      *  this one, except it contains a mapping from <code>key</code> to
      *  <code>value. */
     public PersistentMap<K,V> put(K key, V value) {
@@ -75,7 +75,7 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 	return (Node.get(this.root, this.c, key)!=null);
     }
 
-    /** Make a new <code>PersistentMap</code> identical to this one,
+    /** Make a new {@link PersistentMap} identical to this one,
      *  except that it does not contain a mapping for <code>key</code>. */
     public PersistentMap<K,V> remove(K key) {
 	Node<K,V> new_root = 
@@ -113,7 +113,7 @@ public class PersistentMap<K,V> implements java.io.Serializable {
     public int hashCode() { return (root==null)?0:root.mapHashCode; }
 
     /*---------------------------------------------------------------*/
-    /** <code>java.util.Collection</code>s view of the mapping. */
+    /** {@link java.util.Collection}s view of the mapping. */
     public Map<K,V> asMap() {
 	return new AbstractMap<K,V>() {
 	    // constant-time clone.
@@ -167,7 +167,7 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 	extends PersistentTreeNode<Node<K,V>,K,V> 
 	implements java.io.Serializable {
 	final V value;
-	/** The hash code of a <code>java.util.Map</code> with the
+	/** The hash code of a {@link java.util.Map} with the
 	 *  contents of the tree rooted at this node. */
 	final int mapHashCode;
 	/** Size of the tree rooted at this node. */

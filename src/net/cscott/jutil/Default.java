@@ -17,20 +17,20 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 
 /**
- * <code>Default</code> contains one-off or 'standard, no-frills'
- * implementations of simple <code>Iterator</code>s,
- * <code>Collection</code>s, and <code>Comparator</code>s.
+ * {@link Default} contains one-off or 'standard, no-frills'
+ * implementations of simple {@link Iterator}s,
+ * {@link Collection}s, and {@link Comparator}s.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Default.java,v 1.7 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: Default.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
  */
 public abstract class Default  {
-    /** A <code>Comparator</code> for objects that implement 
-     *   <code>Comparable</code> (checked dynamically at run-time). */
+    /** A {@link Comparator} for objects that implement 
+     *   {@link Comparable} (checked dynamically at run-time). */
     public static final Comparator comparator =
 	 Default.<Comparable>comparator();
-    /** A <code>Comparator</code> for objects that implement 
-     *  <code>Comparable</code> (checked dynamically at run-time).
+    /** A {@link Comparator} for objects that implement 
+     *  {@link Comparable} (checked dynamically at run-time).
      *  This version is parameterized to play nicely with Java's
      *  type system. */
     public static final <T extends Comparable<T>> Comparator<T> comparator() {
@@ -45,9 +45,9 @@ public abstract class Default  {
 	    }
 	};
     }
-    /** An <code>Iterator</code> over the empty set. */
+    /** An {@link Iterator} over the empty set. */
     public static final Iterator nullIterator = nullIterator();
-    /** An <code>Iterator</code> over the empty set, parameterized to
+    /** An {@link Iterator} over the empty set, parameterized to
      *  play nicely with Java's type system. */
     public static final <E> Iterator<E> nullIterator() {
 	return new UnmodifiableIterator<E>() {
@@ -55,7 +55,7 @@ public abstract class Default  {
 	    public E next() { throw new NoSuchElementException(); }
 	};
     }
-    /** An <code>Iterator</code> over a singleton set. */
+    /** An {@link Iterator} over a singleton set. */
     public static final <E> Iterator<E> singletonIterator(E o) {
 	return Collections.singletonList(o).iterator();
     } 
@@ -127,7 +127,7 @@ public abstract class Default  {
     public static final <E> List<E> EMPTY_LIST() {
 	return Collections.<E>emptyList();
     }
-    /** An empty map. Missing from <code>java.util.Collections</code> in
+    /** An empty map. Missing from {@link java.util.Collections} in
      *  Java 1.2.
      * @deprecated Use Collections.EMPTY_MAP
      */
@@ -267,12 +267,12 @@ public abstract class Default  {
 	// serializable.
 	return new PairList<A,B>(left, right);
     }
-    /** Pairs, implemented as a <code>List</code>.
-     *  The <code>PairList</code> implements <code>hashCode()</code>
+    /** Pairs, implemented as a {@link List}.
+     *  The {@link PairList} implements <code>hashCode()</code>
      *  and <code>equals()</code> "properly" so they can be used as keys
      *  in hashtables and etc.  They are implemented as mutable lists of
      *  fixed size 2.  Note that the <code>hashCode()</code> implementation
-     *  differs from pairs implemented as <code>Map.Entry</code>s; the
+     *  differs from pairs implemented as {@link java.util.Map.Entry}s; the
      *  parameterization is different as well.
      */
     public static class PairList<A,B> extends AbstractList
@@ -303,17 +303,17 @@ public abstract class Default  {
 	    }
 	}
     }
-    /** A pair constructor method more appropriate for <code>Set</code>
-     *  views of <code>Map</code>s and <code>MultiMap</code>s.
-     *  The returned object is an instance of <code>Map.Entry</code>;
+    /** A pair constructor method more appropriate for {@link Set}
+     *  views of {@link Map}s and {@link MultiMap}s.
+     *  The returned object is an instance of {@link java.util.Map.Entry};
      *  the only (real) difference from the pairs returned by
      *  <code>Default.pair()</code> is the definition of
-     *  <code>hashCode()</code>, which corresponds to <code>Map.Entry</code>
+     *  <code>hashCode()</code>, which corresponds to {@link java.util.Map.Entry}
      *  (being <code>key.hashCode() ^ value.hashCode()</code> ) rather
-     *  than <code>List</code> (which would be 
+     *  than {@link List} (which would be 
      *  <code>31*(31+key.hashCode())+value.hashCode()</code> ). This is
      *  an annoying distinction; I wish the JDK API authors had made
-     *  these consistent. The <code>Map.Entry</code> returned is immutable.
+     *  these consistent. The {@link java.util.Map.Entry} returned is immutable.
      */
     public static <K,V> Map.Entry<K,V> entry(final K key, final V value) {
 	return new AbstractMapEntry<K,V>() {

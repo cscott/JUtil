@@ -7,22 +7,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 /**
- * A <code>CombineIterator</code> combines several different
- * <code>Iterator</code>s into one.
+ * A {@link CombineIterator} combines several different
+ * {@link Iterator}s into one.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: CombineIterator.java,v 1.3 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: CombineIterator.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
  */
 
 public class CombineIterator<E> implements Iterator<E> {
     final Iterator<Iterator<E>> iti;
     Iterator<E> cur=null, last=null;
 
-    /** Creates a <code>CombineIterator</code> from an array of Iterators. */
+    /** Creates a {@link CombineIterator} from an array of Iterators. */
     public CombineIterator(List<Iterator<E>> itl) {
         this(itl.iterator());
     }
-    /** Creates a <code>CombineIterator</code> from a pair of
+    /** Creates a {@link CombineIterator} from a pair of
 	Iterators. 
     */
     public CombineIterator(final Iterator<E> i1, final Iterator<E> i2) {
@@ -40,7 +40,7 @@ public class CombineIterator<E> implements Iterator<E> {
 	    }
 	});
     }
-    /** Creates a <code>CombineIterator</code> from three
+    /** Creates a {@link CombineIterator} from three
 	Iterators. 
     */
     public CombineIterator(final Iterator<E> i1, final Iterator<E> i2,
@@ -61,7 +61,7 @@ public class CombineIterator<E> implements Iterator<E> {
 	});
     }
 
-    /** Creates a <code>CombineIterator</code> from an
+    /** Creates a {@link CombineIterator} from an
      *  Iterator over Iterators. */
     public CombineIterator(Iterator<Iterator<E>> it) {
 	this.iti = it;

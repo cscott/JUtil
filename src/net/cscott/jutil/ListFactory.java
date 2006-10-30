@@ -8,24 +8,24 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-/** <code>ListFactory</code> is a <code>List</code> generator.
+/** {@link ListFactory} is a {@link List} generator.
     Subclasses should implement constructions of specific types of  
-    <code>List</code>s.  <code>ListFactory</code> also has a set of
-    static helper methods for building <code>List</code> objects. 
+    {@link List}s.  {@link ListFactory} also has a set of
+    static helper methods for building {@link List} objects. 
     <p>
     Note also that the current limitations on parametric types in
     Java mean that we can't easily type this class as
     <code>ListFactory&lt;L extends List&lt;V&gt;,V&gt;</code>,
     as <code>ListFactory&lt;LinkedList&lt;V&gt;,V&gt;</code> is not
     a subtype of <code>ListFactory&lt;List&lt;V&gt;,V&gt;</code>,
-    even though <code>LinkedList</code> is a subtype of <code>List</code>.
+    even though {@link java.util.LinkedList} is a subtype of {@link List}.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListFactory.java,v 1.5 2006-10-29 16:27:22 cananian Exp $
+ * @version $Id: ListFactory.java,v 1.6 2006-10-30 19:58:06 cananian Exp $
  */
 public abstract class ListFactory<V> extends CollectionFactory<V> {
     
-    /** Creates a <code>ListFactory</code>. */
+    /** Creates a {@link ListFactory}. */
     public ListFactory() {
         super();
     }
@@ -42,29 +42,29 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	return makeList(c);
     }
 
-    /** Generates a new, mutable, empty <code>List</code>. */
+    /** Generates a new, mutable, empty {@link List}. */
     public List<V> makeList() {
 	return makeList(Collections.<V>emptyList());
     }
 
-    /** Generates a new, mutable, empty <code>List</code>, using 
+    /** Generates a new, mutable, empty {@link List}, using 
 	<code>initialCapacity</code> as a hint to use for the capacity
-	for the produced <code>List</code>. */
+	for the produced {@link List}. */
     public List<V> makeList(int initialCapacity) {
 	return makeList();
     }
 
-    /** Generates a new mutable <code>List</code>, using the elements
+    /** Generates a new mutable {@link List}, using the elements
 	of <code>c</code> as a template for its initial contents. 
     */
     public abstract List<V> makeList(Collection<? extends V> c); 
 
 
-    /** Creates and returns an unmodifiable <code>List</code> view of
+    /** Creates and returns an unmodifiable {@link List} view of
 	the list made from connecting <code>lists</code> together in
 	order. 
 	<BR> <B>requires:</B> <code>lists</code> is a
-	     <code>List</code> of <code>List</code>s.
+	     {@link List} of {@link List}s.
 	<BR> <B>effects:</B> 
 	<pre>let l0 = (List) lists.get(0)
 	         l1 = (List) lists.get(1)
@@ -78,7 +78,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	</pre>
 	Note that not only changes to the elements of
 	<code>lists</code> are reflected in the returned
-	<code>List</code>, but even changes to <code>lists</code>
+	{@link List}, but even changes to <code>lists</code>
 	itself (adding or removing lists) are also reflected.
     */
     public static <E> List<E> concatenate(final List<List<E>> lists) {
@@ -119,7 +119,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	
     }
 
-    /** Creates and returns an unmodifiable <code>List</code> view of
+    /** Creates and returns an unmodifiable {@link List} view of
 	the list made from connecting <code>lists</code> together in
 	order. 
 	<BR> <B>effects:</B> 
@@ -143,7 +143,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
     }
     */
 
-    /** Creates and returns an immutable <code>List</code> of one element. 
+    /** Creates and returns an immutable {@link List} of one element. 
 	<BR> <B>effects:</B> returns the list [ o ]
 	@deprecated Use {@link java.util.Collections#singletonList(java.lang.Object) Collections.singletonList} instead.
      */

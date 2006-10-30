@@ -13,11 +13,11 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
- * The <code>TestSet</code> class tests our various <code>Set</code>
+ * The {@link TestSet} class tests our various {@link Set}
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: TestSet.java,v 1.3 2006-10-29 16:27:22 cananian Exp $
+ * @version $Id: TestSet.java,v 1.4 2006-10-30 19:58:07 cananian Exp $
  */
 class TestSet {
     private final static boolean DEBUG=false;

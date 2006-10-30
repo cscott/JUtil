@@ -16,11 +16,11 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
- * The <code>TestMap</code> class tests our various <code>Map</code>
+ * The {@link TestMap} class tests our various {@link Map}
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: TestMap.java,v 1.4 2004-01-14 18:44:37 cananian Exp $
+ * @version $Id: TestMap.java,v 1.5 2006-10-30 19:58:07 cananian Exp $
  */
 class TestMap {
     private final static boolean DEBUG=false;

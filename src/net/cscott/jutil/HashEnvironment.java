@@ -10,12 +10,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 /**
- * A <code>HashEnvironment</code> is an <code>Environment</code> using
- * a <code>HashMap</code> as the backing store.
+ * A {@link HashEnvironment} is an {@link Environment} using
+ * a {@link HashMap} as the backing store.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: HashEnvironment.java,v 1.5 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: HashEnvironment.java,v 1.6 2006-10-30 19:58:05 cananian Exp $
  */
 public class HashEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
@@ -23,9 +24,9 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     final List<K> scope = new ArrayList<K>();
     int size = 0;
     
-    /** Creates a <code>HashEnvironment</code>. */
+    /** Creates a {@link HashEnvironment}. */
     public HashEnvironment() { }
-    /** Creates a <code>HashEnvironment</code> with all the mappings in
+    /** Creates a {@link HashEnvironment} with all the mappings in
      *  the given map. */
     public HashEnvironment(Map<? extends K,? extends V> m) {
 	this();
@@ -93,8 +94,8 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     }
 
     // --- EVIL EVIL SET VIEW
-    /** The <code>Set</code> returned by this method is really a
-     *  <code>MapSet</code>. */
+    /** The {@link Set} returned by this method is really a
+     *  {@link MapSet}. */
     public MapSet<K,V> entrySet() {
 	return new AbstractMapSet<K,V>() {
 	    public int size() { return HashEnvironment.this.size; }

@@ -6,11 +6,11 @@ package net.cscott.jutil;
 import java.util.List;
 
 /**
- * <code>ListWrapper</code> is an abstract class designed to make it easier
+ * {@link ListWrapper} is an abstract class designed to make it easier
  * to write wrappers around {@link List}s.
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListWrapper.java,v 1.3 2006-10-29 20:15:48 cananian Exp $
+ * @version $Id: ListWrapper.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
  */
 public abstract class ListWrapper<E> extends CollectionWrapper<E>
     implements List<E> {
@@ -18,7 +18,7 @@ public abstract class ListWrapper<E> extends CollectionWrapper<E>
     @Override
     protected abstract List<E> wrapped();
     
-    /** Creates a <code>ListWrapper</code>. */
+    /** Creates a {@link ListWrapper}. */
     protected ListWrapper() { }
     
     public List<E> subList(int i, int j) {

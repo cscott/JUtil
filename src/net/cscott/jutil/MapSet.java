@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A <code>MapSet</code> is a <code>java.util.Set</code> of
- * <code>Map.Entry</code>s which can also be accessed as a
- * <code>java.util.Map</code>.  Use the <code>entrySet()</code>
- * method of the <code>Map</code> to get back the <code>MapSet</code>.
+ * A {@link MapSet} is a {@link java.util.Set} of
+ * {@link java.util.Map.Entry}s which can also be accessed as a
+ * {@link java.util.Map}.  Use the <code>entrySet()</code>
+ * method of the {@link Map} to get back the {@link MapSet}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MapSet.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: MapSet.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
  */
 public interface MapSet<K,V> extends Set<Map.Entry<K,V>> {
     public Map<K,V> asMap();

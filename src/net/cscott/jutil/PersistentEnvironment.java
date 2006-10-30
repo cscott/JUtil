@@ -8,11 +8,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 /**
- * <code>PersistentEnvironment</code> is an <code>Environment</code>
- * built on a <code>PersistentMap</code>.
+ * {@link PersistentEnvironment} is an {@link Environment}
+ * built on a {@link PersistentMap}.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentEnvironment.java,v 1.2 2004-01-13 21:57:14 cananian Exp $
+ * @version $Id: PersistentEnvironment.java,v 1.3 2006-10-30 19:58:06 cananian Exp $
  */
 // TODO: reimplement with Map returned by PersistentMapFactory as backing store
 // simply put Map.clone() in the Environment.Mark and replace the delegate
@@ -21,10 +21,10 @@ public class PersistentEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
     PersistentMap<K,V> m = new PersistentMap<K,V>();
     
-    /** Creates a <code>PersistentEnvironment</code> with no mappings. */
+    /** Creates a {@link PersistentEnvironment} with no mappings. */
     public PersistentEnvironment() { }
-    /** Creates a <code>PersistentEnvironment</code> with the same
-     *  mappings as the given <code>Map</code>. */
+    /** Creates a {@link PersistentEnvironment} with the same
+     *  mappings as the given {@link Map}. */
     public <K2 extends K, V2 extends V> PersistentEnvironment(Map<K2,V2> m) {
 	putAll(m);
     }
@@ -56,7 +56,7 @@ public class PersistentEnvironment<K,V> extends AbstractMap<K,V>
     }
 
     // ------------- ENVIRONMENT INTERFACE ---------------
-    /** A mark into an <code>PersistentEnvironment</code>. */
+    /** A mark into an {@link PersistentEnvironment}. */
     private static class Mark<K,V> implements Environment.Mark {
 	final PersistentMap<K,V> m;
 	Mark(PersistentMap<K,V> m) { this.m = m; }

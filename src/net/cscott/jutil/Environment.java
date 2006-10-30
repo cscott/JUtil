@@ -4,12 +4,12 @@
 package net.cscott.jutil;
 
 /**
- * An <code>Environment</code> is a <code>Map</code> with scoping:
+ * An {@link Environment} is a {@link java.util.Map} with scoping:
  * you can save marks into the environment and undo all changes
  * since a mark.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Environment.java,v 1.1 2003-03-20 01:58:20 cananian Exp $
+ * @version $Id: Environment.java,v 1.2 2006-10-30 19:58:05 cananian Exp $
  */
 public interface Environment<K,V> extends java.util.Map<K,V> {
     /** A abstract property for marks into an environment. */

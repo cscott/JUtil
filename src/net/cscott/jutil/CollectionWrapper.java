@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Collection;
 
 /**
- * <code>CollectionWrapper</code> is a class that acts as a wrapper
+ * {@link CollectionWrapper} is a class that acts as a wrapper
  * around another Collection, using it as its backing store.  This
  * class isn't meant for direct usage, but rather provides for an easy
  * way for developers to quickly add extra independent behavior to
@@ -15,13 +15,13 @@ import java.util.Collection;
  * AbstractCollection's interface
  * 
  * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: CollectionWrapper.java,v 1.3 2006-10-29 20:15:47 cananian Exp $
+ * @version $Id: CollectionWrapper.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
  */
 public abstract class CollectionWrapper<E> implements Collection<E> {
     /** Implementations should return the wrapped {@link Collection} here. */
     protected abstract Collection<E> wrapped();
 
-    /** Creates a <code>CollectionWrapper</code>. */
+    /** Creates a {@link CollectionWrapper}. */
     protected CollectionWrapper() { }
     
     public boolean add(E o) {

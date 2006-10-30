@@ -5,15 +5,15 @@ package net.cscott.jutil;
 
 import java.util.Comparator;
 
-/** A <code>BinaryTree</code> is a <code>Tree</code> where each node has
+/** A {@link BinaryTree} is a {@code Tree} where each node has
     at most two children.
     
-    <p> All elements of a given <code>BinaryTree</code> <i>t</i> must
+    <p> All elements of a given {@link BinaryTree} <i>t</i> must
     be mutually comparable, either inherently or through an external
-    <code>Comparator</code>.
+    {@link Comparator}.
     
-    <p><i>Unlike</i> a <code>TreeSet</code>, duplicate elements
-    <b>are</b> allowed in a <code>BinaryTree</code>.
+    <p><i>Unlike</i> a {@link java.util.TreeSet}, duplicate elements
+    <b>are</b> allowed in a {@link BinaryTree}.
     
     <p> FSK: We should probably have a Tree interface by
     now... Sometimes you want to expose the fact that you're working
@@ -24,7 +24,7 @@ import java.util.Comparator;
 */
 public class BinaryTree {
     
-    /** A <code>Node</code> is an element of this tree.
+    /** A {@link Node} is an element of this tree.
      */
     public class Node {
 	public final Object key;
@@ -58,11 +58,11 @@ public class BinaryTree {
 	}
     }
     
-    /** Creates a <code>Node</code> n for this such that n.key == k.
-	Factory method for <code>Node</code>.  Every construction of a
-	<code>Node</code> takes place through this method; thus
-	subclasses of <code>RedBlackTree</code> can associate new data
-	with their own nodes by extending the <code>Node</code> class
+    /** Creates a {@link Node} n for this such that n.key == k.
+	Factory method for {@link Node}.  Every construction of a
+	{@link Node} takes place through this method; thus
+	subclasses of {@link RedBlackTree} can associate new data
+	with their own nodes by extending the {@link Node} class
 	and overriding this method. 
 	
 	<p> Note that makeNode <b>must</b> deal with the case when key
