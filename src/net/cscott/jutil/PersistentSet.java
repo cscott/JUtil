@@ -15,9 +15,9 @@ import java.util.Set;
  * but instead exposes the underlying functional operations.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSet.java,v 1.6 2006-10-29 16:27:21 cananian Exp $
+ * @version $Id: PersistentSet.java,v 1.7 2006-10-30 03:25:32 cananian Exp $
  */
-public class PersistentSet<T>  {
+public class PersistentSet<T>  implements Iterable<T> {
     final Node<T> root;
     final Comparator<T> c;
     final Node.Allocator<T> allocator;
@@ -100,7 +100,18 @@ public class PersistentSet<T>  {
    
     /** Human-readable representation of the set. */
     public String toString() { return asSet().toString(); }
-
+    
+    /** Unmodifiable iterator. */
+    public Iterator<T> iterator() {
+        final Iterator<Node<T>> it = Node.iterator(root);
+        return new UnmodifiableIterator<T>() {
+            @Override
+            public boolean hasNext() { return it.hasNext(); }
+            @Override
+            public T next() { return it.next().key; }
+        };
+    }
+    
     /*---------------------------------------------------------------*/
     /** <code>java.util.Collection</code>s view of the set. */
     public Set<T> asSet() {
@@ -118,7 +129,7 @@ public class PersistentSet<T>  {
 		return PersistentSet.this.size();
 	    }
 	    public Iterator<T> iterator() {
-		final Iterator<Node<T>> it = Node.iterator(root);
+                final Iterator<Node<T>> it = Node.iterator(root);
 		return new Iterator<T>() {
 		    Node<T> last=null;
 		    public boolean hasNext() { return it.hasNext(); }
