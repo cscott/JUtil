@@ -4,6 +4,7 @@
 package net.cscott.jutil;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -25,7 +26,7 @@ import java.util.HashMap;
     cause <code>IllegalArgumentException</code> to be thrown.
 
     @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: BitSetFactory.java,v 1.3 2004-01-13 20:47:05 cananian Exp $
+    @version $Id: BitSetFactory.java,v 1.4 2006-10-30 03:24:35 cananian Exp $
  */
 public class BitSetFactory<V> extends SetFactory<V> {
     
@@ -52,10 +53,10 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	<code>universe</code> of values and an <code>Indexer</code>
 	for the elements of <code>universe</code>. 
     */
-    public BitSetFactory(final Set<V> universe, final Indexer<V> indexer) {
+    public BitSetFactory(final Collection<V> universe, final Indexer<V> indexer) {
         final Iterator<V> vals = universe.iterator();
 	this.indexer = indexer;
-	this.universe = universe;
+	this.universe = new HashSet<V>(universe);
 	int max = 0;
 	while(vals.hasNext()) {
 	    int i = indexer.getID(vals.next());
@@ -71,21 +72,21 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	<code>Indexer.getByID()</code> method to allow
 	efficient iteration over sets.
     */
-    public BitSetFactory(final Set<V> universe) {
+    public BitSetFactory(final Collection<V> universe) {
 	final HashMap<V,Integer> obj2int = new HashMap<V,Integer>();
 	final ArrayList<V> int2obj = new ArrayList<V>();
 	final Iterator<V> iter = universe.iterator();
-	this.universe = universe;
+	this.universe = new HashSet<V>(universe);
 	int i;
 	for(i=0; iter.hasNext(); i++) {
 	    V o = iter.next();
-	    obj2int.put(o, new Integer(i));
+	    obj2int.put(o, i);
 	    int2obj.add(i, o); 
 	}
 	this.bitStringSize = i+1;
 	this.indexer = new Indexer<V>() {
 	    public int getID(V o) {
-		return obj2int.get(o).intValue();
+		return obj2int.get(o);
 	    }
 	    public V getByID(int id) {
 		return int2obj.get(id);
