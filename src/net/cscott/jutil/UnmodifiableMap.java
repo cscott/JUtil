@@ -9,7 +9,7 @@ import java.util.Set;
  * This wrapper for {@link Map}s implements {@link Map#entrySet()}
  * so that it returns an {@link UnmodifiableMapSet}.
  * @author C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UnmodifiableMap.java,v 1.1 2006-10-29 20:15:47 cananian Exp $
+ * @version $Id: UnmodifiableMap.java,v 1.2 2006-10-30 16:19:00 cananian Exp $
  */
 public abstract class UnmodifiableMap<K,V> extends MapWrapper<K,V> {
     public static <K,V> UnmodifiableMap<K,V> proxy(final Map<K,V> m) {
@@ -49,7 +49,7 @@ public abstract class UnmodifiableMap<K,V> extends MapWrapper<K,V> {
         return Collections.unmodifiableCollection(wrapped().values());
     }
     @Override
-    public abstract UnmodifiableMapSet<K,V> entrySet();
+    public abstract /*Unmodifiable*/MapSet<K,V> entrySet(); // XXX bug in JDK1.5/1.6 compiler
 
     // protect map mutators.
     /** Throws {@link UnsupportedOperationException}. */
