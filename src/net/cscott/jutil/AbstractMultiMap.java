@@ -3,6 +3,7 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Collection;
@@ -13,14 +14,15 @@ import java.util.AbstractMap;
  * interface, to minimize the effort requires to implement this interface.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractMultiMap.java,v 1.4 2006-10-30 20:14:41 cananian Exp $ */
+ * @version $Id: AbstractMultiMap.java,v 1.5 2006-10-30 21:58:57 cananian Exp $ */
 public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     implements MultiMap<K,V> {
 
     public String toString() {
 	StringBuffer sb = new StringBuffer();
 	sb.append('{');
-	for(K k : keySet()) {
+	for (Iterator<K> it = keySet().iterator(); it.hasNext(); ) {
+	    K k = it.next();
 	    Collection<V> values = getValues(k);
 	    if (values.size()==0) continue;
 	    sb.append(k.toString());
@@ -29,6 +31,8 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 		sb.append(values.iterator().next().toString());
 	    else
 		sb.append(values.toString());
+            if (it.hasNext())
+                sb.append(", ");
 	}
 	sb.append('}');
 	return sb.toString();
