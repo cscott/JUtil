@@ -17,7 +17,7 @@
     </target>
     <target depends="init" name="build">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac destdir="bin">
+        <javac destdir="bin" target="1.5">
             <src path="src"/>
             <classpath refid="project.classpath"/>
         </javac>
