@@ -17,7 +17,7 @@ import java.util.Stack;
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: WorkSet.java,v 1.5 2006-10-30 19:58:07 cananian Exp $
+ * @version $Id: WorkSet.java,v 1.6 2007-04-03 19:09:47 cananian Exp $
  * @deprecated Use {@link java.util.LinkedHashSet LinkedHashSet} instead.
  */
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
@@ -25,7 +25,33 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
     private final HashMap<E,EntryList<E>> hm;
     private EntryList<E> listhead = EntryList.init(); // header and footer nodes.
     private EntryList<E> listfoot = listhead.next;
-    private final static boolean debug=false; // turn on consistency checks.
+    private final static boolean debug=false; // turn on expensive consistency checks.
+
+    // assertion helper function; checks that the data structures are
+    // consistent.
+    private boolean isValid() {
+	assert listhead != null;
+	assert listfoot != null;
+	assert listhead.prev == null;
+	assert listfoot.next == null;
+	assert listhead.next != null;
+	assert listfoot.prev != null;
+	if (debug) assert EntryList.equals(listhead, hm.keySet());
+	assert isEmpty() == hm.isEmpty();
+	if (debug) assert _checkSize() == hm.size();
+	return true;
+    }
+    // helper method for isValid(); does the expensive O(N) checks
+    private int _checkSize() {
+	int size=0;
+	for (EntryList<E> elp=listhead.next; elp!=listfoot; elp=elp.next) {
+	    assert elp.next.prev == elp;
+	    assert elp.prev.next == elp;
+	    assert hm.get(elp.o) == elp;
+	    size++;
+	}
+	return size;
+    }
     
     /** Creates a new, empty {@link WorkSet} with a default capacity
      *  and load factor. */
@@ -55,13 +81,13 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
      *  to the set and returns false if the element is already in the set.
      */
     public boolean addFirst(E o) {
+	assert isValid();
 	if (o==null) throw new NullPointerException();
 	if (hm.containsKey(o)) return false;
 	EntryList<E> nel = new EntryList<E>(o);
 	listhead.add(nel);
 	hm.put(o, nel);
-	// verify list/set correspondence.
-	if (debug) assert EntryList.equals(listhead, hm.keySet());
+	assert isValid();
 	return true;
     }
     /** Adds an element to the end of the (ordered) set and returns true,
@@ -69,39 +95,45 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
      *  to the set and returns false if the element is already in the set.
      */
     public boolean addLast(E o) {
+	assert isValid();
 	if (o==null) throw new NullPointerException();
 	if (hm.containsKey(o)) return false;
 	EntryList<E> nel = new EntryList<E>(o);
 	listfoot.prev.add(nel);
 	hm.put(o, nel);
-	// verify list/set correspondence.
-	if (debug) assert EntryList.equals(listhead, hm.keySet());
+	assert isValid();
 	return true;
     }
     /** Returns the first element in the ordered set. */
     public E getFirst() {
+	assert isValid();
 	if (isEmpty()) throw new java.util.NoSuchElementException();
 	return listhead.next.o;
     }
     /** Returns the last element in the ordered set. */
     public E getLast() {
+	assert isValid();
 	if (isEmpty()) throw new java.util.NoSuchElementException();
 	return listfoot.prev.o;
     }
     /** Removes the first element in the ordered set and returns it. */
     public E removeFirst() {
+	assert isValid();
 	if (isEmpty()) throw new java.util.NoSuchElementException();
 	E o = listhead.next.o;
 	hm.remove(o);
 	listhead.next.remove();
+	assert isValid();
 	return o;
     }
     /** Removes the last element in the ordered set and returns it. */
     public E removeLast() {
+	assert isValid();
 	if (isEmpty()) throw new java.util.NoSuchElementException();
 	E o = listfoot.prev.o;
 	hm.remove(o);
 	listfoot.prev.remove();
+	assert isValid();
 	return o;
     }
 
@@ -136,7 +168,9 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 
     /** Removes all elements from the set. */
     public void clear() {
+	assert isValid();
 	hm.clear(); listhead.next = listfoot; listfoot.prev = listhead;
+	assert isValid();
     }
 
     /** Determines if this contains an item.
@@ -168,22 +202,22 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 		E o=elp.next.o; elp=elp.next; return o;
 	    }
 	    public void remove() {
+		assert isValid();
 		if (elp==listhead) throw new IllegalStateException();
 		hm.remove(elp.o);
 		(elp = elp.prev).next.remove();
-		// verify list/set correspondence.
-		if (debug) assert EntryList.equals(listhead, hm.keySet());
+		assert isValid();
 	    }
 	};
     }
     public boolean remove(Object o) {
+	assert isValid();
 	if (!hm.containsKey(o)) return false;
 	// remove from hashmap
 	EntryList<E> elp = hm.remove(o);
 	// remove from linked list.
 	elp.remove();
-	// verify list/set correspondence.
-	if (debug) assert EntryList.equals(listhead, hm.keySet());
+	assert isValid();
 	return true;
     }
     public int size() { return hm.size(); }
