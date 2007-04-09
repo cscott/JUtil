@@ -17,7 +17,7 @@ import java.util.Stack;
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
  * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: WorkSet.java,v 1.6 2007-04-03 19:09:47 cananian Exp $
+ * @version $Id: WorkSet.java,v 1.7 2007-04-09 17:31:28 cananian Exp $
  * @deprecated Use {@link java.util.LinkedHashSet LinkedHashSet} instead.
  */
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
@@ -86,7 +86,8 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	if (hm.containsKey(o)) return false;
 	EntryList<E> nel = new EntryList<E>(o);
 	listhead.add(nel);
-	hm.put(o, nel);
+	EntryList<E> old = hm.put(o, nel);
+	assert old==null : old;
 	assert isValid();
 	return true;
     }
@@ -100,7 +101,8 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	if (hm.containsKey(o)) return false;
 	EntryList<E> nel = new EntryList<E>(o);
 	listfoot.prev.add(nel);
-	hm.put(o, nel);
+	EntryList<E> old = hm.put(o, nel);
+	assert old==null : old;
 	assert isValid();
 	return true;
     }
@@ -121,7 +123,8 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	assert isValid();
 	if (isEmpty()) throw new java.util.NoSuchElementException();
 	E o = listhead.next.o;
-	hm.remove(o);
+	EntryList<E> old = hm.remove(o);
+	assert old == listhead.next : o;
 	listhead.next.remove();
 	assert isValid();
 	return o;
@@ -131,7 +134,8 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	assert isValid();
 	if (isEmpty()) throw new java.util.NoSuchElementException();
 	E o = listfoot.prev.o;
-	hm.remove(o);
+	EntryList<E> old = hm.remove(o);
+	assert old == listfoot.prev : o;
 	listfoot.prev.remove();
 	assert isValid();
 	return o;
