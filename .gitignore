@@ -8,6 +8,7 @@ aclocal.m4
 INSTALL
 COPYING
 ChangeLog
+ChangeLog.bak
 *.jar
 classes
 *.tar.gz
