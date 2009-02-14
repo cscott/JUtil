@@ -35,10 +35,14 @@
 <!-- bundle up all files for distribution -->
 <property name="version" value="1.3" />
 <property name="package" value="jutil" />
+<property name="package_topdir" value="net/cscott/jutil" />
 
 <target name="dist" depends="init,build,jar,javadoc">
   <delete file="ChangeLog" />
-  <exec executable="cvs2cl" />
+  <exec executable="git-log" output="ChangeLog">
+    <arg value="--stat" />
+    <arg value="-C" /> <!-- "-C -C" is nice, but it takes 2m to run! -->
+  </exec>
   <tar destfile="${package}-${version}.tar.gz" compression="gzip">
     <tarfileset dir="src" prefix="${package}-${version}/src"
                 includes="**/*.java **/*.html" />
@@ -50,3 +54,37 @@
   </tar>
 </target>
     
+<!-- make the version file -->
+<target name="chk-version">
+  <!-- description="Generates Version.java.tmp and sets the
+       version.uptodate property to false if it should
+       be moved to replace Version.java" -->
+  <copy file="src/${package_topdir}/Version.java.in"
+        tofile="src/${package_topdir}/Version.java.tmp" >
+    <filterset>
+      <filter token="VERSION" value="${version}"/>
+      <filter token="PACKAGE" value="${package}"/>
+    </filterset>
+  </copy>
+  <condition property="version.uptodate">
+    <filesmatch file1="src/${package_topdir}/Version.java"
+		file2="src/${package_topdir}/Version.java.tmp" />
+  </condition>
+</target>
+<target name="move-version" depends="chk-version" unless="version.uptodate">
+  <!-- Renames Version.java.tmp iff it is different from Version.java-->
+  <!-- be careful only to overwrite Verson.java if there are changes -->
+  <move file="src/${package_topdir}/Version.java.tmp"
+	tofile="src/${package_topdir}/Version.java" />
+</target>
+<target name="version"
+	description="Generates Version.java with the correct
+		     version number."
+	depends="move-version">
+  <!-- clean up the temp file in any case -->
+  <delete file="src/${package_topdir}/Version.java.tmp" />
+</target>
+<target name="echo-version" depends="init"
+        description="Print the current version number." >
+  <echo message="Current version is: ${version}" />
+</target>
