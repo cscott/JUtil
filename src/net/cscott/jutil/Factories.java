@@ -6,6 +6,7 @@ package net.cscott.jutil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /** {@link Factories} consists exclusively of static methods that
@@ -145,6 +147,34 @@ public final class Factories {
 	return new SerialSetFactory<V>() {
 	    public TreeSet<V> makeSet(Collection<? extends V> c) {
 		return new TreeSet<V>(c);
+	    }
+	};
+    }
+    public static final <V> SetFactory<V> treeSetFactory(final Comparator<? super V> comp) {
+	return new SerialSetFactory<V>() {
+	    public TreeSet<V> makeSet(Collection<? extends V> c) {
+		TreeSet<V> result = new TreeSet<V>(comp);
+		result.addAll(c);
+		return result;
+	    }
+	};
+    }
+
+    /** A {@link MapFactory} that generates {@link TreeMap}s. */
+    public static final MapFactory treeMapFactory = treeMapFactory();
+    public static final <K,V> MapFactory<K,V> treeMapFactory() {
+	return new SerialMapFactory<K,V>() {
+	    public TreeMap<K,V> makeMap(Map<? extends K,? extends V> map) {
+		return new TreeMap<K,V>(map);
+	    }
+	};
+    }
+    public static final <K,V> MapFactory<K,V> treeMapFactory(final Comparator<? super K> comp) {
+	return new SerialMapFactory<K,V>() {
+	    public TreeMap<K,V> makeMap(Map<? extends K,? extends V> map) {
+		TreeMap<K,V> result = new TreeMap<K,V>(comp);
+		result.putAll(map);
+		return result;
 	    }
 	};
     }
