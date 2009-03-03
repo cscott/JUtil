@@ -13,7 +13,7 @@
         <mkdir dir="bin"/>
     </target>
     <target name="clean">
-        <delete dir="bin"/>
+        <delete dir="bin/net"/>
     </target>
     <target depends="init" name="build">
         <echo message="${ant.project.name}: ${ant.file}"/>
