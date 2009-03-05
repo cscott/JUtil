@@ -142,8 +142,8 @@ public final class Factories {
     }
 
     /** A {@link SetFactory} that generates {@link TreeSet}s. */
-    public static final SetFactory treeSetFactory = treeSetFactory();
-    public static final <V> SetFactory<V> treeSetFactory() {
+    public static final SetFactory treeSetFactory = Factories.<Comparable>treeSetFactory();
+    public static final <V extends Comparable<V>> SetFactory<V> treeSetFactory() {
 	return new SerialSetFactory<V>() {
 	    public TreeSet<V> makeSet(Collection<? extends V> c) {
 		return new TreeSet<V>(c);
@@ -161,8 +161,8 @@ public final class Factories {
     }
 
     /** A {@link MapFactory} that generates {@link TreeMap}s. */
-    public static final MapFactory treeMapFactory = treeMapFactory();
-    public static final <K,V> MapFactory<K,V> treeMapFactory() {
+    public static final MapFactory treeMapFactory = Factories.<Comparable,Object>treeMapFactory();
+    public static final <K extends Comparable<K>,V> MapFactory<K,V> treeMapFactory() {
 	return new SerialMapFactory<K,V>() {
 	    public TreeMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 		return new TreeMap<K,V>(map);
