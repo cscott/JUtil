@@ -8,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -98,6 +100,33 @@ class MultiMapTest {
 	assertEquals(Map.of("b", Set.of(3)), contents(mm));
 	assertTrue(mm.entrySet().removeIf(e -> e.getValue() == 3));
 	assertTrue(mm.isEmpty());
+    }
+
+    /** A copy constructor makes a multimap with value collections of
+     *  its own. */
+    @ParameterizedTest(name="{0}") @MethodSource("factories")
+    void copy(Factory f) {
+	MultiMap<String,Integer> mm = make(f);
+	for (MultiMap<String,Integer> copy :
+		 List.<MultiMap<String,Integer>>of
+		 (new GenericMultiMap<String,Integer>(mm),
+		  new GenericInvertibleMultiMap<String,Integer>(mm))) {
+	    assertEquals(contents(mm), contents(copy));
+	    copy.add("a", 4);
+	    copy.remove("b", 3);
+	    assertEquals(Map.of("a", Set.of(1, 2), "b", Set.of(3)),
+			 contents(mm));
+	}
+	GenericMultiMap<String,Integer> gmm =
+	    new GenericMultiMap<>(Factories.<String,Collection<Integer>>treeMapFactory(),
+				  Factories.<Integer>arrayListFactory());
+	gmm.addAll(mm);
+	gmm.add("a", 1);
+	GenericMultiMap<String,Integer> copy = new GenericMultiMap<>(gmm);
+	assertEquals(List.of(1, 2, 1), copy.getValues("a"));
+	copy.getValues("a").add(5);
+	assertEquals(List.of(1, 2, 1), gmm.getValues("a"));
+	assertEquals(4, gmm.size());
     }
 
     /** The other default methods of {@link Map} use get(), put() and

@@ -187,6 +187,26 @@ class MapTest {
 	t.assertPassed();
     }
 
+    /** A copy has the mappings of its source, and a change to one
+     *  does not change the other. */
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void copy(Factory f) {
+	Map source = new HashMap();
+	source.put("a", 1);
+	source.put("b", 2);
+	Map copy = f.build(source);
+	Assertions.assertEquals(source, copy);
+	copy.put("a", 3);
+	copy.remove("b");
+	Assertions.assertEquals(Map.of("a", 1, "b", 2), source);
+	Map copy2 = f.build(copy);
+	copy.put("c", 4);
+	Assertions.assertEquals(Map.of("a", 3), copy2);
+	copy2.put("a", 5);
+	Assertions.assertEquals(Map.of("a", 3, "c", 4), copy);
+    }
+
     @ParameterizedTest(name="{0}")
     @MethodSource("factories")
     void get(Factory f) {

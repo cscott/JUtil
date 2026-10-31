@@ -24,8 +24,13 @@ public class LinearMap<K,V> extends AbstractMap<K,V> {
         set = new LinearSet<Map.Entry<K,V>>();
     }
 
-    public LinearMap(Map<K,V> map) {
-	set = new LinearSet<Map.Entry<K,V>>(map.entrySet());
+    /** Creates a {@link LinearMap} with the same mappings as
+     *  <code>map</code>.  A change to one map does not change the
+     *  other. */
+    public LinearMap(Map<? extends K,? extends V> map) {
+	this(map.size());
+	for (Map.Entry<? extends K,? extends V> e : map.entrySet())
+	    set.add(new PairMapEntry<K,V>(e.getKey(), e.getValue()));
     }
 
     /** Creates a {@link LinearMap} with specified capacity. */

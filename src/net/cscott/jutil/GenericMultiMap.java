@@ -68,24 +68,32 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	this.mf = mf;
     }
     
-    /** Creates a {@link GenericMultiMap} from another
-	{@link GenericMultiMap}.
-	
-	NOTE: I would make this ctor public, but I need to eliminate
-	any issues with the Collection-values being shared between
-	'this' and 'mm'.
-
-    */
-    GenericMultiMap(GenericMultiMap<K,V> mm) { 
-	this.mf = mm.mf;
-	this.cf = mm.cf;
-	this.internMap = this.mf.makeMap(mm.internMap);
+    /** Creates a {@link GenericMultiMap} with the same mappings as
+     *  <code>mm</code>, which uses the same {@link MapFactory} and
+     *  {@link CollectionFactory} as <code>mm</code>.  The copy has
+     *  value collections of its own: a change to one map does not
+     *  change the other.
+     *  @since 2.0 */
+    public GenericMultiMap(GenericMultiMap<K,V> mm) {
+	this(mm.mf, mm.cf);
+	for (Map.Entry<K,Collection<V>> e : mm.internMap.entrySet())
+	    this.internMap.put(e.getKey(), cf.makeCollection(e.getValue()));
     }
-	
-    /** Makes a new {@link MultiMap} initialized with all of the
-	{@link java.util.Map.Entry}s in <code>m</code>.
-    */
-    GenericMultiMap(Map<? extends K,? extends V> m) { 
+
+    /** Creates a {@link GenericMultiMap} with the mappings of
+     *  <code>mm</code>, using a {@link HashMap} for the map and
+     *  {@link HashSet}s for the value collections.
+     *  @since 2.0 */
+    public GenericMultiMap(MultiMap<? extends K,? extends V> mm) {
+	this();
+	addAll(mm);
+    }
+
+    /** Creates a {@link GenericMultiMap} with the mappings of
+     *  <code>m</code>, using a {@link HashMap} for the map and
+     *  {@link HashSet}s for the value collections.
+     *  @since 2.0 */
+    public GenericMultiMap(Map<? extends K,? extends V> m) {
 	this();
 	putAll(m);
     }

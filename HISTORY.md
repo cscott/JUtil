@@ -122,6 +122,12 @@
   which removes them.  The documentation of `MultiMap` says how the
   other `Map` defaults, such as `merge()`, treat a key with many
   values.
+* `GenericMultiMap` has public copy constructors, which take a
+  `GenericMultiMap` (and keep its map and collection factories), a
+  `MultiMap` or a `Map`.  The copy has value collections of its own.
+* Fixed: a `LinearMap` made by `new LinearMap(map)` shared the
+  entries of `map`, so a `put()` on one map changed the other.  The
+  constructor takes a `Map<? extends K,? extends V>`.
 
 ## 1.5 (2026-10-30)
 
