@@ -105,6 +105,14 @@
   `ListFactory.concatenate()` is no longer inherited by
   implementations of `ListFactory`: call it as
   `ListFactory.concatenate()`.
+* `FilterIterator` takes a `Predicate` and a `Function`, which can be
+  lambdas, and has `FilterIterator.filter()` and
+  `FilterIterator.map()` for just one of them.  Deprecated:
+  `FilterIterator.Filter`, and the constructor which takes one.
+* `CombineIterator`'s constructors take wildcard types, such as an
+  `Iterator<? extends Iterator<? extends E>>`.  Its `remove()` throws
+  `IllegalStateException` instead of `NullPointerException` before
+  the first call to `next()`.
 
 ## 1.5 (2026-10-30)
 

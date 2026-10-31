@@ -13,7 +13,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import net.cscott.jutil.FilterIterator.Filter;
 
 /**
  * A {@link PersistentMultiMapFactory} uses hash-consing to ensure that
@@ -172,19 +171,11 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 		@Override public int size() { return MultiMapImpl.this.size(); }
 		@Override
 		public Iterator<V> iterator() {
-		    return new FilterIterator<SetNode<V>,V>
+		    return FilterIterator.map
 			(new CombineIterator<SetNode<V>>
-			 (new FilterIterator<MapNode<K,V>,Iterator<SetNode<V>>>
-			  (MapNode.iterator(root),
-			   new Filter<MapNode<K,V>,Iterator<SetNode<V>>>() {
-			      @Override
-			      public Iterator<SetNode<V>> map(MapNode<K,V> n) {
-				  return SetNode.iterator(n.value);
-			      }
-			  })),
-			 new Filter<SetNode<V>,V>() {
-			    @Override public V map(SetNode<V> n) { return n.key; }
-			});
+			 (FilterIterator.map(MapNode.iterator(root),
+					     n -> SetNode.iterator(n.value))),
+			 n -> n.key);
 		}
 	    };
 	}

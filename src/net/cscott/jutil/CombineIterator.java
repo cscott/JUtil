@@ -8,65 +8,41 @@ import java.util.List;
 import java.util.NoSuchElementException;
 /**
  * A {@link CombineIterator} combines several different
- * {@link Iterator}s into one.
+ * {@link Iterator}s into one.  Its {@link #remove()} removes the
+ * last element returned from the {@link Iterator} it came from.
+ * A {@link java.util.stream.Stream} of streams does the same, with
+ * {@link java.util.stream.Stream#flatMap}.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 
 public class CombineIterator<E> implements Iterator<E> {
-    final Iterator<Iterator<E>> iti;
-    Iterator<E> cur=null, last=null;
+    final Iterator<? extends Iterator<? extends E>> iti;
+    Iterator<? extends E> cur=null, last=null;
 
-    /** Creates a {@link CombineIterator} from an array of Iterators. */
-    public CombineIterator(List<Iterator<E>> itl) {
+    /** Creates a {@link CombineIterator} from a list of Iterators. */
+    public CombineIterator(List<? extends Iterator<? extends E>> itl) {
         this(itl.iterator());
     }
     /** Creates a {@link CombineIterator} from a pair of
 	Iterators. 
     */
-    public CombineIterator(final Iterator<E> i1, final Iterator<E> i2) {
-	this(new UnmodifiableIterator<Iterator<E>>() {
-	    int i=0;
-	    @Override
-	    public Iterator<E> next() {
-		switch(i++) {
-		case 0: return i1;
-		case 1: return i2;
-		default: throw new NoSuchElementException();
-		}
-	    }
-	    @Override
-	    public boolean hasNext() {
-		return i<2;
-	    }
-	});
+    public CombineIterator(final Iterator<? extends E> i1,
+			   final Iterator<? extends E> i2) {
+	this(List.of(i1, i2));
     }
     /** Creates a {@link CombineIterator} from three
 	Iterators. 
     */
-    public CombineIterator(final Iterator<E> i1, final Iterator<E> i2,
-			   final Iterator<E> i3) {
-	this(new UnmodifiableIterator<Iterator<E>>() {
-	    int i=0;
-	    @Override
-	    public Iterator<E> next() {
-		switch(i++) {
-		case 0: return i1;
-		case 1: return i2;
-		case 2: return i3;
-		default: throw new NoSuchElementException();
-		}
-	    }
-	    @Override
-	    public boolean hasNext() {
-		return i<3;
-	    }
-	});
+    public CombineIterator(final Iterator<? extends E> i1,
+			   final Iterator<? extends E> i2,
+			   final Iterator<? extends E> i3) {
+	this(List.of(i1, i2, i3));
     }
 
     /** Creates a {@link CombineIterator} from an
      *  Iterator over Iterators. */
-    public CombineIterator(Iterator<Iterator<E>> it) {
+    public CombineIterator(Iterator<? extends Iterator<? extends E>> it) {
 	this.iti = it;
     }
 
@@ -85,6 +61,7 @@ public class CombineIterator<E> implements Iterator<E> {
     }
     @Override
     public void remove() {
+	if (last==null) throw new IllegalStateException();
 	last.remove();
     }
 }

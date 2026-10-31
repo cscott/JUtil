@@ -272,14 +272,9 @@ public class BitSetFactory<V> implements SetFactory<V> {
 	    } : new Iterator<V>() { // slower fall-back
 		    // need to wrap a *modifiable* iterator 
 		    // around an internal filter iterator...
-		    Iterator<V> internIter = new FilterIterator<V,V>
-			(fact.universe.iterator(), 
-			 new FilterIterator.Filter<V,V>() {
-				 @Override
-				 public boolean isElement(V o) {
-				     return BitStringSet.this.bs.get
-					 (fact.indexer.getID(o));
-				 }});
+		    Iterator<V> internIter = FilterIterator.filter
+			(fact.universe.iterator(),
+			 o -> BitStringSet.this.bs.get(fact.indexer.getID(o)));
 		    V last = null;
 		    @Override
 		    public V next() {
