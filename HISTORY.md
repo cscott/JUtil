@@ -1,6 +1,6 @@
 # JUtil history
 
-## 2.0 (unreleased)
+## 2.0 (2026-10-31)
 
 * JDK 21 or later is required, to build and to run JUtil.
 * Published on Maven Central, as `net.cscott:jutil`; `ant release`
