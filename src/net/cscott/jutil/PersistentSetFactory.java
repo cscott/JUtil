@@ -3,8 +3,6 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import net.cscott.jutil.Default.PairList;
-
 import java.lang.ref.WeakReference;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -143,26 +141,26 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    assert container!=null && subset!=null;
 	    assert container!=subset; // needed for next test to be correct
 	    if (subset.size >= container.size) return false; // pigeonhole
-	    PairList<Node<T>,Node<T>> pair =
+	    Pair<Node<T>,Node<T>> pair =
 		removeAndSplit(subset, container.key);
 	    return containsAll(container.left, pair.left()) &&
 		containsAll(container.right, pair.right());
 	}
-	PairList<Node<T>,Node<T>> removeAndSplit(Node<T> node, T key) {
+	Pair<Node<T>,Node<T>> removeAndSplit(Node<T> node, T key) {
 	    if (node==null)
-		return new PairList<Node<T>,Node<T>>(null, null);
+		return new Pair<>(null, null);
 	    int cmp = comparator.compare(node.key, key);
 	    if (cmp==0)
-		return new PairList<Node<T>,Node<T>>(node.left, node.right);
+		return new Pair<>(node.left, node.right);
 	    if (cmp <0) {
-		PairList<Node<T>,Node<T>> pair=removeAndSplit(node.right, key);
-		return new PairList<Node<T>,Node<T>>
+		Pair<Node<T>,Node<T>> pair=removeAndSplit(node.right, key);
+		return new Pair<>
 		    (allocator.newNode(node.key, node.getValue(),
 				       node.left, pair.left()),
 		     pair.right());
 	    } else {
-		PairList<Node<T>,Node<T>> pair=removeAndSplit(node.left, key);
-		return new PairList<Node<T>,Node<T>>
+		Pair<Node<T>,Node<T>> pair=removeAndSplit(node.left, key);
+		return new Pair<>
 		    (pair.left(),
 		     allocator.newNode(node.key, node.getValue(),
 				       pair.right(), node.right));

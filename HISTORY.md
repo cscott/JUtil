@@ -86,6 +86,10 @@
   the stack when given a heap of their own class with an equal
   comparator, and `BinaryHeap.union()` did not empty the heap it was
   given.
+* `Pair`, an immutable, serializable record of two values, with
+  `left()` and `right()`.  Deprecated: `Default.PairList` and
+  `Default.pair()`, for `Pair`.  A `PairList` is a mutable `List`,
+  which a record cannot be, so `Pair` is a new class.
 
 ## 1.5 (2026-10-30)
 

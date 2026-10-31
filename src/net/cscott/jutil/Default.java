@@ -349,7 +349,14 @@ public abstract class Default  {
     /** A pair constructor method.  Pairs implement <code>hashCode()</code>
      *  and <code>equals()</code> "properly" so they can be used as keys
      *  in hashtables and etc.  They are implemented as mutable lists of
-     *  fixed size 2. */
+     *  fixed size 2.
+     *  @deprecated Use {@link Pair}, an immutable record:
+     *  <code>new Pair&lt;&gt;(left, right)</code>.  For an immutable
+     *  list, use {@link List#of(Object,Object)}, which does not permit
+     *  <code>null</code>s.
+     */
+    @Deprecated(since="2.0")
+    @SuppressWarnings("deprecation") // returns a PairList
     public static <A,B> PairList<A,B> pair(final A left, final B right) {
 	// this can't be an anonymous class because we want to make it
 	// serializable.
@@ -362,7 +369,13 @@ public abstract class Default  {
      *  fixed size 2.  Note that the <code>hashCode()</code> implementation
      *  differs from pairs implemented as {@link java.util.Map.Entry}s; the
      *  parameterization is different as well.
+     *  @deprecated Use {@link Pair}, an immutable record whose
+     *  {@link Pair#left()} and {@link Pair#right()} replace the methods
+     *  of the same name.  Unlike a {@link PairList}, a {@link Pair} is
+     *  not a {@link List}, and its <code>hashCode()</code> and
+     *  <code>toString()</code> differ.
      */
+    @Deprecated(since="2.0")
     public static class PairList<A,B> extends AbstractList<Object>
 	implements java.io.Serializable {
 	@java.io.Serial
