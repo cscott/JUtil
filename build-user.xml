@@ -2,6 +2,15 @@
     <echo message="Please run: $ ant -v -projecthelp"/>
 </target>
 
+<!-- JDK 1.8's javadoc is stricter about html in comments -->
+<condition property="javadoc.args" value="" else="-Xdoclint:none">
+  <or>
+    <equals arg1="${ant.java.version}" arg2="1.5" />
+    <equals arg1="${ant.java.version}" arg2="1.6" />
+    <equals arg1="${ant.java.version}" arg2="1.7" />
+  </or>
+</condition>
+
 <target name="javadoc" depends="init,build"
         description="Generates javadoc in api/">
     <mkdir dir="api" />
@@ -16,6 +25,7 @@
              author="true" use="true" version="true" breakiterator="true"
              source="1.5" classpath="bin">
         <link href="http://java.sun.com/javase/6/docs/api"/>
+        <arg line="${javadoc.args}" />
     </javadoc>
 </target>
 
@@ -39,7 +49,8 @@
 
 <target name="dist" depends="init,build,jar,javadoc">
   <delete file="ChangeLog" />
-  <exec executable="git-log" output="ChangeLog">
+  <exec executable="git" output="ChangeLog">
+    <arg value="log" />
     <arg value="--stat" />
     <arg value="-C" /> <!-- "-C -C" is nice, but it takes 2m to run! -->
   </exec>
