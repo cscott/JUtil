@@ -11,8 +11,7 @@ import java.util.Iterator;
  * The name's a bit clunky, but fits with the JDK naming in
  * {@link java.util.Collections} and etc.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UnmodifiableIterator.java,v 1.4 2006-10-30 20:14:41 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class UnmodifiableIterator<E> implements Iterator<E> {
     /** Create an {@link UnmodifiableIterator} from the given (potentailly

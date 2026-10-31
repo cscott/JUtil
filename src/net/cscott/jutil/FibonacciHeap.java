@@ -18,8 +18,7 @@ import java.util.Map;
  * Implementation is based on the description in <i>Introduction to
  * Algorithms</i> by Cormen, Leiserson, and Riverst, in Chapter 21.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: FibonacciHeap.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 
@@ -326,34 +325,34 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 		    int i = 0;
 		    public boolean hasNext() { return i<el.length; }
 		    public Map.Entry<Integer,Integer> next() {
-			Integer io = new Integer(el[i++]);
+			Integer io = Integer.valueOf(el[i++]);
 			return new PairMapEntry<Integer,Integer>(io, io);
 		    }
 		};
 	    }
 	}, null/* default comparator */);
 	assert h.size()==10 && !h.isEmpty();
-	assert h.minimum().getKey().equals(new Integer(-16));
+	assert h.minimum().getKey().equals(Integer.valueOf(-16));
 	System.out.println(h);
-	h.insert(new Integer(-15), new Integer(-15));
+	h.insert(Integer.valueOf(-15), Integer.valueOf(-15));
 	assert h.size()==11 && !h.isEmpty();
-	assert h.minimum().getKey().equals(new Integer(-16));
+	assert h.minimum().getKey().equals(Integer.valueOf(-16));
 	System.out.println(h);
 	// now verify that we'll get all the keys out in properly sorted order
 	System.out.println(h.size());
-	assert h.extractMinimum().getKey().equals(new Integer(-16));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-16));
 	System.out.println(h.size());
 	System.out.println(h);
-	assert h.extractMinimum().getKey().equals(new Integer(-15));
-	assert h.extractMinimum().getKey().equals(new Integer(-14));
-	assert h.extractMinimum().getKey().equals(new Integer(-10));
-	assert h.extractMinimum().getKey().equals(new Integer(-9));
-	assert h.extractMinimum().getKey().equals(new Integer(-8));
-	assert h.extractMinimum().getKey().equals(new Integer(-7));
-	assert h.extractMinimum().getKey().equals(new Integer(-4));
-	assert h.extractMinimum().getKey().equals(new Integer(-3));
-	assert h.extractMinimum().getKey().equals(new Integer(-2));
-	assert h.extractMinimum().getKey().equals(new Integer(-1));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-15));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-14));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-10));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-9));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-8));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-7));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-4));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-3));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-2));
+	assert h.extractMinimum().getKey().equals(Integer.valueOf(-1));
 	assert h.isEmpty() && h.size()==0;
 	// okay, test delete and decreaseKey now.
 	h.clear(); assert h.isEmpty() && h.size()==0;

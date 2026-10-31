@@ -16,8 +16,7 @@ import java.util.Vector;
  * The {@link TestSet} class tests our various {@link Set}
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: TestSet.java,v 1.4 2006-10-30 19:58:07 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 class TestSet {
     private final static boolean DEBUG=false;
@@ -504,7 +503,7 @@ class TestSet {
 
    th.checkPoint("toArray([java.lang.Object)[java.lang.Object");
     try {
-    	ac.toArray(null);
+    	ac.toArray((Object[]) null);
     	th.fail("should throw a NullPointerException");
     	}
     catch (NullPointerException ne) { th.check(true);}

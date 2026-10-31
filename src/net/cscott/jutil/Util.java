@@ -5,8 +5,7 @@ package net.cscott.jutil;
 
 /** 
  * Miscellaneous static utility functions.
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Util.java,v 1.2 2006-10-29 16:27:20 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class Util {
   /** Repeat a given string a certain number of times.

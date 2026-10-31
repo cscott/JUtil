@@ -10,8 +10,7 @@ import java.util.Iterator;
     {@link InvertibleMap}.  It returns unmodifiable inverted
     views of the mappings it maintains.
 
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: GenericInvertibleMap.java,v 1.5 2006-10-30 19:58:05 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
 */
 public class GenericInvertibleMap<K,V>
     extends MapWrapper<K,V> implements InvertibleMap<K,V> {

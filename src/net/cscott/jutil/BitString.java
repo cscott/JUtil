@@ -28,8 +28,7 @@ package net.cscott.jutil;
  * The length of a bit set related to the logical length of a bit set
  * and is defined independently of implementation.
  *
- * @author  John Whaley <jwhaley@alum.mit.edu>
- * @version $Id: BitString.java,v 1.3 2006-10-30 19:58:05 cananian Exp $
+ * @author  John Whaley &lt;jwhaley@alum.mit.edu&gt;
  */
 
 public final class BitString implements Cloneable, java.io.Serializable {

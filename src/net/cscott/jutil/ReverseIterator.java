@@ -12,8 +12,7 @@ import java.util.NoSuchElementException;
  * insensitive to changes in the underlying collection once construction
  * is complete.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: ReverseIterator.java,v 1.3 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class ReverseIterator<E> extends SnapshotIterator<E> {
     /** Creates a {@link ReverseIterator} of {@link Iterator}

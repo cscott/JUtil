@@ -10,86 +10,66 @@ import java.util.Map;
  * {@link Heap}s support create, insert, minimum, extract-min,
  * union, decrease-key, and delete operations.  There are three primary
  * implementations, each with different expected run-times:<br>
- * <TABLE BORDER=2 ALIGN=CENTER>
- * 
- * <TR BGCOLOR="cornsilk"><TH>Procedure</TH>
- *     <TH>{@link BinaryHeap}<BR>(worst-case)</TH>
- *     <TH>{@link BinomialHeap}<BR>(worst-case)</TH>
- *     <TH>{@link FibonacciHeap}<BR>(amortized)</TH></TR>
- * 
- * <TR>
- *  <TD BGCOLOR="wheat">M<font size=-1>AKE</font>-H<font size=-1>EAP</font>
- *  </TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- * </TR>
- * 
- * <TR>
- *  <TD BGCOLOR="wheat">I<font size=-1>NSERT</font></TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER><i>O</i>(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- * </TR>
- * 
- * <TR>
- *  <TD BGCOLOR="wheat">M<font size=-1>INIMUM</font></TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- *     <TD ALIGN=CENTER><i>O</i>(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- * </TR>
- * 
- * <TR>
- *  <TD BGCOLOR="wheat">E<font size=-1>XTRACT</font>-M<font size=-1>IN</font>
- *  </TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER><i>O</i>(lg <i>n</i>)</TD>
- * </TR>
- * 
- * <TR><TD BGCOLOR="wheat">U<font size=-1>NION</font></TD>
- *     <TD ALIGN=CENTER>Theta(<i>n</i>)</TD>
- *     <TD ALIGN=CENTER><i>O</i>(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- * </TR>
- * 
- * <TR>
- *  <TD BGCOLOR="wheat">D<font size=-1>ECREASE</font>-K<font size=-1>EY</font>
- *  </TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(1)</TD>
- * </TR>
- * 
- * <TR>
- *  <TD BGCOLOR="wheat">U<font size=-1>PDATE</font>-K<font size=-1>EY</font>
- *  </TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- * </TR>
- * 
- * <TR>
- *  <TD BGCOLOR="wheat">D<font size=-1>ELETE</font></TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER>Theta(lg <i>n</i>)</TD>
- *     <TD ALIGN=CENTER><i>O</i>(lg <i>n</i>)</TD>
- * </TR>
- * 
- * <CAPTION ALIGN="BOTTOM">
+ * <table class="striped">
+ * <caption>
  * Running times for operations on three implementations of mergable
  * heaps.  The number of items in the heap(s) at the time of an operation
- * is denoted by <i>n</i>.<br>
- * <DIV ALIGN=RIGHT><SMALL><i>
- * (From "Introduction to Algorithms" by Cormen, Leiserson, and Rivest)
- * </i></small></div>
- * </CAPTION>
- * 
- * </TABLE>
+ * is denoted by <i>n</i>.
+ * (From <i>Introduction to Algorithms</i> by Cormen, Leiserson, and Rivest.)
+ * </caption>
+ * <thead>
+ * <tr><th scope="col">Procedure</th>
+ *     <th scope="col">{@link BinaryHeap}<br>(worst-case)</th>
+ *     <th scope="col">{@link BinomialHeap}<br>(worst-case)</th>
+ *     <th scope="col">{@link FibonacciHeap}<br>(amortized)</th></tr>
+ * </thead>
+ * <tbody>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Make-Heap</span></th>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ * </tr>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Insert</span></th>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center"><i>O</i>(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ * </tr>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Minimum</span></th>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ *     <td style="text-align: center"><i>O</i>(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ * </tr>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Extract-Min</span></th>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center"><i>O</i>(lg <i>n</i>)</td>
+ * </tr>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Union</span></th>
+ *     <td style="text-align: center">&Theta;(<i>n</i>)</td>
+ *     <td style="text-align: center"><i>O</i>(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ * </tr>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Decrease-Key</span></th>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(1)</td>
+ * </tr>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Update-Key</span></th>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ * </tr>
+ * <tr><th scope="row"><span style="font-variant: small-caps">Delete</span></th>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center">&Theta;(lg <i>n</i>)</td>
+ *     <td style="text-align: center"><i>O</i>(lg <i>n</i>)</td>
+ * </tr>
+ * </tbody>
+ * </table>
  * <p>
  * All implementations of {@link Heap} should have a no-argument
  * constructor which implements the 
- * M<font size=-1>AKE</font>-H<font size=-1>EAP</font> operation in
+ * <span style="font-variant: small-caps">Make-Heap</span> operation in
  * the above-stated time bound.  In addition, certain implementations
  * may also have constructors which take a {@link Map} or
  * {@link Heap} and construct a heap in less time than it would
@@ -97,15 +77,14 @@ import java.util.Map;
  * {@link Heap}.
  *
  * Note that the 
- * U<font size=-1>PDATE</font>-K<font size=-1>EY</font> operation is
+ * <span style="font-variant: small-caps">Update-Key</span> operation is
  * typically implemented as a delete followed by an insert, which
  * often has worse performance than a
- * D<font size=-1>ECREASE</font>-K<font size=-1>EY</font> operation.
+ * <span style="font-variant: small-caps">Decrease-Key</span> operation.
  * However, some algorithms need to increase keys as well as decrease
  * them; there's nothing you can do about that.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Heap.java,v 1.4 2006-10-30 20:14:41 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  * @see BinaryHeap
  * @see BinomialHeap
  * @see FibonacciHeap

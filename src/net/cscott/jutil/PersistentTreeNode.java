@@ -20,8 +20,7 @@ import java.util.Iterator;
  * collections of elements are unique, we can use simple comparison and
  * equality tests for treaps.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentTreeNode.java,v 1.6 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     extends AbstractMapEntry<K,V> implements java.io.Serializable {
@@ -456,11 +455,11 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	// number of nodes is 'i'
 	// perfectly balanced tree has depth ceil(log2(i))
 	for (int i=1; i<=N; i++) {
-	    root = put(root, c, new Integer(i), new Integer(i), allocator);
+	    root = put(root, c, Integer.valueOf(i), Integer.valueOf(i), allocator);
 	    System.out.println(i+" DEPTH "+depth(root)+" IDEAL "+Util.log2c(i));
 	}
 	for (int i=N; i>=1; i--) {
-	    root = remove(root, c, new Integer(i), allocator);
+	    root = remove(root, c, Integer.valueOf(i), allocator);
 	    System.out.println(i+" DEPTH "+depth(root)+" IDEAL "+Util.log2c(i));
 	}
 	// XXX not a very good self-test at the moment: no automatic

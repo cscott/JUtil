@@ -14,8 +14,7 @@ import java.util.Collection;
  * their own specific Collections without having to reimplement all of
  * AbstractCollection's interface
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: CollectionWrapper.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class CollectionWrapper<E> implements Collection<E> {
     /** Implementations should return the wrapped {@link Collection} here. */

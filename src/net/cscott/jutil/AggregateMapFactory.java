@@ -20,8 +20,7 @@ import java.util.Set;
  * The iterators of the submaps are fast, unlike those of
  * {@link HashMap}.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateMapFactory.java,v 1.6 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     implements java.io.Serializable {

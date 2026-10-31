@@ -10,8 +10,7 @@ import java.util.EmptyStackException;
  * stack of <b>unique</b> objects.
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UniqueStack.java,v 1.3 2006-10-30 19:58:07 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 
 public class UniqueStack<E> extends UniqueVector<E> {

@@ -18,8 +18,7 @@ import java.util.WeakHashMap;
  * also constant-time.  The implementation is based on persistent
  * randomized treaps.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMapFactory.java,v 1.7 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();

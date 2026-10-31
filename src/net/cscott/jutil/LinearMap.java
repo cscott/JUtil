@@ -14,8 +14,7 @@ import java.util.Set;
  * {@link Map} designed for use when the number of entries is
  * small.  It is backed by a {@link LinearSet}.
  *
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: LinearMap.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public class LinearMap<K,V> extends AbstractMap<K,V> {
     private LinearSet<Map.Entry<K,V>> set;

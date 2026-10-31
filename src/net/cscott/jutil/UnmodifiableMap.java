@@ -8,8 +8,7 @@ import java.util.Set;
 /**
  * This wrapper for {@link Map}s implements {@link Map#entrySet()}
  * so that it returns an {@link UnmodifiableMapSet}.
- * @author C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UnmodifiableMap.java,v 1.2 2006-10-30 16:19:00 cananian Exp $
+ * @author C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class UnmodifiableMap<K,V> extends MapWrapper<K,V> {
     public static <K,V> UnmodifiableMap<K,V> proxy(final Map<K,V> m) {

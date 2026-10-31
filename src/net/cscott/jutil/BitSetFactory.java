@@ -25,8 +25,7 @@ import java.util.HashMap;
     universe of values given to the constructor; other Objects will
     cause {@link IllegalArgumentException} to be thrown.
 
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: BitSetFactory.java,v 1.6 2006-10-30 20:14:41 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public class BitSetFactory<V> extends SetFactory<V> {
     

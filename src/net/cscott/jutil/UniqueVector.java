@@ -12,13 +12,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 
 /**
  * A unique vector refuses to addElement duplicates.
  * <p>Conforms to the JDK 1.2 Collections API.
  *
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UniqueVector.java,v 1.6 2006-10-30 19:58:07 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  * @see java.util.Vector
  * @see java.util.Hashtable
  */
@@ -66,7 +67,7 @@ public class UniqueVector<E> extends AbstractList<E>
     removeElement(element);
     vect.add(index, element);
     for (int i=index; i<vect.size(); i++)
-      uniq.put(element, new Integer(i));
+      uniq.put(element, Integer.valueOf(i));
   }
   /**
    * Adds the specified component to the end of this vector, increasing
@@ -79,7 +80,7 @@ public class UniqueVector<E> extends AbstractList<E>
     if (obj==null) throw new NullPointerException();
     if (contains(obj)) return false;
     vect.add(obj);
-    uniq.put(obj, new Integer(vect.size()-1));
+    uniq.put(obj, Integer.valueOf(vect.size()-1));
     return true;
   }
 
@@ -289,7 +290,7 @@ public class UniqueVector<E> extends AbstractList<E>
     uniq.remove(obj);
     // fixup indices.
     for (int i=index; i<vect.size(); i++)
-      uniq.put(vect.get(i), new Integer(i));
+      uniq.put(vect.get(i), Integer.valueOf(i));
     return obj;
   }
   /**
@@ -352,5 +353,13 @@ public class UniqueVector<E> extends AbstractList<E>
       Set s = (Set) o;
       if (hashCode() != s.hashCode()) return false; // "quick" test.
       return containsAll(s) && s.containsAll(this); // slower accurate test.
+  }
+  /** Creates a {@link Spliterator} over the elements of this vector,
+   *  in order.  (This resolves the conflict between the default
+   *  methods of {@link List} and {@link Set}.) */
+  @Override
+  public Spliterator<E> spliterator() {
+      return Spliterators.spliterator
+	  (this, Spliterator.ORDERED | Spliterator.DISTINCT);
   }
 }

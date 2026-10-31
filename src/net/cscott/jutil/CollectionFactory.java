@@ -25,8 +25,7 @@ import java.util.Set;
     a subtype of <code>CollectionFactory&lt;Collection&lt;V&gt;,V&gt;</code>,
     even though {@link Set} is a subtype of {@link Collection}.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: CollectionFactory.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class CollectionFactory<V> {
     

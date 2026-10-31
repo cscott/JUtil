@@ -65,8 +65,7 @@ import java.util.Set;
 	 does not ever attempt to use a {@link MultiMap} when any
 	 of its Keys map to more than one value.
     
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MultiMap.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public interface MultiMap<K,V> extends Map<K,V> {
     /** Returns some arbitrary value from the collection of values to

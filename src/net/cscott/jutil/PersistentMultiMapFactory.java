@@ -26,8 +26,7 @@ import net.cscott.jutil.FilterIterator.Filter;
  * mappings are allowed).  The implementation is based on persistent
  * randomized treaps.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMultiMapFactory.java,v 1.5 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     final MapAllocator<K,V> mapAllocator = new MapAllocator<K,V>();

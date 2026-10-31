@@ -9,8 +9,7 @@ import java.util.Iterator;
  * An {@link IteratorEnumerator} converts an {@link Iterator}
  * into an {@link Enumeration}.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: IteratorEnumerator.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class IteratorEnumerator<E> implements Enumeration<E> {
     private final Iterator<E> i;

@@ -12,8 +12,7 @@ import java.util.ListIterator;
  * order.  Similar to using <code>ReverseIterator(l.iterator())</code>
  * but more efficient as it does not need to create a snapshot.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: ReverseListIterator.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class ReverseListIterator<E> implements ListIterator<E> {
     private final ListIterator<E> it;

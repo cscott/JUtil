@@ -12,8 +12,7 @@ import java.util.Set;
  * {@link java.util.Map}.  Use the {@link Map#entrySet()}
  * method of the {@link Map} to get back the {@link MapSet}.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MapSet.java,v 1.3 2006-10-30 20:14:41 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public interface MapSet<K,V> extends Set<Map.Entry<K,V>> {
     public Map<K,V> asMap();

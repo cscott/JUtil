@@ -16,8 +16,7 @@ import java.util.Set;
  * {@link Set} designed for use when the number of entries is
  * small.  It is backed by a {@link List}.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: LinearSet.java,v 1.6 2006-10-30 19:58:06 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 						      java.io.Serializable {

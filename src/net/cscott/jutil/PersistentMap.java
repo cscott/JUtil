@@ -16,8 +16,7 @@ import java.util.Set;
  * does not implement that standard {@link java.util.Map} API
  * but instead exposes the underlying functional operations.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentMap.java,v 1.7 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentMap<K,V> implements java.io.Serializable {
     final Node<K,V> root;
@@ -57,7 +56,7 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 
     /** Creates and returns a new {@link PersistentMap} identical to
      *  this one, except it contains a mapping from <code>key</code> to
-     *  <code>value. */
+     *  <code>value</code>. */
     public PersistentMap<K,V> put(K key, V value) {
 	Node<K,V> new_root =
 	    Node.put(this.root, this.c, key, value, allocator);

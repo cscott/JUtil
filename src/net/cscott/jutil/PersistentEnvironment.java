@@ -11,8 +11,7 @@ import java.util.Set;
  * {@link PersistentEnvironment} is an {@link Environment}
  * built on a {@link PersistentMap}.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentEnvironment.java,v 1.3 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 // TODO: reimplement with Map returned by PersistentMapFactory as backing store
 // simply put Map.clone() in the Environment.Mark and replace the delegate

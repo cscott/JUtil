@@ -19,8 +19,7 @@ import java.util.Vector;
  * The {@link TestMap} class tests our various {@link Map}
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: TestMap.java,v 1.5 2006-10-30 19:58:07 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 class TestMap {
     private final static boolean DEBUG=false;
@@ -274,7 +273,7 @@ class TestMap {
     hm.put("a" ,this);
     th.check("a1 value".equals(hm.get("a1")), "checking get -- 3");
     th.check("a11 value".equals(hm.get("a11")), "checking get -- 4");
-    //th.check( hm.get(new Integer(97)) == null , "checking get -- 5");
+    //th.check( hm.get(Integer.valueOf(97)) == null , "checking get -- 5");
 
 
   }
@@ -609,10 +608,10 @@ class TestMap {
 * we try to make it difficult for the table by using objects with same hashcode
 */
   private final String st ="a";
-  private final Byte b =new Byte((byte)97);
-  private final Short sh=new Short((short)97);
-  private final Integer i = new Integer(97);
-  private final Long l = new Long(97L);
+  private final Byte b =Byte.valueOf((byte)97);
+  private final Short sh=Short.valueOf((short)97);
+  private final Integer i = Integer.valueOf(97);
+  private final Long l = Long.valueOf(97L);
   private int sqnce = 1;
 
   public void test_behaviour(){
@@ -648,7 +647,7 @@ class TestMap {
     check_presence(h);
     sqnce = 1;
     for ( ; j < 100 ; j++ )
-    {   f = new Float((float)j);
+    {   f = Float.valueOf((float)j);
         h.put(f,f);
        // sleep(5);
     }
@@ -656,7 +655,7 @@ class TestMap {
     check_presence(h);
 //    sleep(500);
     for ( ; j < 200 ; j++ )
-    {   f = new Float((float)j);
+    {   f = Float.valueOf((float)j);
         h.put(f,f);
       //  sleep(10);
     }
@@ -665,7 +664,7 @@ class TestMap {
 //    sleep(50);
 
     for ( ; j < 300 ; j++ )
-    {   f = new Float((float)j);
+    {   f = Float.valueOf((float)j);
         h.put(f,f);
       //  sleep(10);
     }
@@ -681,7 +680,7 @@ class TestMap {
 
 
     for ( ; j > 199 ; j-- )
-    {   f = new Float((float)j);
+    {   f = Float.valueOf((float)j);
         h.remove(f);
       //  sleep(10);
     }
@@ -689,7 +688,7 @@ class TestMap {
     th.check(h.size() == 205,"size checking -- 4 got: "+h.size());
     check_presence(h);
     for ( ; j > 99 ; j-- )
-    {   f = new Float((float)j);
+    {   f = Float.valueOf((float)j);
         h.remove(f);
       //  sleep(5);
     }
@@ -697,7 +696,7 @@ class TestMap {
     check_presence(h);
    // sleep(1500);
     for ( ; j > -1 ; j-- )
-    {   f = new Float((float)j);
+    {   f = Float.valueOf((float)j);
         h.remove(f);
      //   sleep(5);
     }

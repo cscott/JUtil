@@ -17,8 +17,7 @@ import java.util.Map;
     a subtype of <code>MapFactory&lt;Map&lt;K,V&gt;,K,V&gt;</code>,
     even though {@link java.util.HashMap} is a subtype of {@link Map}.
 
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MapFactory.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class MapFactory<K,V> {
     

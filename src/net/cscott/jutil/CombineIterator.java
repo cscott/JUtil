@@ -10,8 +10,7 @@ import java.util.NoSuchElementException;
  * A {@link CombineIterator} combines several different
  * {@link Iterator}s into one.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: CombineIterator.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 
 public class CombineIterator<E> implements Iterator<E> {

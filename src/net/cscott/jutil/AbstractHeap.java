@@ -11,8 +11,7 @@ import java.util.Map;
  * the {@link Heap} interface, to minimize the effort required
  * to implement this interface.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractHeap.java,v 1.6 2006-10-30 20:14:40 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     /** A comparator for the keys in {@link java.util.Map.Entry}s, based

@@ -12,8 +12,7 @@ import java.util.ListIterator;
  * bit clunky, but fits with the JDK naming in
  * {@link java.util.Collections} and such.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: UnmodifiableListIterator.java,v 1.3 2006-10-30 20:14:41 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class UnmodifiableListIterator<E> implements ListIterator<E> {
     /** Returns <code>true</code> if the list iterator has more elements

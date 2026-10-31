@@ -17,8 +17,7 @@ import java.util.Set;
  * less space and rehash less frequently than if we were using
  * the standard {@link Factories#hashSetFactory()}.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AggregateSetFactory.java,v 1.6 2006-10-30 20:14:41 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class AggregateSetFactory<V> extends SetFactory<V>
     implements java.io.Serializable {

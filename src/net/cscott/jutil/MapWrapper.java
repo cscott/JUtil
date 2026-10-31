@@ -10,8 +10,7 @@ import java.util.Map;
     {@link Map} functionality while not restricting developers to
     one particular {@link Map} implementation. 
 
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: MapWrapper.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
 */
 public abstract class MapWrapper<K,V> implements Map<K,V> {
     public MapWrapper() { }

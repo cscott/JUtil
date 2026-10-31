@@ -12,8 +12,7 @@ import java.util.Set;
     save developers the trouble of implementing the various mutator
     methds of the {@link MultiMap} interface.
 
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: UnmodifiableMultiMap.java,v 1.5 2006-10-30 19:58:07 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
 */
 public abstract class UnmodifiableMultiMap<K,V> 
     extends UnmodifiableMap<K,V> implements MultiMap<K,V> {

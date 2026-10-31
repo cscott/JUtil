@@ -17,8 +17,7 @@ import java.util.NoSuchElementException;
  * visited, while still permitting the visitor to make changes to
  * the collection as it operates.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: SnapshotIterator.java,v 1.3 2006-10-30 19:58:07 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class SnapshotIterator<E> extends UnmodifiableIterator<E> {
     final ArrayList<E> l = new ArrayList<E>();

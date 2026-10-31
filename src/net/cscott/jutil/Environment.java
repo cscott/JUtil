@@ -8,8 +8,7 @@ package net.cscott.jutil;
  * you can save marks into the environment and undo all changes
  * since a mark.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Environment.java,v 1.2 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public interface Environment<K,V> extends java.util.Map<K,V> {
     /** A abstract property for marks into an environment. */

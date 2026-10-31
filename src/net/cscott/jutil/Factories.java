@@ -24,8 +24,7 @@ import java.util.TreeSet;
 /** {@link Factories} consists exclusively of static methods that
     operate on or return {@link CollectionFactory}s. 
  
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: Factories.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public final class Factories {
     

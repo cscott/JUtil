@@ -16,10 +16,10 @@ import java.util.Stack;
  * is not dependent on the total capacity of the underlying hashtable.
  * <p>Conforms to the JDK 1.2 Collections API.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: WorkSet.java,v 1.7 2007-04-09 17:31:28 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  * @deprecated Use {@link java.util.LinkedHashSet LinkedHashSet} instead.
  */
+@Deprecated
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 {
     private final HashMap<E,EntryList<E>> hm;

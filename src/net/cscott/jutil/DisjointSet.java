@@ -17,8 +17,7 @@ import java.util.Set;
  * 'alpha' denotes the *extremely* slowly-growing inverse Ackermann
  * function.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: DisjointSet.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class DisjointSet<E>  {
     private final Map<E,Node<E>> elmap = new HashMap<E,Node<E>>();

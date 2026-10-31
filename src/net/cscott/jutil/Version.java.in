@@ -4,7 +4,6 @@ package net.cscott.jutil;
 /**
  * The {@link Version} object contains fields naming the current version
  * of the @PACKAGE@ library (@VERSION@).
- * @version $Id: Version.java,v 1.4 2006-10-30 19:12:05 cananian Exp $
  */
 public abstract class Version {
     /** The name of the package: "JUtil". */

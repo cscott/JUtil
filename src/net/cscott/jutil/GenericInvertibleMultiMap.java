@@ -18,8 +18,7 @@ import java.util.Set;
  * {@link GenericInvertibleMap}, because {@link MultiMap}
  * correctly extends {@link Map}.
  *
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: GenericInvertibleMultiMap.java,v 1.4 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     private final MultiMap<K,V> map;

@@ -21,8 +21,7 @@ import java.util.SortedSet;
  * implementations of simple {@link Iterator}s,
  * {@link Collection}s, and {@link Comparator}s.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: Default.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class Default  {
     /** A {@link Comparator} for objects that implement 
@@ -69,11 +68,13 @@ public abstract class Default  {
     /** An empty set.
      * @deprecated Use Collections.EMPTY_SET
      */
+    @Deprecated
     public static final SortedSet EMPTY_SET = EMPTY_SET();
     /** An empty set; the parameterized version.
      *  Plays nicely with Java's type system.
      * @deprecated Use Collections.emptySet()
      */
+    @Deprecated
     public static final <E> SortedSet<E> EMPTY_SET() {
 	return new EmptySortedSet<E>();
     }
@@ -124,6 +125,7 @@ public abstract class Default  {
      *  Made necessary by limitations in GJ's type system.
      * @deprecated Use Collections.emptyList()
      */
+    @Deprecated
     public static final <E> List<E> EMPTY_LIST() {
 	return Collections.<E>emptyList();
     }
@@ -131,10 +133,12 @@ public abstract class Default  {
      *  Java 1.2.
      * @deprecated Use Collections.EMPTY_MAP
      */
+    @Deprecated
     public static final SortedMap EMPTY_MAP = EMPTY_MAP();
     /** An empty map, parameterized to play nicely with Java's type system.
      * @deprecated Use Collections.emptyMap()
      */
+    @Deprecated
     public static final <K,V> SortedMap<K,V> EMPTY_MAP() {
 	return new EmptySortedMap<K,V>();
     }

@@ -17,8 +17,7 @@ package net.cscott.jutil;
  * several {@link java.util.Map} implementations do not like 
  * <code>null</code>s in their internal structures.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: PairMapEntry.java,v 1.3 2006-10-30 20:14:41 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public class PairMapEntry<K,V> extends AbstractMapEntry<K,V> {
     private K key;

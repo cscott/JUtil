@@ -26,8 +26,8 @@ import java.util.Set;
  *	 can be maintained if arbitrary operations on mm.getValues(k)
  *	 are passed on to 'mm'.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: GenericMultiMap.java,v 1.6 2006-10-30 19:58:05 cananian Exp $ */
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
+ */
 public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     
     // internal Map[KeyType -> Collection[ ValueType ]]

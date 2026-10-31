@@ -17,8 +17,7 @@ import java.util.Map;
  * the description in <i>Introduction to Algorithms</i> by Cormen,
  * Leiserson, and Rivest, on page 400 and following.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: BinomialHeap.java,v 1.8 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     private static final boolean debug=false;
@@ -407,7 +406,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	// construct heap on page 404 of CLR
 	int ia[] = new int[] {29, 6, 14, 38, 17, 8, 11, 27, 1, 25, 12, 18, 10};
 	for (int i=0; i<ia.length; i++)
-	    bm1.insert(new Integer(ia[i]), null);
+	    bm1.insert(Integer.valueOf(ia[i]), null);
 	System.out.println(bm1.entries());
 	System.out.println(bm1.minimum());
 	System.out.println("----");
@@ -416,11 +415,11 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	// union example on pages 410-411 of CLR
 	ia=new int[] { 15, 33, 28, 41, 7, 25, 12 };
 	for (int i=0; i<ia.length; i++)
-	    bm1.insert(new Integer(ia[i]), null);
+	    bm1.insert(Integer.valueOf(ia[i]), null);
 	ia=new int[] { 6, 44, 10, 17, 29, 31, 48, 50, 8, 22, 23, 24, 30, 32,
 		       45, 55, 3, 37, 18 };
 	for (int i=0; i<ia.length; i++)
-	    bm2.insert(new Integer(ia[i]), null);
+	    bm2.insert(Integer.valueOf(ia[i]), null);
 
 	System.out.println(bm1.entries());
 	System.out.println(bm2.entries());
@@ -431,7 +430,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	bm2 = new BinomialHeap<Integer,Integer>(bm1);
 
 	// print sorted using extractMinimum()
-	bm1.insert(new Integer(3), null); // duplicate key.
+	bm1.insert(Integer.valueOf(3), null); // duplicate key.
 	assert bm1.size()==27;
 	while (bm1.size()>0)
 	    System.out.print(bm1.extractMinimum().getKey().toString()+" ");
@@ -462,31 +461,31 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 		    int i = 0;
 		    public boolean hasNext() { return i<el.length; }
 		    public Map.Entry<Integer,Integer> next() {
-			Integer io = new Integer(el[i++]);
+			Integer io = Integer.valueOf(el[i++]);
 			return new PairMapEntry<Integer,Integer>(io, io);
 		    }
 		};
 	    }
 	}, ic);
 	assert bm1.size()==10 && !bm1.isEmpty();
-	assert bm1.minimum().getKey().equals(new Integer(-16));
+	assert bm1.minimum().getKey().equals(Integer.valueOf(-16));
 	System.out.println(bm1);
-	bm1.insert(new Integer(-15), new Integer(-15));
+	bm1.insert(Integer.valueOf(-15), Integer.valueOf(-15));
 	assert bm1.size()==11 && !bm1.isEmpty();
-	assert bm1.minimum().getKey().equals(new Integer(-16));
+	assert bm1.minimum().getKey().equals(Integer.valueOf(-16));
 	System.out.println(bm1);
 	// now verify that we'll get all the keys out in properly sorted order
-	assert bm1.extractMinimum().getKey().equals(new Integer(-16));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-15));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-14));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-10));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-9));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-8));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-7));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-4));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-3));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-2));
-	assert bm1.extractMinimum().getKey().equals(new Integer(-1));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-16));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-15));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-14));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-10));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-9));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-8));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-7));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-4));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-3));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-2));
+	assert bm1.extractMinimum().getKey().equals(Integer.valueOf(-1));
 	assert bm1.isEmpty() && bm1.size()==0;
 
 	// now test delete, decreaseKey, and updateKey

@@ -14,8 +14,7 @@ import java.util.Set;
  * does not implement that standard {@link java.util.Set} API
  * but instead exposes the underlying functional operations.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: PersistentSet.java,v 1.8 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentSet<T>  implements Iterable<T> {
     final Node<T> root;

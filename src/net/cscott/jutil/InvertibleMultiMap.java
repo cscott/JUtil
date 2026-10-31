@@ -17,8 +17,7 @@ package net.cscott.jutil;
  * {@link InvertibleMultiMap}, 
  * <code>this.invert().invert()==this</code>.
  *
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: InvertibleMultiMap.java,v 1.3 2006-10-30 20:14:41 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public interface InvertibleMultiMap<K,V>
     extends MultiMap<K,V>, InvertibleMap<K,V> {

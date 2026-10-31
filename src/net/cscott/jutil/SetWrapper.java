@@ -8,8 +8,8 @@ import java.util.Set;
  * {@link SetWrapper} is analogous to
  * {@link CollectionWrapper}, specialized for {@link Set}s.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: SetWrapper.java,v 1.3 2006-10-30 19:58:07 cananian Exp $ */
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
+ */
 public abstract class SetWrapper<E> extends CollectionWrapper<E>
     implements Set<E> {
     /** Implementations should return the wrapped {@link Set} here. */

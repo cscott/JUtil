@@ -1,7 +1,8 @@
 This directory contains java sources for the JUtil java utility classes.
 
-This project can be build with either Eclipse or Ant.
+This project can be built with either Eclipse or Ant: `ant` builds
+jutil-<version>.jar, and `ant javadoc` builds the documentation in api/.
 
-A JDK between 1.5 and 8 is required to build JUtil 1.x; JDK 9 and later
-can't compile for Java 1.5.  The resulting jutil.jar runs on Java 1.5
-and later.
+JDK 21 or later is required to build and to run JUtil 2.x.  JUtil 1.5,
+the last release of the 1.x line, builds on JDK 1.5 through 8 and runs
+on Java 1.5 and later.

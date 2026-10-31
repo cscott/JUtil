@@ -15,8 +15,7 @@ import java.util.Set;
  * A {@link HashEnvironment} is an {@link Environment} using
  * a {@link HashMap} as the backing store.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: HashEnvironment.java,v 1.6 2006-10-30 19:58:05 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class HashEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {

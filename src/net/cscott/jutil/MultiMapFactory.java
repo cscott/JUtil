@@ -9,8 +9,7 @@ import java.util.*;
  *  {@link MultiMap}s.  Subclasses *must* implement at least one of
  *  the <code>makeMultiMap</code> methods.
  *
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapFactory.java,v 1.5 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class MultiMapFactory<K,V> extends MapFactory<K,V> {
     

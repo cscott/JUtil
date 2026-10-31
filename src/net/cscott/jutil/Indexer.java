@@ -13,8 +13,7 @@ package net.cscott.jutil;
  * data-structure needing an explict dependency on that particular
  * Factory or Object type.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: Indexer.java,v 1.2 2006-10-30 19:58:05 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class Indexer<T> {
     

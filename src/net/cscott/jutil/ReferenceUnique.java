@@ -12,7 +12,6 @@ package net.cscott.jutil;
  * automated checkers to more accurately discrimate legitimate
  * uses of <code>==</code> on objects from unsafe uses.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: ReferenceUnique.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public interface ReferenceUnique { }

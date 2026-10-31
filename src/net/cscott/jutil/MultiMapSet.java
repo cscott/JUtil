@@ -9,8 +9,7 @@ package net.cscott.jutil;
  * {@link MultiMap}.  Use the {@link MultiMap#entrySet()} method
  * of the {@link MultiMap} to get back the {@link MultiMapSet}.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: MultiMapSet.java,v 1.4 2006-10-30 20:14:41 cananian Exp $
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public interface MultiMapSet<K,V> extends MapSet<K,V> {
     public MultiMap<K,V> asMap();

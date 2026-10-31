@@ -19,8 +19,7 @@ import java.util.Set;
     a subtype of <code>SetFactory&lt;Set&lt;V&gt;,V&gt;</code>,
     even though {@link HashSet} is a subtype of {@link Set}.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: SetFactory.java,v 1.4 2006-10-30 19:58:07 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class SetFactory<V> extends CollectionFactory<V> {
     

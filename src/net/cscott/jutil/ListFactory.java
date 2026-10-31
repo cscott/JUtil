@@ -20,8 +20,7 @@ import java.util.List;
     a subtype of <code>ListFactory&lt;List&lt;V&gt;,V&gt;</code>,
     even though {@link java.util.LinkedList} is a subtype of {@link List}.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListFactory.java,v 1.6 2006-10-30 19:58:06 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class ListFactory<V> extends CollectionFactory<V> {
     
@@ -147,6 +146,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	<BR> <B>effects:</B> returns the list [ o ]
 	@deprecated Use {@link java.util.Collections#singletonList(java.lang.Object) Collections.singletonList} instead.
      */
+    @Deprecated
     public static <E> List<E> singleton(final E o) {
 	return new AbstractList<E>() {
 	    public E get(int index) {

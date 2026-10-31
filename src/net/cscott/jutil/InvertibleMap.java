@@ -17,8 +17,7 @@ import java.util.Map;
     have to be made through <code>this</code> rather than directly to
     the returned {@link MultiMap}).
 
-    @author  Felix S. Klock II <pnkfelix@mit.edu>
-    @version $Id: InvertibleMap.java,v 1.2 2006-10-30 19:58:06 cananian Exp $
+    @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
 */
 public interface InvertibleMap<K,V> extends java.util.Map<K,V> {
     /** Returns a inverted view of <code>this</code>.

@@ -13,8 +13,8 @@ import java.util.AbstractMap;
  * This class provides a skeletal implementation of the {@link MultiMap}
  * interface, to minimize the effort requires to implement this interface.
  * 
- * @author  C. Scott Ananian <cananian@alumni.princeton.edu>
- * @version $Id: AbstractMultiMap.java,v 1.5 2006-10-30 21:58:57 cananian Exp $ */
+ * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ */
 public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     implements MultiMap<K,V> {
 

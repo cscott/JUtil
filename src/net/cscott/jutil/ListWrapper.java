@@ -9,8 +9,7 @@ import java.util.List;
  * {@link ListWrapper} is an abstract class designed to make it easier
  * to write wrappers around {@link List}s.
  * 
- * @author  Felix S. Klock II <pnkfelix@mit.edu>
- * @version $Id: ListWrapper.java,v 1.4 2006-10-30 19:58:06 cananian Exp $
+ * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class ListWrapper<E> extends CollectionWrapper<E>
     implements List<E> {
