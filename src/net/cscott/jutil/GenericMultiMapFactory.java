@@ -28,6 +28,6 @@ public class GenericMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
     /** Create a new {@link GenericMultiMap}. */
     @Override
     public GenericMultiMap<K,V> makeMultiMap() {
-	return new GenericMultiMap<K,V>(mf, cf);
+	return new GenericMultiMap<>(mf, cf);
     }
 }

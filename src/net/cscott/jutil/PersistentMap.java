@@ -108,7 +108,7 @@ public class PersistentMap<K,V> implements java.io.Serializable {
     /** Cloning takes constant time, regardless of the size of the map. */
     @Override
     public PersistentMap<K,V> clone() {
-	return new PersistentMap<K,V>(root, c, allocator);
+	return new PersistentMap<>(root, c, allocator);
     }
     /** Human-readable representation of the map. */
     @Override public String toString() { return asMap().toString(); }
@@ -208,7 +208,7 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 	    @Override
 	    Node<K,V> newNode(K key, V value,
 			      Node<K,V> left, Node<K,V> right) {
-		return new Node<K,V>(key, value, left, right);
+		return new Node<>(key, value, left, right);
 	    }
 	}
     }

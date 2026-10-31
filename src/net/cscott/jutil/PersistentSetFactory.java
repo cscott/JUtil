@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentSetFactory<T> implements SetFactory<T> {
-    final Allocator<T> allocator = new Allocator<T>();
+    final Allocator<T> allocator = new Allocator<>();
     final Comparator<T> comparator;
 
     /** Creates a {@link PersistentSetFactory}. Note that the elements
@@ -200,15 +200,15 @@ public class PersistentSetFactory<T> implements SetFactory<T> {
     static class Allocator<T>
 	extends PersistentTreeNode.Allocator<Node<T>,T,T> {
 	final WeakHashMap<Node<T>,WeakReference<Node<T>>> hashConsCache =
-	    new WeakHashMap<Node<T>,WeakReference<Node<T>>>();
+	    new WeakHashMap<>();
 	@Override
 	Node<T> newNode(T key, T value,
 			Node<T> left, Node<T> right) {
 	    assert key==value;
-	    Node<T> n = new Node<T>(key, left, right);
+	    Node<T> n = new Node<>(key, left, right);
 	    WeakReference<Node<T>> nn = hashConsCache.get(n);
 	    if (nn==null)
-		hashConsCache.put(n,nn=new WeakReference<Node<T>>(n));
+		hashConsCache.put(n,nn=new WeakReference<>(n));
 	    return nn.get();
 	}
     }

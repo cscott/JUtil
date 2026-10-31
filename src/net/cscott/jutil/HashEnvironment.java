@@ -20,8 +20,8 @@ import java.util.Set;
  */
 public class HashEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
-    final Map<K,LList<V>> back = new HashMap<K,LList<V>>();
-    final List<K> scope = new ArrayList<K>();
+    final Map<K,LList<V>> back = new HashMap<>();
+    final List<K> scope = new ArrayList<>();
     int size = 0;
     
     /** Creates a {@link HashEnvironment}. */

@@ -146,7 +146,7 @@ public class IntervalTree extends RedBlackTree<IntervalTree.Interval> {
 	if (x == NIL) {
 	    return Collections.emptyIterator();
 	} else if (interval(x).overlaps(i)) {
-	    return new CombineIterator<Interval>(
+	    return new CombineIterator<>(
 		Default.singletonIterator(interval(x)),
 		allOverlapping(x.left(), i),
 		allOverlapping(x.right(), i)
@@ -154,7 +154,7 @@ public class IntervalTree extends RedBlackTree<IntervalTree.Interval> {
 	} else if (x.left() != NIL && max(x.left()) >= i.low) {
 	    // FSK: I suspect there is a asymptotically more efficient
 	    // way to handle this case, but haven't worked it out yet.
-	    return new CombineIterator<Interval>( allOverlapping(x.left(), i),
+	    return new CombineIterator<>( allOverlapping(x.left(), i),
 					allOverlapping(x.right(), i));
 	} else {
 	    // see CLR, pg. 293, Theorem 15.2, case 2. for justification. 

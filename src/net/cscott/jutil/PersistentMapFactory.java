@@ -21,7 +21,7 @@ import java.util.WeakHashMap;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentMapFactory<K,V> implements MapFactory<K,V> {
-    final Allocator<K,V> allocator = new Allocator<K,V>();
+    final Allocator<K,V> allocator = new Allocator<>();
     final Comparator<K> comparator;
 
     /** Creates a {@link PersistentMapFactory}.  Note that the keys
@@ -200,14 +200,14 @@ public class PersistentMapFactory<K,V> implements MapFactory<K,V> {
     static class Allocator<K,V>
 	extends PersistentTreeNode.Allocator<Node<K,V>,K,V> {
 	final WeakHashMap<Node<K,V>,WeakReference<Node<K,V>>> hashConsCache =
-	    new WeakHashMap<Node<K,V>,WeakReference<Node<K,V>>>();
+	    new WeakHashMap<>();
 	@Override
 	Node<K,V> newNode(K key, V value,
 			  Node<K,V> left, Node<K,V> right) {
-	    Node<K,V> n = new Node<K,V>(key, value, left, right);
+	    Node<K,V> n = new Node<>(key, value, left, right);
 	    WeakReference<Node<K,V>> nn = hashConsCache.get(n);
 	    if (nn==null)
-		hashConsCache.put(n,nn=new WeakReference<Node<K,V>>(n));
+		hashConsCache.put(n,nn=new WeakReference<>(n));
 	    return nn.get();
 	}
 

@@ -129,6 +129,22 @@ class MultiMapTest {
 	assertEquals(4, gmm.size());
     }
 
+    /** The fast addAll() of two multimaps from the same factory. */
+    @org.junit.jupiter.api.Test
+    void persistentAddAll() {
+	PersistentMultiMapFactory<String,Integer> pf =
+	    new PersistentMultiMapFactory<String,Integer>
+	    (Comparator.naturalOrder(), Comparator.naturalOrder());
+	MultiMap<String,Integer> a = pf.makeMultiMap(), b = pf.makeMultiMap();
+	a.add("a", 1); a.add("a", 2); a.add("b", 3);
+	b.add("a", 2); b.add("a", 4); b.add("c", 5);
+	assertTrue(a.addAll(b));
+	assertEquals(Map.of("a", Set.of(1, 2, 4), "b", Set.of(3),
+			    "c", Set.of(5)), contents(a));
+	assertEquals(Map.of("a", Set.of(2, 4), "c", Set.of(5)), contents(b));
+	assertFalse(a.addAll(b));
+    }
+
     /** The other default methods of {@link Map} use get(), put() and
      *  remove(), as documented. */
     @ParameterizedTest(name="{0}") @MethodSource("factories")

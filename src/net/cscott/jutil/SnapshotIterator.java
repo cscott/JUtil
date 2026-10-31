@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class SnapshotIterator<E> implements Iterator<E> {
-    final ArrayList<E> l = new ArrayList<E>();
+    final ArrayList<E> l = new ArrayList<>();
     int i = 0;
 
     /** Creates a {@link SnapshotIterator} from {@link Iterator}

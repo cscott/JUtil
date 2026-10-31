@@ -55,13 +55,13 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     /** Insert an entry into the heap. */
     @Override
     public Map.Entry<K,V> insert(K key, V value) {
-	Entry<K,V> e = new Entry<K,V>(key, value);
+	Entry<K,V> e = new Entry<>(key, value);
 	insert(e);
 	return e;
     }
     @Override
     protected void insert(Map.Entry<K,V> me) {
-	Node<K,V> x = new Node<K,V>((Entry<K,V>)me);
+	Node<K,V> x = new Node<>((Entry<K,V>)me);
 	// THESE ARE DONE IN THE CONSTRUCTOR.
 	// x.degree=0; x.parent=x.child=null;
 	// x.left = x.right = x;  x.mark = false;

@@ -38,7 +38,7 @@ public class AggregateMapFactory<K,V> implements MapFactory<K,V>,
     }
     @SuppressWarnings("serial") // serializable if its contents are
     private final Map<Map.Entry<ID<K,V>,K>,DoublyLinkedList<K,V>> m =
-	new HashMap<Map.Entry<ID<K,V>,K>,DoublyLinkedList<K,V>>();
+	new HashMap<>();
     /** Returns the key of the backing store for <code>key</code> in
      *  the submap <code>id</code>. */
     private static <K,V,T> Map.Entry<ID<K,V>,T> storeKey(ID<K,V> id, T key) {
@@ -62,8 +62,8 @@ public class AggregateMapFactory<K,V> implements MapFactory<K,V>,
      *  finalizer thread. */
     private void expunge() {
 	if (collected==null) {
-	    collected = new ReferenceQueue<Object>();
-	    refs = new HashSet<MapRef<K,V>>();
+	    collected = new ReferenceQueue<>();
+	    refs = new HashSet<>();
 	}
 	for (Reference<?> r; (r = collected.poll()) != null; ) {
 	    @SuppressWarnings("unchecked")
@@ -90,7 +90,7 @@ public class AggregateMapFactory<K,V> implements MapFactory<K,V>,
 	return am;
     }
     class AggregateMap extends AbstractMap<K,V> {
-	final ID<K,V> IDENTITY = new ID<K,V>();
+	final ID<K,V> IDENTITY = new ID<>();
 	int size=0;
 
 	AggregateMap(Map<? extends K,? extends V> mm) { putAll(mm); }
@@ -116,7 +116,7 @@ public class AggregateMapFactory<K,V> implements MapFactory<K,V>,
 	@Override
 	public V put(K key, V value) {
 	    expunge();
-	    DoublyLinkedList<K,V> entry=new DoublyLinkedList<K,V>(key, value);
+	    DoublyLinkedList<K,V> entry=new DoublyLinkedList<>(key, value);
 	    DoublyLinkedList<K,V> old=m.put(storeKey(IDENTITY,key),entry);
 	    if (old!=null) unlink(old);
 	    link(entry);

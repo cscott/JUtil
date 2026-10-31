@@ -95,7 +95,7 @@ public class PersistentSet<T>  implements Iterable<T> {
     /** Cloning takes constant time, regardless of the size of the set. */
     @Override
     public PersistentSet<T> clone() {
-	return new PersistentSet<T>(root, c, allocator);
+	return new PersistentSet<>(root, c, allocator);
     }
    
     /** Human-readable representation of the set. */
@@ -184,7 +184,7 @@ public class PersistentSet<T>  implements Iterable<T> {
 	    @Override
 	    Node<T> newNode(T key, T value, Node<T> left, Node<T> right) {
 		// ignore value.
-		return new Node<T>(key, left, right);
+		return new Node<>(key, left, right);
 	    }
 	}
     }

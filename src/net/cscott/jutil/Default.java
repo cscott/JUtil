@@ -121,7 +121,7 @@ public abstract class Default  {
      */
     @Deprecated
     public static final <E> SortedSet<E> EMPTY_SET() {
-	return new EmptySortedSet<E>();
+	return new EmptySortedSet<>();
     }
     /** Implementation of an immutable empty set. */
     private static class EmptySet<E> implements Set<E>, java.io.Serializable {
@@ -200,7 +200,7 @@ public abstract class Default  {
      */
     @Deprecated
     public static final <K,V> SortedMap<K,V> EMPTY_MAP() {
-	return new EmptySortedMap<K,V>();
+	return new EmptySortedMap<>();
     }
     /** Implementation of an immutable empty map. */
     private static class EmptyMap<K,V>
@@ -268,7 +268,7 @@ public abstract class Default  {
     /** An empty multi-map, parameterized to play nicely with Java's
      *  type system. */
     public static final <K,V> MultiMap<K,V> EMPTY_MULTIMAP() {
-	return new EmptyMultiMap<K,V>();
+	return new EmptyMultiMap<>();
     }
     /** Implementation of an immutable empty multimap. */
     private static class EmptyMultiMap<K,V> extends EmptyMap<K,V>
@@ -364,7 +364,7 @@ public abstract class Default  {
     public static <A,B> PairList<A,B> pair(final A left, final B right) {
 	// this can't be an anonymous class because we want to make it
 	// serializable.
-	return new PairList<A,B>(left, right);
+	return new PairList<>(left, right);
     }
     /** Pairs, implemented as a {@link List}.
      *  The {@link PairList} implements <code>hashCode()</code>
@@ -433,6 +433,6 @@ public abstract class Default  {
      */
     @Deprecated(since="2.0")
     public static <K,V> Map.Entry<K,V> entry(final K key, final V value) {
-	return new AbstractMap.SimpleImmutableEntry<K,V>(key, value);
+	return new AbstractMap.SimpleImmutableEntry<>(key, value);
     }
 }

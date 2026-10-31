@@ -28,8 +28,8 @@ import java.util.WeakHashMap;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
-    final MapAllocator<K,V> mapAllocator = new MapAllocator<K,V>();
-    final SetAllocator<V> setAllocator = new SetAllocator<V>();
+    final MapAllocator<K,V> mapAllocator = new MapAllocator<>();
+    final SetAllocator<V> setAllocator = new SetAllocator<>();
     final Comparator<K> keyComparator;
     final Comparator<V> valueComparator;
 
@@ -145,15 +145,11 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 	    MultiMapImpl mmi = (MultiMapImpl) mm;
 	    if (this.factory() != mmi.factory()) return super.addAll(mm);
 	    // fast impl.
-	    MapNode.Merger<SetNode<V>> merger=new MapNode.Merger<SetNode<V>>(){
-		@Override
-		public SetNode<V> merge(SetNode<V> oldv, SetNode<V> newv) {
-		    return SetNode.putAll(oldv, newv,
-					  valueComparator, setAllocator);
-		}
-	    };
 	    MapNode<K,V> np= MapNode.putAll(this.root, mmi.root, keyComparator,
-					    mapAllocator, merger);
+					    mapAllocator, (oldv, newv) ->
+					    SetNode.putAll(oldv, newv,
+							   valueComparator,
+							   setAllocator));
 	    if (np==root) return false;
 	    this.root = np;
 	    return true;
@@ -413,14 +409,14 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
     static class MapAllocator<K,V>
 	extends PersistentTreeNode.Allocator<MapNode<K,V>,K,SetNode<V>> {
 	final WeakHashMap<MapNode<K,V>,WeakReference<MapNode<K,V>>> hashConsCache =
-	    new WeakHashMap<MapNode<K,V>,WeakReference<MapNode<K,V>>>();
+	    new WeakHashMap<>();
 	@Override
 	MapNode<K,V> newNode(K key, SetNode<V> value,
 			     MapNode<K,V> left, MapNode<K,V> right) {
-	    MapNode<K,V> n = new MapNode<K,V>(key, value, left, right);
+	    MapNode<K,V> n = new MapNode<>(key, value, left, right);
 	    WeakReference<MapNode<K,V>> nn = hashConsCache.get(n);
 	    if (nn==null)
-		hashConsCache.put(n,nn=new WeakReference<MapNode<K,V>>(n));
+		hashConsCache.put(n,nn=new WeakReference<>(n));
 	    return nn.get();
 	}
 
@@ -433,15 +429,15 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
     static class SetAllocator<V>
 	extends PersistentTreeNode.Allocator<SetNode<V>,V,V> {
 	final WeakHashMap<SetNode<V>,WeakReference<SetNode<V>>> hashConsCache =
-	    new WeakHashMap<SetNode<V>,WeakReference<SetNode<V>>>();
+	    new WeakHashMap<>();
 	@Override
 	SetNode<V> newNode(V key, V value,
 			   SetNode<V> left, SetNode<V> right) {
 	    // ignore value.
-	    SetNode<V> n = new SetNode<V>(key, left, right);
+	    SetNode<V> n = new SetNode<>(key, left, right);
 	    WeakReference<SetNode<V>> nn = hashConsCache.get(n);
 	    if (nn==null)
-		hashConsCache.put(n,nn=new WeakReference<SetNode<V>>(n));
+		hashConsCache.put(n,nn=new WeakReference<>(n));
 	    return nn.get();
 	}
 

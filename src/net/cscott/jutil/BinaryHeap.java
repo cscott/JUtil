@@ -47,7 +47,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	// initialize comparator
 	c = entryComparator(); // cache in field.
 	// initialize A
-	A = new ArrayList<Entry<K,V>>(1+collection.size());
+	A = new ArrayList<>(1+collection.size());
 	A.add(null); /* element zero is reserved */
 	// use BUILD-HEAP
 	union(collection);
@@ -56,7 +56,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     @Override
     public Map.Entry<K,V> insert(K key, V value) {
 	int index=A.size();
-	Entry<K,V> e=new Entry<K,V>(key, value, index);
+	Entry<K,V> e=new Entry<>(key, value, index);
 	A.add(e);
 	upheap(index);
 	if (debug) checkHeap();

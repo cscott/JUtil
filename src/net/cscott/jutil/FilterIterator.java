@@ -59,14 +59,14 @@ public class FilterIterator<A,B> implements Iterator<B> {
      *  @since 2.0 */
     public static <A> FilterIterator<A,A> filter(Iterator<? extends A> i,
 						 Predicate<? super A> filter) {
-	return new FilterIterator<A,A>(i, filter, Function.identity());
+	return new FilterIterator<>(i, filter, Function.identity());
     }
     /** Returns an {@link Iterator} over <code>map.apply(o)</code> for
      *  each element <code>o</code> of <code>i</code>.
      *  @since 2.0 */
     public static <A,B> FilterIterator<A,B> map(Iterator<? extends A> i,
 						Function<? super A,? extends B> map) {
-	return new FilterIterator<A,B>(i, o -> true, map);
+	return new FilterIterator<>(i, o -> true, map);
     }
 
     private A next = null;

@@ -20,7 +20,7 @@ import java.util.Set;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class DisjointSet<E>  {
-    private final Map<E,Node<E>> elmap = new HashMap<E,Node<E>>();
+    private final Map<E,Node<E>> elmap = new HashMap<>();
 
     /** Creates a {@link DisjointSet}. */
     public DisjointSet() { }
@@ -55,7 +55,7 @@ public class DisjointSet<E>  {
     // these are the routines according to CLR
     private Node<E> _make_set(E o) {
 	assert !elmap.containsKey(o);
-	Node<E> x = new Node<E>(o);
+	Node<E> x = new Node<>(o);
 	elmap.put(o, x);
 	return x;
     }
@@ -120,7 +120,7 @@ public class DisjointSet<E>  {
     /** Returns a human-readable representation of the DisjointSet. */
     @Override
     public String toString() {
-	MultiMap<E,E> mm = new GenericMultiMap<E,E>();
+	MultiMap<E,E> mm = new GenericMultiMap<>();
 	for (Node<E> n : elmap.values()) {
 	    Node<E> r = _find_set(n);
 	    if (n!=r) mm.add(r.element, n.element);

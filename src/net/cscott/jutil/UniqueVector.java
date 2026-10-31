@@ -33,10 +33,10 @@ public class UniqueVector<E> extends AbstractList<E>
 
   /** Constructs an empty UniqueVector. */
   public UniqueVector() 
-  { vect = new ArrayList<E>(); uniq = new HashMap<E,Integer>(); }
+  { vect = new ArrayList<>(); uniq = new HashMap<>(); }
   /** Constructs an empty UniqueVector with the specified initial capacity. */
   public UniqueVector(int initialCapacity) 
-  { vect = new ArrayList<E>(initialCapacity); uniq=new HashMap<E,Integer>(initialCapacity); }
+  { vect = new ArrayList<>(initialCapacity); uniq=new HashMap<>(initialCapacity); }
   /** Constructs a vector containing the elements of the specified 
    *  {@link Collection}, in the order they are returned by the
    *  collection's iterator.  Duplicate elements are skipped. */
@@ -100,7 +100,7 @@ public class UniqueVector<E> extends AbstractList<E>
    */
   @Override
   public synchronized UniqueVector<E> clone() throws CloneNotSupportedException {
-    return new UniqueVector<E>(this);
+    return new UniqueVector<>(this);
   }
   /**
    * Tests if the specified object is a component in this vector.
@@ -351,10 +351,8 @@ public class UniqueVector<E> extends AbstractList<E>
   public int hashCode() {
       if (!asSet) return super.hashCode();
       int hc=0;
-      for (Iterator<E> it=iterator(); it.hasNext(); ) {
-	  E elem = it.next();
+      for (E elem : this)
 	  hc += (elem==null) ? 0 : elem.hashCode();
-      }
       return hc;
   }
   @Override

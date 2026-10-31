@@ -101,9 +101,9 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     private void union(Collection<? extends Map.Entry<? extends K,? extends V>> coll) {
 	// add an n-entry set to an m-entry heap in O(n+lg(n+m)) time.
 	// BUILD-HEAP in O(n) time by successive unions.
-	ArrayList<BinomialHeap<K,V>> hal = new ArrayList<BinomialHeap<K,V>>(coll.size());
+	ArrayList<BinomialHeap<K,V>> hal = new ArrayList<>(coll.size());
 	for (Map.Entry<? extends K,? extends V> e : coll) {
-	    BinomialHeap<K,V> bh = new BinomialHeap<K,V>(this.comparator());
+	    BinomialHeap<K,V> bh = new BinomialHeap<>(this.comparator());
 	    bh.insert(e.getKey(), e.getValue());
 	    hal.add(bh);
 	}
@@ -162,14 +162,14 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     @Override
     public Map.Entry<K,V> insert(K key, V value) { // binomial-heap-insert
 	if (debug) checkHeap();
-	Entry<K,V> e = new Entry<K,V>(key, value);
+	Entry<K,V> e = new Entry<>(key, value);
 	insert(e);
 	return e;
     }
     @Override
     protected void insert(Map.Entry<K,V> me) {
 	Entry<K,V> e = (Entry<K,V>) me;
-	Node<K,V> x = new Node<K,V>(e);
+	Node<K,V> x = new Node<>(e);
 	union(x);
 	if (debug) checkHeap();
     }
@@ -301,7 +301,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
      *  has.  O(n) time. */
     @Override
     public BinomialHeap<K,V> clone() {
-	BinomialHeap<K,V> bm=new BinomialHeap<K,V>(comparator());
+	BinomialHeap<K,V> bm=new BinomialHeap<>(comparator());
 	bm.head=_clone(null, this.head);
 	if (debug) { checkHeap(head, c); checkHeap(bm.head, bm.c); }
 	return bm;
@@ -309,7 +309,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     /** Recursively clone a node. */
     private Node<K,V> _clone(Node<K,V> parent, Node<K,V> n) {
 	if (n==null) return null;
-	Node<K,V> nn = new Node<K,V>(new Entry<K,V>(n.entry.getKey(), n.entry.getValue()));
+	Node<K,V> nn = new Node<>(new Entry<K,V>(n.entry.getKey(), n.entry.getValue()));
 	nn.degree = n.degree;
 	nn.parent = parent;
 	nn.child = _clone(nn, n.child);

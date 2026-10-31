@@ -18,7 +18,7 @@ import java.util.Set;
 // on undoToMark().
 public class PersistentEnvironment<K,V> extends AbstractMap<K,V>
     implements Environment<K,V> {
-    PersistentMap<K,V> m = new PersistentMap<K,V>();
+    PersistentMap<K,V> m = new PersistentMap<>();
     
     /** Creates a {@link PersistentEnvironment} with no mappings. */
     public PersistentEnvironment() { }
@@ -30,7 +30,7 @@ public class PersistentEnvironment<K,V> extends AbstractMap<K,V>
 
     // ------------- MAP INTERFACE ---------------
     /** Remove all mappings from this map. */
-    @Override public void clear() { this.m = new PersistentMap<K,V>(); }
+    @Override public void clear() { this.m = new PersistentMap<>(); }
     /** Returns <code>true</code> if this map contains no key-value mappings.*/
     @Override public boolean isEmpty() { return m.isEmpty(); }
     /** Returns the numer of key-value mappings in this map. */

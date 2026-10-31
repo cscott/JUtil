@@ -21,7 +21,7 @@ public class LinearMap<K,V> extends AbstractMap<K,V> {
 
     /** Creates a {@link LinearMap}. */
     public LinearMap() {
-        set = new LinearSet<Map.Entry<K,V>>();
+        set = new LinearSet<>();
     }
 
     /** Creates a {@link LinearMap} with the same mappings as
@@ -35,7 +35,7 @@ public class LinearMap<K,V> extends AbstractMap<K,V> {
 
     /** Creates a {@link LinearMap} with specified capacity. */
     public LinearMap(int capacity) {
-        set = new LinearSet<Map.Entry<K,V>>(capacity);
+        set = new LinearSet<>(capacity);
     }
 
     @Override

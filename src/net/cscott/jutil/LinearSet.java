@@ -107,7 +107,7 @@ public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-	HashSet<E> s = new HashSet<E>(this.size() + c.size());
+	HashSet<E> s = new HashSet<>(this.size() + c.size());
 	s.addAll(this);
 	boolean r = s.addAll(c);
 	this.list = lf.makeList(s);
@@ -127,6 +127,6 @@ public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 
     @Override
     public LinearSet<E> clone() {
-	return new LinearSet<E>(this);
+	return new LinearSet<>(this);
     }
 }

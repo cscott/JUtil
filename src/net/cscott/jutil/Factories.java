@@ -43,7 +43,7 @@ public final class Factories {
 	return new SerialMapFactory<K,V>() {
 	    @Override
 	    public HashMap<K,V> makeMap(Map<? extends K,? extends V> map) {
-		return new HashMap<K,V>(map);
+		return new HashMap<>(map);
 	    }
 	};
     }
@@ -58,7 +58,7 @@ public final class Factories {
 	return new SerialMapFactory<K,V>() {
 	    @Override
 	    public LinkedHashMap<K,V> makeMap(Map<? extends K,? extends V> map) {
-		return new LinkedHashMap<K,V>(map);
+		return new LinkedHashMap<>(map);
 	    }
 	};
     }
@@ -69,7 +69,7 @@ public final class Factories {
         return new SerialMapFactory<K,V>() {
             @Override
             public EnumMap<K,V> makeMap(Map<? extends K,? extends V> map) {
-                EnumMap<K,V> m = new EnumMap<K,V>(enumClass);
+                EnumMap<K,V> m = new EnumMap<>(enumClass);
                 m.putAll(map);
                 return m;
             }
@@ -86,11 +86,11 @@ public final class Factories {
 	return new SerialSetFactory<V>() {
 	    @Override
 	    public HashSet<V> makeSet(Collection<? extends V> c) {
-		return new HashSet<V>(c);
+		return new HashSet<>(c);
 	    }
 	    @Override
 	    public HashSet<V> makeSet(int i) {
-		return new HashSet<V>(i);
+		return new HashSet<>(i);
 	    }
 	};
     }
@@ -105,11 +105,11 @@ public final class Factories {
 	return new SerialSetFactory<V>() {
 	    @Override
 	    public LinkedHashSet<V> makeSet(Collection<? extends V> c) {
-		return new LinkedHashSet<V>(c);
+		return new LinkedHashSet<>(c);
 	    }
 	    @Override
 	    public LinkedHashSet<V> makeSet(int i) {
-		return new LinkedHashSet<V>(i);
+		return new LinkedHashSet<>(i);
 	    }
 	};
     }
@@ -149,11 +149,11 @@ public final class Factories {
 	return new SerialSetFactory<V>() {
 	    @Override
 	    public WorkSet<V> makeSet(Collection<? extends V> c) {
-		return new WorkSet<V>(c);
+		return new WorkSet<>(c);
 	    }
 	    @Override
 	    public WorkSet<V> makeSet(int i) {
-		return new WorkSet<V>(i);
+		return new WorkSet<>(i);
 	    }
 	};
     }
@@ -171,16 +171,16 @@ public final class Factories {
 	public LinearSet<V> makeSet(Collection<? extends V> c) {
 	    LinearSet<V> ls;
 	    if (c instanceof Set) {
-		ls = new LinearSet<V>((Set<? extends V>)c);
+		ls = new LinearSet<>((Set<? extends V>)c);
 	    } else {
-		ls = new LinearSet<V>(c.size());
+		ls = new LinearSet<>(c.size());
 		ls.addAll(c);
 	    }
 	    return ls;
 	}
 	@Override
 	public LinearSet<V> makeSet(int i) {
-	    return new LinearSet<V>(i);
+	    return new LinearSet<>(i);
 	}
       };
     }
@@ -195,7 +195,7 @@ public final class Factories {
 	return new SerialSetFactory<V>() {
 	    @Override
 	    public TreeSet<V> makeSet(Collection<? extends V> c) {
-		return new TreeSet<V>(c);
+		return new TreeSet<>(c);
 	    }
 	};
     }
@@ -203,7 +203,7 @@ public final class Factories {
 	return new SerialSetFactory<V>() {
 	    @Override
 	    public TreeSet<V> makeSet(Collection<? extends V> c) {
-		TreeSet<V> result = new TreeSet<V>(comp);
+		TreeSet<V> result = new TreeSet<>(comp);
 		result.addAll(c);
 		return result;
 	    }
@@ -220,7 +220,7 @@ public final class Factories {
 	return new SerialMapFactory<K,V>() {
 	    @Override
 	    public TreeMap<K,V> makeMap(Map<? extends K,? extends V> map) {
-		return new TreeMap<K,V>(map);
+		return new TreeMap<>(map);
 	    }
 	};
     }
@@ -228,7 +228,7 @@ public final class Factories {
 	return new SerialMapFactory<K,V>() {
 	    @Override
 	    public TreeMap<K,V> makeMap(Map<? extends K,? extends V> map) {
-		TreeMap<K,V> result = new TreeMap<K,V>(comp);
+		TreeMap<K,V> result = new TreeMap<>(comp);
 		result.putAll(map);
 		return result;
 	    }
@@ -245,7 +245,7 @@ public final class Factories {
 	return new SerialListFactory<V>() {
 	    @Override
 	    public LinkedList<V> makeList(Collection<? extends V> c) {
-		return new LinkedList<V>(c);
+		return new LinkedList<>(c);
 	    }
 	};
     }
@@ -261,11 +261,11 @@ public final class Factories {
 	return new SerialListFactory<V>() {
 	    @Override
 	    public ArrayList<V> makeList(Collection<? extends V> c) {
-		return new ArrayList<V>(c);
+		return new ArrayList<>(c);
 	    }
 	    @Override
 	    public ArrayList<V> makeList(int i) {
-		return new ArrayList<V>(i);
+		return new ArrayList<>(i);
 	    }
 	};
     }

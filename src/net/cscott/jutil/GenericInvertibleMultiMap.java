@@ -30,7 +30,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     }
     private GenericInvertibleMultiMap(MultiMap<K,V> map, MultiMap<V,K> imap) {
 	this.map = map; this.imap = imap;
-	this.inverse = new GenericInvertibleMultiMap<V,K>(imap, map, this);
+	this.inverse = new GenericInvertibleMultiMap<>(imap, map, this);
     }
     
     /* The same factory makes both the map and its inverse, which have
@@ -273,13 +273,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
     }
     @Override
     public boolean retainAll(K key, Collection<?> values) {
-	boolean changed = false;
-	for (Iterator<V> it=this.getValues(key).iterator(); it.hasNext(); )
-	    if (!values.contains(it.next())) {
-		it.remove();
-		changed = true;
-	    }
-	return changed;
+	return this.getValues(key).removeIf(v -> !values.contains(v));
     }
     @Override public int size() { return map.size(); }
     @Override public String toString() { return map.toString(); }

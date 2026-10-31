@@ -58,23 +58,23 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
     /** Creates a new, empty {@link WorkSet} with a default capacity
      *  and load factor. */
     public WorkSet() {
-	hm = new HashMap<E,EntryList<E>>();
+	hm = new HashMap<>();
     }
     /** Constructs a new, empty {@link WorkSet} with the specified
      *  initial capacity and default load factor. */
     public WorkSet(int initialCapacity) {
-	hm = new HashMap<E,EntryList<E>>(initialCapacity);
+	hm = new HashMap<>(initialCapacity);
     }
     /** Constructs a new, empty {@link WorkSet} with the specified
      *  initial capacity and the specified load factor. */
     public WorkSet(int initialCapacity, float loadFactor) {
-	hm = new HashMap<E,EntryList<E>>(initialCapacity, loadFactor);
+	hm = new HashMap<>(initialCapacity, loadFactor);
     }
     /** Constructs a new {@link WorkSet} with the contents of the
      *  specified {@link Collection}. */
     public WorkSet(java.util.Collection<? extends E> c) {
 	// make hash map about twice as big as the collection.
-	hm = new HashMap<E,EntryList<E>>(Math.max(2*c.size(),11));
+	hm = new HashMap<>(Math.max(2*c.size(),11));
 	addAll(c);
     }
 
@@ -86,7 +86,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	assert isValid();
 	if (o==null) throw new NullPointerException();
 	if (hm.containsKey(o)) return false;
-	EntryList<E> nel = new EntryList<E>(o);
+	EntryList<E> nel = new EntryList<>(o);
 	listhead.add(nel);
 	EntryList<E> old = hm.put(o, nel);
 	assert old==null : old;
@@ -101,7 +101,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	assert isValid();
 	if (o==null) throw new NullPointerException();
 	if (hm.containsKey(o)) return false;
-	EntryList<E> nel = new EntryList<E>(o);
+	EntryList<E> nel = new EntryList<>(o);
 	listfoot.prev.add(nel);
 	EntryList<E> old = hm.put(o, nel);
 	assert old==null : old;
@@ -281,8 +281,8 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	}
 	// return a list with only a header and footer node.
 	static <T> EntryList<T> init() {
-	    EntryList<T> header = new EntryList<T>(null);
-	    EntryList<T> footer = new EntryList<T>(null);
+	    EntryList<T> header = new EntryList<>(null);
+	    EntryList<T> footer = new EntryList<>(null);
 	    header.next = footer;
 	    footer.prev = header;
 	    return header;

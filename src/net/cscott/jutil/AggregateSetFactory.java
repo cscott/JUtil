@@ -29,7 +29,7 @@ public class AggregateSetFactory<V> implements SetFactory<V>,
     private static final long serialVersionUID = 1L;
     @SuppressWarnings("serial") // serializable if its contents are
     private final Map<EntryList<V>,EntryList<V>> m =
-	new HashMap<EntryList<V>,EntryList<V>>();
+	new HashMap<>();
     /** The subsets that are garbage, queued by the garbage collector. */
     private transient ReferenceQueue<Object> collected;
     /** Keeps the {@link SetRef}s reachable until they are queued. */
@@ -48,8 +48,8 @@ public class AggregateSetFactory<V> implements SetFactory<V>,
      *  finalizer thread. */
     private void expunge() {
 	if (collected==null) {
-	    collected = new ReferenceQueue<Object>();
-	    refs = new HashSet<SetRef<V>>();
+	    collected = new ReferenceQueue<>();
+	    refs = new HashSet<>();
 	}
 	for (Reference<?> r; (r = collected.poll()) != null; ) {
 	    @SuppressWarnings("unchecked")
@@ -80,7 +80,7 @@ public class AggregateSetFactory<V> implements SetFactory<V>,
     private class AggregateSet extends AbstractSet<V> {
 	// list header is the IDENTITY object for the set.
 	// this is also the backing store for efficient iteration.
-	final ID<V> IDENTITY = new ID<V>();
+	final ID<V> IDENTITY = new ID<>();
 	int size=0;
 
 	AggregateSet(Collection<? extends V> c) {
@@ -89,7 +89,7 @@ public class AggregateSetFactory<V> implements SetFactory<V>,
 	@Override
 	public boolean add(V o) {
 	    expunge();
-	    EntryList<V> entry = new EntryList<V>(IDENTITY, o);
+	    EntryList<V> entry = new EntryList<>(IDENTITY, o);
 	    if (m.containsKey(entry)) return false;
 	    IDENTITY.add(entry);
 	    m.put(entry, entry);
@@ -100,7 +100,7 @@ public class AggregateSetFactory<V> implements SetFactory<V>,
 	 *  this set, to look it up in the backing store. */
 	@SuppressWarnings("unchecked") // only equals() and hashCode() see o.
 	private EntryList<V> probe(Object o) {
-	    return new EntryList<V>(IDENTITY, (V) o);
+	    return new EntryList<>(IDENTITY, (V) o);
 	}
 	@Override
 	public boolean contains(Object o) {

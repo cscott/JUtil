@@ -5,6 +5,7 @@ package net.cscott.jutil;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.function.BinaryOperator;
 /**
  * {@link PersistentTreeNode}s are nodes of a persistent randomized
  * search tree.  This is the representation from: <cite>
@@ -213,7 +214,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 			      NodePair<N,K,V> partition
 			      (K key, N node, Comparator<K> c,
 			       Allocator<N,K,V> allocator) {
-	if (node==null) return new NodePair<N,K,V>(null, null);
+	if (node==null) return new NodePair<>(null, null);
 	int keycmp = c.compare(key, node.key);
 	if (keycmp < 0) {
 	    NodePair<N,K,V> np = partition(key, node.left, c, allocator);
@@ -252,9 +253,6 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 			   left.left, merge(left.right, right, c, allocator),
 			   allocator);
     }
-    static abstract class Merger<V> {
-	public abstract V merge(V origValue, V newValue);
-    }
     /** Merge trees with possibly overlapping sets of keys.  The value
      *  from <code>newNode</code> is preferred in case both
      *  <code>origNode</code> and <code>newNode</code> contain the same
@@ -270,13 +268,11 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
      *  key. */
     static <N extends PersistentTreeNode<N,K,V>,K,V>
 		      N putAll(N origNode, N newNode, Comparator<K> c,
-			       Allocator<N,K,V> allocator, Merger<V> merger) {
+			       Allocator<N,K,V> allocator, BinaryOperator<V> merger) {
 	if (origNode==null) return newNode;
 	if (newNode==null) return origNode;
 	// fill in missing merger.
-	if (merger==null) merger = new Merger<V>() {
-	    @Override public V merge(V origValue, V newValue) { return newValue; }
-	};
+	if (merger==null) merger = (origValue, newValue) -> newValue;
 	// okay, compare origNode and newNode.
 	int keycmp = c.compare(origNode.key, newNode.key);
 	if (keycmp==0) {
@@ -284,7 +280,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	    // and then finish the putAll
 	    return putAll(merge(origNode.left, origNode.right, c, allocator),
 			  newNode(newNode, newNode.key,
-				  merger.merge(origNode.getValue(),
+				  merger.apply(origNode.getValue(),
 					       newNode.getValue()),
 				  newNode.left, newNode.right, allocator),
 			  c, allocator, merger);
@@ -315,7 +311,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     /** Define an iterator over a tree (in tree order). */
     public static <N extends PersistentTreeNode<N,K,V>,K,V>
 			     Iterator<N> iterator(N root) {
-	return new NodeIterator<N,K,V>(root);
+	return new NodeIterator<>(root);
     }
     /** An iterator class over a tree of {@link PersistentTreeNode}s. */
     private static class NodeIterator<N extends PersistentTreeNode<N,K,V>,K,V>
@@ -323,7 +319,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	NodeList<N,K,V> stack = null;
 	NodeIterator(N root) {
 	    for (N n=root; n!=null; n=n.left)
-		stack = new NodeList<N,K,V>(n, stack);
+		stack = new NodeList<>(n, stack);
 	}
 	@Override public boolean hasNext() { return stack!=null; }
 	@Override
@@ -332,7 +328,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	    stack = stack.tail;
 	    // now recurse down the left side of the right-hand node
 	    for (N nn=n.right; nn!=null; nn=nn.left)
-		stack = new NodeList<N,K,V>(nn, stack);
+		stack = new NodeList<>(nn, stack);
 	    // done.
 	    return n;
 	}

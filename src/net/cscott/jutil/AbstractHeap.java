@@ -25,7 +25,7 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     protected AbstractHeap(Comparator<? super K> c) {
 	if (c==null) c = Default.nullsFirst();
 	this.keyComparator = c; // should never be null, JDK1.1 hack or no.
-	this.entryComparator = new EntryComparator<K,V>(c);
+	this.entryComparator = new EntryComparator<>(c);
     }
 
     // abstract methods:

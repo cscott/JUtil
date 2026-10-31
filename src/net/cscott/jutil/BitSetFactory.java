@@ -55,7 +55,7 @@ public class BitSetFactory<V> implements SetFactory<V> {
     public BitSetFactory(final Collection<V> universe, final Indexer<V> indexer) {
         final Iterator<V> vals = universe.iterator();
 	this.indexer = indexer;
-	this.universe = new HashSet<V>(universe);
+	this.universe = new HashSet<>(universe);
 	int max = 0;
 	while(vals.hasNext()) {
 	    int i = indexer.getID(vals.next());
@@ -72,10 +72,10 @@ public class BitSetFactory<V> implements SetFactory<V> {
 	efficient iteration over sets.
     */
     public BitSetFactory(final Collection<V> universe) {
-	final HashMap<V,Integer> obj2int = new HashMap<V,Integer>();
-	final ArrayList<V> int2obj = new ArrayList<V>();
+	final HashMap<V,Integer> obj2int = new HashMap<>();
+	final ArrayList<V> int2obj = new ArrayList<>();
 	final Iterator<V> iter = universe.iterator();
-	this.universe = new HashSet<V>(universe);
+	this.universe = new HashSet<>(universe);
 	int i;
 	for(i=0; iter.hasNext(); i++) {
 	    V o = iter.next();
@@ -107,7 +107,7 @@ public class BitSetFactory<V> implements SetFactory<V> {
     */ 
     @Override
     public BitStringSet<V> makeSet(Collection<? extends V> c) {
-	BitStringSet<V> bss = new BitStringSet<V>(bitStringSize, this);
+	BitStringSet<V> bss = new BitStringSet<>(bitStringSize, this);
 	bss.addAll(c);
 	return bss;
     }
@@ -216,7 +216,7 @@ public class BitSetFactory<V> implements SetFactory<V> {
 	
 	@Override
 	public BitStringSet<V> clone() {
-	    return new BitStringSet<V>(this);
+	    return new BitStringSet<>(this);
 	}
 
 	@Override
