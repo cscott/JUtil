@@ -43,7 +43,7 @@
 </target>
 
 <!-- bundle up all files for distribution -->
-<property name="version" value="1.4" />
+<property name="version" value="1.5" />
 <property name="package" value="jutil" />
 <property name="package_topdir" value="net/cscott/jutil" />
 
