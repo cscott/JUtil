@@ -77,6 +77,15 @@
 * Every serializable class declares its `serialVersionUID`.  Objects
   serialized by JUtil 1.x, other than a `Default.PairList`, cannot be
   read by 2.0.
+* Heaps take a `Comparator<? super K>`, so a heap of `Integer` keys
+  can be ordered by a `Comparator<Number>` or `Comparator<Object>`.
+  `Heap.comparator()` returns a `Comparator<? super K>`: code which
+  assigns it to a `Comparator<K>` no longer compiles.
+* `Heap` is `Iterable` over its entries, in no particular order.
+* Fixed: `BinomialHeap.union()` and `FibonacciHeap.union()` overflowed
+  the stack when given a heap of their own class with an equal
+  comparator, and `BinaryHeap.union()` did not empty the heap it was
+  given.
 
 ## 1.5 (2026-10-30)
 

@@ -17,12 +17,12 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     /** A comparator for the keys in {@link java.util.Map.Entry}s, based
      *  on the key comparator given to the constructor.  But
      *  {@link #keyComparator} is never null! */
-    private final Comparator<K> keyComparator;
+    private final Comparator<? super K> keyComparator;
     /** A comparator for {@link java.util.Map.Entry}s, based on the
      *  key comparator given to the constructor. */
     private final EntryComparator<K,V> entryComparator;
     /** Sole constructor, for invocation by subclass constructors. */
-    protected AbstractHeap(Comparator<K> c) {
+    protected AbstractHeap(Comparator<? super K> c) {
 	if (c==null) c = Default.nullsFirst();
 	this.keyComparator = c; // should never be null, JDK1.1 hack or no.
 	this.entryComparator = new EntryComparator<K,V>(c);
@@ -83,18 +83,18 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     @Override public String toString() { return entries().toString(); }
     /** Returns the comparator used to compare keys in this {@link Heap},
      *  or <code>null</code> if the keys' natural ordering is used. */
-    @Override public Comparator<K> comparator() { return entryComparator.cc; }
+    @Override public Comparator<? super K> comparator() { return entryComparator.cc; }
     /** Returns the comparator used to compare keys in this {@link Heap}.
      *  <strong>Will never return <code>null</code>.</strong> */
-    protected Comparator<K> keyComparator() { return keyComparator; }
+    protected Comparator<? super K> keyComparator() { return keyComparator; }
     /** Returns a comparator which can be used to compare
      *  {@link java.util.Map.Entry}s. Will never return <code>null</code>. */
     protected Comparator<Map.Entry<K,V>> entryComparator() { return entryComparator; }
 
     /** Compares {@link java.util.Map.Entry}s by key. */
     private static class EntryComparator<K,V> implements Comparator<Map.Entry<K,V>> {
-	final Comparator<K> cc;
-	EntryComparator(Comparator<K> cc) { this.cc = cc; } // never null
+	final Comparator<? super K> cc;
+	EntryComparator(Comparator<? super K> cc) { this.cc = cc; } // never null
 	@Override
 	public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
 	    K k1 = e1.getKey(), k2 = e2.getKey();

@@ -33,7 +33,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     public BinaryHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
     /** Creates a new, empty {@link BinaryHeap} with the
      *  specified comparator. */
-    public BinaryHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
+    public BinaryHeap(Comparator<? super K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Builds a binary heap from the given heap, using
      *  the same key comparator as the given heap.  O(n) time. */
     public BinaryHeap(Heap<K,? extends V> h) {
@@ -42,7 +42,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     /** Builds a binary heap from a collection of {@link java.util.Map.Entry}s
      *  and a key comparator.
      *  O(n) time. */
-    public BinaryHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
+    public BinaryHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<? super K> comparator) {
 	super(comparator);
 	// initialize comparator
 	c = entryComparator(); // cache in field.
@@ -80,6 +80,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
     @Override
     public void union(Heap<? extends K,? extends V> h) {
 	union(h.entries());
+	h.clear();
     }
     /** Union a collection of {@link java.util.Map.Entry}s, using BUILD-HEAP. */
     private void union(Collection<? extends Map.Entry<? extends K,? extends V>> coll) {

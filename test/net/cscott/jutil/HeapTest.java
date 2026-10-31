@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -28,7 +29,7 @@ class HeapTest {
     record Factory(String name,
 		   Supplier<Heap<String,String>> empty,
 		   BiFunction<Collection<Map.Entry<Integer,Integer>>,
-			      Comparator<Integer>,
+			      Comparator<? super Integer>,
 			      Heap<Integer,Integer>> fromEntries) {
 	@Override public String toString() { return name; }
     }
@@ -100,5 +101,48 @@ class HeapTest {
 	assertEquals("o", h.extractMinimum().getValue());
 	assertEquals("m", h.extractMinimum().getValue());
 	assertEquals(4, h.size());
+    }
+
+    /** A heap of {@link Integer}s takes a {@code Comparator<Object>}. */
+    @ParameterizedTest(name="{0}") @MethodSource("factories")
+    void superComparator(Factory f) {
+	Comparator<Object> byString = Comparator.comparing(Object::toString);
+	Heap<Integer,Integer> h = f.fromEntries().apply
+	    (entries(9, 10, 100, 2), byString);
+	assertEquals(byString, h.comparator());
+	for (int k : new int[] { 10, 100, 2, 9 })
+	    assertEquals(k, h.extractMinimum().getKey());
+    }
+
+    /** A heap is {@link Iterable}: for-each visits all of its entries. */
+    @ParameterizedTest(name="{0}") @MethodSource("factories")
+    void iterate(Factory f) {
+	Heap<Integer,Integer> h = f.fromEntries().apply
+	    (entries(5, 3, 8, 1, 4, 7), null);
+	h.extractMinimum();
+	h.insert(6, 6);
+	TreeSet<Integer> seen = new TreeSet<>();
+	for (Map.Entry<Integer,Integer> e : h) {
+	    assertEquals(e.getKey(), e.getValue());
+	    assertTrue(seen.add(e.getKey()));
+	}
+	assertEquals(new TreeSet<>(List.of(3, 4, 5, 6, 7, 8)), seen);
+    }
+
+    /** {@code union()} moves all the entries of the other heap into
+     *  this one, whichever implementation the other heap is. */
+    @ParameterizedTest(name="{0}") @MethodSource("factories")
+    void union(Factory f) {
+	for (Factory g : factories().toList()) {
+	    Heap<Integer,Integer> h = f.fromEntries().apply
+		(entries(5, 1, 9), null);
+	    Heap<Integer,Integer> other = g.fromEntries().apply
+		(entries(4, 8, 2), null);
+	    h.union(other);
+	    assertTrue(other.isEmpty(), g.name());
+	    assertEquals(6, h.size(), g.name());
+	    for (int k : new int[] { 1, 2, 4, 5, 8, 9 })
+		assertEquals(k, h.extractMinimum().getKey(), g.name());
+	}
     }
 }

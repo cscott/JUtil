@@ -36,7 +36,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     public FibonacciHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
     /** Creates a new, empty {@link FibonacciHeap}, sorted according
      *  to the given {@link Comparator}.  O(1) time. */
-    public FibonacciHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
+    public FibonacciHeap(Comparator<? super K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Constructs a new heap with the same entries as the specified
      *  {@link Heap}. O(n) time. */
     public FibonacciHeap(Heap<K,? extends V> h) {
@@ -44,7 +44,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     }
     /** Constructs a new heap from a collection of
      *  {@link java.util.Map.Entry}s and a key comparator. O(n) time. */
-    public FibonacciHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
+    public FibonacciHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<? super K> comparator) {
 	super(comparator);
 	c = entryComparator();
 	for (Map.Entry<? extends K,? extends V> e : collection) {
@@ -87,12 +87,16 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	// done.
     }
     @Override
+    @SuppressWarnings("unchecked") // see below
     public void union(Heap<? extends K,? extends V> h) {
-	if (h instanceof FibonacciHeap &&
-	    entryComparator().equals(((FibonacciHeap)h).entryComparator()))
-	    // the unsafe cast below from K2 to K and V2 to V should really be
-	    // safe if the entryComparators for the two Heaps are identical.
-	    union((FibonacciHeap<? extends K,? extends V>)h);
+	if (h instanceof FibonacciHeap<? extends K,? extends V> fh &&
+	    entryComparator().equals(fh.entryComparator()))
+	    // The entries of h become entries of this heap.  The cast is
+	    // unchecked: one which h's caller kept as a Map.Entry<K2,V2>
+	    // can be given a K or a V that is not a K2 or a V2, by a
+	    // decreaseKey() or a setValue() on this heap.  The two heaps
+	    // order their entries alike, since their comparators are equal.
+	    union((FibonacciHeap<K,V>) fh);
 	else super.union(h);
     }
     @Override

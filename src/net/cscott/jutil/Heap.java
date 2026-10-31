@@ -5,6 +5,7 @@ package net.cscott.jutil;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 /**
  * {@link Heap}s support create, insert, minimum, extract-min,
@@ -89,7 +90,7 @@ import java.util.Map;
  * @see BinomialHeap
  * @see FibonacciHeap
  */
-public interface Heap<K,V> {
+public interface Heap<K,V> extends Iterable<Map.Entry<K,V>> {
     /** Inserts a node with the specified key and value into the
      *  {@link Heap}.  Returns the generated {@link java.util.Map.Entry}
      *  which may be stored and eventually passed back to
@@ -134,6 +135,12 @@ public interface Heap<K,V> {
     /** Returns a collection view of all the {@link java.util.Map.Entry}s
      *  in this {@link Heap}. */
     public Collection<Map.Entry<K,V>> entries();
+    /** Returns an iterator over the {@link java.util.Map.Entry}s in
+     *  this {@link Heap}, in no particular order: the iterator of
+     *  {@link #entries()}.
+     *  @since 2.0 */
+    @Override
+    default Iterator<Map.Entry<K,V>> iterator() { return entries().iterator(); }
     /** Returns the hash code for this heap.  The hash code for this
      *  heap will be one greater than the hash code for the
      *  {@link Collection} returned by {@link #entries()}. */
@@ -150,6 +157,5 @@ public interface Heap<K,V> {
 
     /** Returns the comparator associated with this {@link Heap},
      *  or <code>null</code> if it uses its elements' natural ordering. */
-    // XXX: Should this be Comparator<? super K> instead?
-    public Comparator<K> comparator();
+    public Comparator<? super K> comparator();
 }

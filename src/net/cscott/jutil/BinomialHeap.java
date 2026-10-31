@@ -31,13 +31,13 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     public BinomialHeap() { this(Collections.<Map.Entry<K,V>>emptySet(), null); }
     /** Constructs a new, empty {@link BinomialHeap}, sorted according
      *  to the given comparator. O(1) time. */
-    public BinomialHeap(Comparator<K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
+    public BinomialHeap(Comparator<? super K> c) { this(Collections.<Map.Entry<K,V>>emptySet(), c); }
     /** Constructs a new binomial heap with the same entries as the specified
      *  {@link Heap}. O(n) time. */
     public BinomialHeap(Heap<K,? extends V> h) { this(h.entries(), h.comparator()); }
     /** Constructs a binomial heap from a collection of
      *  {@link java.util.Map.Entry}s and a key comparator.  O(n) time. */
-    public BinomialHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<K> comparator) {
+    public BinomialHeap(Collection<? extends Map.Entry<? extends K,? extends V>> collection, Comparator<? super K> comparator) {
 	super(comparator);
 	c = entryComparator();
 	union(collection);
@@ -85,10 +85,16 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
      *  and its entry comparator is the same as this one's.
      *  Otherwise, it takes O(n) time. */
     @Override
+    @SuppressWarnings("unchecked") // see below
     public void union(Heap<? extends K,? extends V> h) {
-	if (h instanceof BinomialHeap &&
-	    entryComparator().equals(((BinomialHeap)h).entryComparator()))
-	    union((BinomialHeap<? extends K, ? extends V>)h);
+	if (h instanceof BinomialHeap<? extends K,? extends V> bh &&
+	    entryComparator().equals(bh.entryComparator()))
+	    // The entries of h become entries of this heap.  The cast is
+	    // unchecked: one which h's caller kept as a Map.Entry<K2,V2>
+	    // can be given a K or a V that is not a K2 or a V2, by a
+	    // decreaseKey() or a setValue() on this heap.  The two heaps
+	    // order their entries alike, since their comparators are equal.
+	    union((BinomialHeap<K,V>) bh);
 	else { union(h.entries()); h.clear(); }
     }
     // union a set of Map.Entry's
