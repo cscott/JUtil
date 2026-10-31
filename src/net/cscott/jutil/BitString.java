@@ -45,6 +45,12 @@ public final class BitString implements Cloneable, java.io.Serializable {
   private static int subscript(int bitIndex) {
     return bitIndex >> BITS_PER_UNIT;
   }
+  /**
+   * The mask of the bits of a unit up to and including bitIndex.
+   */
+  private static int upTo(int bitIndex) {
+    return (~0) >>> (MASK - (bitIndex & MASK));
+  }
 
   /**
    * Creates an empty string with the specified size.
@@ -87,7 +93,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     if (subscript(where) < bits.length) {
       // search in first unit is masked.
       start = subscript(where);
-      mask = (~0) >>> (MASK - (where & mask));
+      mask = upTo(where);
     }
     // search through units
     for (int i=start; i>=0; i--, mask=~0) {
@@ -117,8 +123,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
    */
   public void setUpTo(int bit) {
     int where = subscript(bit);
-    /* preaddition of 1 to bit is a clever hack to avoid long arithmetic */
-    bits[where] |= ((1 << ((bit+1) & MASK)) - 1);
+    bits[where] |= upTo(bit);
     while (where-- > 0) {
       bits[where] = ~0;
     }
@@ -148,8 +153,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
    */
   public void clearUpTo(int bit) {
     int where = subscript(bit);
-    /* preaddition of 1 to bit is a clever hack to avoid long arithmetic */
-    bits[where] &= ~((1 << ((bit+1) & MASK)) - 1);
+    bits[where] &= ~upTo(bit);
     while (where-- > 0) {
       bits[where] = 0;
     }
@@ -225,7 +229,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     boolean result;
     int where = subscript(bit);
     int old = bits[where];
-    bits[where] |= (set.bits[where] & ((1 << ((bit+1) & MASK)) - 1));
+    bits[where] |= (set.bits[where] & upTo(bit));
     result = (bits[where] != old);
     while (where-- > 0) {
       old = bits[where];
@@ -350,7 +354,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     for (int i = setLength; i-- > 0 ;) {
       number += howManyOneBits(bits[i]);
     }
-    number += howManyOneBits(bits[setLength] & ((1 << ((where+1) & MASK))-1));
+    number += howManyOneBits(bits[setLength] & upTo(where));
     return number;
   }
 

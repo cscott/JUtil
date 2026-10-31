@@ -58,6 +58,9 @@
 * Deprecated: `Util.repeatString()`, for `String.repeat()`;
   `Util.popcount()`, for `Integer.bitCount()` and `Long.bitCount()`;
   and `Util.zerocount()`, for `bitCount(~v)`.
+* Fixed: `BitString.setUpTo()`, `clearUpTo()`, `or_upTo()` and
+  `numberOfOnes(int)` ignored a whole unit of 32 bits when given the
+  last bit of a unit, such as 31 or 63.
 * Every serializable class declares its `serialVersionUID`.  Objects
   serialized by JUtil 1.x, other than a `Default.PairList`, cannot be
   read by 2.0.

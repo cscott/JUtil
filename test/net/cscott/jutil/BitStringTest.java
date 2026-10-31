@@ -51,4 +51,27 @@ class BitStringTest {
 	// toString()
 	assertEquals("{52, 53, 76, 77}", bs.toString());
     }
+
+    /** The last bit of each unit was handled as if it were the first
+     *  bit of the next one. */
+    @Test void upToTheEndOfAUnit() {
+	for (int bit : new int[] { 0, 30, 31, 32, 63, 64, 95, 99 }) {
+	    BitString all = new BitString(100);
+	    all.setAll();
+	    assertEquals(bit+1, all.numberOfOnes(bit), "numberOfOnes("+bit+")");
+
+	    BitString bs = new BitString(100);
+	    bs.setUpTo(bit);
+	    assertEquals(bit+1, bs.numberOfOnes(), "setUpTo("+bit+")");
+	    assertEquals(bit, bs.lastSet(), "setUpTo("+bit+")");
+
+	    bs = new BitString(100);
+	    assertTrue(bs.or_upTo(all, bit), "or_upTo("+bit+")");
+	    assertEquals(bit+1, bs.numberOfOnes(), "or_upTo("+bit+")");
+	    assertEquals(bit, bs.lastSet(), "or_upTo("+bit+")");
+
+	    all.clearUpTo(bit);
+	    assertEquals(bit+1, all.firstSet(), "clearUpTo("+bit+")");
+	}
+    }
 }
