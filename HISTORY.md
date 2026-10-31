@@ -89,6 +89,10 @@
   the stack when given a heap of their own class with an equal
   comparator, and `BinaryHeap.union()` did not empty the heap it was
   given.
+* Fixed: a heap was not `equals()` to itself, and its `hashCode()`
+  changed from call to call.  Heaps are equal when they have the same
+  entries, in any order, and the hash code is one more than the sum of
+  the entries' hash codes.
 * `Pair`, an immutable, serializable record of two values, with
   `left()` and `right()`.  Deprecated: `Default.PairList` and
   `Default.pair()`, for `Pair`.  A `PairList` is a mutable `List`,

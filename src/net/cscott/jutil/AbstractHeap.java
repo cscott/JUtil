@@ -3,8 +3,10 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 /**
  * {@link AbstractHeap} provides a skeletal implementation of
@@ -74,11 +76,28 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
 	h.clear();
     }
     @Override public boolean isEmpty() { return size()==0; }
-    @Override public int hashCode() { return 1+entries().hashCode(); }
+    @Override
+    public int hashCode() {
+	int h = 1;
+	for (Map.Entry<K,V> e : entries())
+	    h += e.hashCode();
+	return h;
+    }
     @Override
     public boolean equals(Object o) {
-	if (o instanceof Heap) return entries().equals(((Heap)o).entries());
-	return false;
+	if (o == this) return true;
+	if (!(o instanceof Heap<?,?> h) || h.size() != size()) return false;
+	// the entries are in no particular order, and a key-value pair
+	// can be in a heap more than once: count each one.
+	Map<Map.Entry<?,?>,Integer> count = new HashMap<>();
+	for (Map.Entry<K,V> e : entries())
+	    count.merge(new AbstractMap.SimpleImmutableEntry<Object,Object>(e),
+			1, Integer::sum);
+	for (Map.Entry<?,?> e : h.entries())
+	    if (count.merge(new AbstractMap.SimpleImmutableEntry<Object,Object>(e),
+			    -1, Integer::sum) < 0)
+		return false;
+	return true;
     }
     @Override public String toString() { return entries().toString(); }
     /** Returns the comparator used to compare keys in this {@link Heap},

@@ -141,15 +141,14 @@ public interface Heap<K,V> extends Iterable<Map.Entry<K,V>> {
      *  @since 2.0 */
     @Override
     default Iterator<Map.Entry<K,V>> iterator() { return entries().iterator(); }
-    /** Returns the hash code for this heap.  The hash code for this
-     *  heap will be one greater than the hash code for the
-     *  {@link Collection} returned by {@link #entries()}. */
+    /** Returns the hash code for this heap: one greater than the sum
+     *  of the hash codes of its entries. */
     @Override public int hashCode();
     /** Compares the specified object with this heap for equality.
      *  Returns <code>true</code> iff the given object is also a
-     *  {@link Heap} and the {@link Collection}s returned
-     *  by their {@link #entries()} methods are equal using
-     *  the <code>equals()</code> method of {@link Collection}.
+     *  {@link Heap} with the same entries, in any order: each
+     *  key-value pair is in both heaps the same number of times.
+     *  The heaps' comparators are not compared.
      */
     @Override public boolean equals(Object o);
     /** Returns a string representation of this {@link Heap}. */

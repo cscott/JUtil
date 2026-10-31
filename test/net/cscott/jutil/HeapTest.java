@@ -5,6 +5,7 @@
 package net.cscott.jutil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -127,6 +128,33 @@ class HeapTest {
 	    assertTrue(seen.add(e.getKey()));
 	}
 	assertEquals(new TreeSet<>(List.of(3, 4, 5, 6, 7, 8)), seen);
+    }
+
+    /** Heaps are equal when they have the same entries, whatever
+     *  their order or implementation, and equal heaps have equal
+     *  hash codes. */
+    @ParameterizedTest(name="{0}") @MethodSource("factories")
+    void equality(Factory f) {
+	Heap<Integer,Integer> h = f.fromEntries().apply
+	    (entries(5, 1, 9, 1), null);
+	assertEquals(h, h);
+	assertEquals(h.hashCode(), h.hashCode());
+	for (Factory g : factories().toList()) {
+	    Heap<Integer,Integer> same = g.fromEntries().apply
+		(entries(1, 9, 1, 5), null);
+	    assertEquals(h, same, g.name());
+	    assertEquals(same, h, g.name());
+	    assertEquals(h.hashCode(), same.hashCode(), g.name());
+	    // the same keys, but 1 once and 5 twice
+	    assertNotEquals(h, g.fromEntries().apply
+			    (entries(5, 1, 9, 5), null), g.name());
+	    assertNotEquals(h, g.fromEntries().apply
+			    (entries(5, 1, 9), null), g.name());
+	}
+	Heap<Integer,Integer> other = f.fromEntries().apply
+	    (entries(5, 1, 9), null);
+	other.insert(1, 2);
+	assertNotEquals(h, other);
     }
 
     /** {@code union()} moves all the entries of the other heap into
