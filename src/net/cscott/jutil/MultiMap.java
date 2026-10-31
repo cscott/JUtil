@@ -3,9 +3,13 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 /** {@link MultiMap} maps a key to a collection of values.  These
     collections are created as needed using a
@@ -56,6 +60,15 @@ import java.util.Set;
 	 <code>key</code> to a singleton collection containing
 	 <code>value</code>.  Use <code>add(key, value)</code> to
 	 preserve the old collection of associative mappings.
+
+    <BR> The default methods of {@link Map} which are not
+         overridden here, such as <code>putIfAbsent()</code>,
+         <code>computeIfPresent()</code>, <code>compute()</code> and
+         <code>merge()</code>, are built on <code>get()</code>,
+         <code>put()</code> and <code>remove()</code>: they see an
+         arbitrary one of the values of a key, and replace or remove
+         all of them.  {@link #replace(Object,Object,Object)} and
+         {@link #replaceAll} treat each mapping separately.
 
     <P>  Note that the behavior of {@link MultiMap} is
          indistinquishable from that of a {@link Map} if none of
@@ -190,6 +203,43 @@ public interface MultiMap<K,V> extends Map<K,V> {
     /** Returns a {@link Set} view that allows you to recapture
      *  the {@link MultiMap} view. */
     @Override public MultiMapSet<K,V> entrySet();
+
+    /** Replaces the mapping from <code>key</code> to
+     *  <code>oldValue</code>, if there is one, with a mapping from
+     *  <code>key</code> to <code>newValue</code>.  The other values
+     *  of <code>key</code> are kept.
+     *  ({@link Map}'s default implementation would compare
+     *  <code>oldValue</code> to an arbitrary one of the values of
+     *  <code>key</code>, and then replace all of them.)
+     *  @return <code>true</code> if <code>key</code> mapped to
+     *  <code>oldValue</code>.
+     *  @since 2.0 */
+    @Override
+    default boolean replace(K key, V oldValue, V newValue) {
+	if (!remove(key, oldValue)) return false;
+	add(key, newValue);
+	return true;
+    }
+
+    /** Replaces each mapping from a key <code>k</code> to a value
+     *  <code>v</code> with a mapping from <code>k</code> to
+     *  <code>function.apply(k, v)</code>.  The new mappings are
+     *  added after all of the new values are computed, so this map
+     *  is unchanged if <code>function</code> throws.
+     *  ({@link Map}'s default implementation would call
+     *  {@link java.util.Map.Entry#setValue} while iterating, which a
+     *  {@link MultiMap}'s entries do not support.)
+     *  @since 2.0 */
+    @Override
+    default void replaceAll(BiFunction<? super K,? super V,? extends V> function) {
+	List<Map.Entry<K,V>> replaced = new ArrayList<>(size());
+	for (Map.Entry<K,V> e : entrySet())
+	    replaced.add(new AbstractMap.SimpleImmutableEntry<K,V>
+			 (e.getKey(), function.apply(e.getKey(), e.getValue())));
+	clear();
+	for (Map.Entry<K,V> e : replaced)
+	    add(e.getKey(), e.getValue());
+    }
 } 
 
 

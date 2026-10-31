@@ -73,6 +73,13 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 	public void clear() {
 	    this.root = null;
 	}
+	/** Maps <code>key</code> to the values in <code>values</code>,
+	 *  or to none if <code>values</code> is <code>null</code>. */
+	private void putValues(K key, SetNode<V> values) {
+	    this.root = (values==null) ?
+		MapNode.remove(this.root, keyComparator, key, mapAllocator) :
+		MapNode.put(this.root, keyComparator, key, values, mapAllocator);
+	}
 	// constant-time!
 	@Override public MultiMapImpl clone() { return new MultiMapImpl(this.root); }
 	@Override
@@ -127,8 +134,7 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 	    SetNode<V> v2 = SetNode.remove(v, valueComparator, (V)value,
 					   setAllocator);
 	    if (v==v2) return false;
-	    this.root = MapNode.put(this.root, keyComparator, np.key, v2,
-				    mapAllocator);
+	    putValues(np.key, v2);
 	    return true;
 	}
 	@Override
@@ -249,8 +255,7 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 		SetNode<V> v2 = SetNode.put(setRoot, valueComparator, v, v,
 					    setAllocator);
 		if (setRoot == v2) return false; // no change.
-		MultiMapImpl.this.root = MapNode.put(root, keyComparator,
-						     key, v2, mapAllocator);
+		putValues(key, v2);
 		setRoot = v2;
 		return true;
 	    }
@@ -266,8 +271,7 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 					       valueComparator, setAllocator,
 					       null);
 		if (setRoot == v2) return false; // no change.
-		MultiMapImpl.this.root = MapNode.put(root, keyComparator,
-						     key, v2, mapAllocator);
+		putValues(key, v2);
 		setRoot = v2;
 		return true;
 	    }
@@ -293,8 +297,7 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 		SetNode<V> v2 = SetNode.remove(setRoot, valueComparator, (V)o,
 					       setAllocator);
 		if (setRoot == v2) return false; // no change.
-		MultiMapImpl.this.root = MapNode.put(root, keyComparator,
-						     key, v2, mapAllocator);
+		putValues(key, v2);
 		setRoot = v2;
 		return true;
 	    }

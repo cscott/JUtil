@@ -113,6 +113,15 @@
   `Iterator<? extends Iterator<? extends E>>`.  Its `remove()` throws
   `IllegalStateException` instead of `NullPointerException` before
   the first call to `next()`.
+* Fixed: a multimap made by `PersistentMultiMapFactory` threw
+  `NullPointerException` when the last value of a key was removed,
+  by `remove(key, value)` or through `getValues()` or `keySet()`.
+* `MultiMap.replace(key, oldValue, newValue)` and
+  `MultiMap.replaceAll()` change each mapping separately, and keep a
+  key's other values; the `Map` defaults they replace used `put()`,
+  which removes them.  The documentation of `MultiMap` says how the
+  other `Map` defaults, such as `merge()`, treat a key with many
+  values.
 
 ## 1.5 (2026-10-30)
 
