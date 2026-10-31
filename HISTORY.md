@@ -138,6 +138,8 @@
   compiles.
 * `SnapshotIterator` and `IteratorEnumerator` take an
   `Iterator<? extends E>`.
+* The documentation of `MultiMap`, `PersistentMap` and `DisjointSet`
+  has examples, which `ant test` runs with [JDoctest].
 
 ## 1.5 (2026-10-30)
 
@@ -214,3 +216,4 @@ Built, but not released publicly at the time.
 * `java -jar jutil.jar` prints the library version.
 
 [FLEX]: http://flex.cscott.net/
+[JDoctest]: https://github.com/cscott/JDoctest

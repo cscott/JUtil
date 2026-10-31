@@ -77,7 +77,24 @@ import java.util.function.BiFunction;
 	 the constraints enforced by the {@link Map} interface
 	 does not ever attempt to use a {@link MultiMap} when any
 	 of its Keys map to more than one value.
-    
+
+    @doc.test
+      <code>add()</code> adds a value to those of a key, while
+      <code>put()</code> replaces them all:
+      js> mm = new GenericMultiMap(Factories.treeSetFactory())
+      {}
+      js> mm.add("fruit", "pear"); mm.add("fruit", "apple")
+      true
+      js> mm.add("nut", "pecan")
+      true
+      js> mm.getValues("fruit")
+      [apple, pear]
+      js> mm.size() // the number of mappings, not of keys
+      3
+      js> mm.put("fruit", "fig") // returns one of the old values
+      apple
+      js> mm.getValues("fruit")
+      [fig]
     @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public interface MultiMap<K,V> extends Map<K,V> {

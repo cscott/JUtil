@@ -16,6 +16,20 @@ import java.util.Set;
  * operations, 'n' is the total number of elements in the set, and
  * 'alpha' denotes the *extremely* slowly-growing inverse Ackermann
  * function.
+ *
+ * @doc.test
+ *   {@link #union union()} merges the sets of two elements, and
+ *   {@link #find find()} returns the representative of an element's
+ *   set, which is the same for every element of the set:
+ *   js> ds = new DisjointSet()
+ *   {}
+ *   js> ds.union("a", "b"); ds.union("c", "d"); ds.union("b", "c")
+ *   js> ds.find("a") == ds.find("d")
+ *   true
+ *   js> ds.find("e") // an element in no union is its own set
+ *   e
+ *   js> ds.find("e") == ds.find("a")
+ *   false
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */

@@ -15,6 +15,23 @@ import java.util.Set;
  * by {@link PersistentMapFactory}, {@link PersistentMap}
  * does not implement that standard {@link java.util.Map} API
  * but instead exposes the underlying functional operations.
+ *
+ * @doc.test
+ *   A {@link PersistentMap} is never changed: {@link #put put()} and
+ *   {@link #remove remove()} return a new map, which shares most of its
+ *   structure with the old one.
+ *   js> empty = new PersistentMap()
+ *   {}
+ *   js> one = empty.put("a", "apple")
+ *   {a=apple}
+ *   js> two = one.put("b", "banana")
+ *   {a=apple, b=banana}
+ *   js> two.remove("a")
+ *   {b=banana}
+ *   js> one
+ *   {a=apple}
+ *   js> two.get("b")
+ *   banana
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
