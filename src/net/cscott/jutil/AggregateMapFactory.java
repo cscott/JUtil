@@ -39,6 +39,11 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
     @SuppressWarnings("serial") // serializable if its contents are
     private final Map<Map.Entry<ID<K,V>,K>,DoublyLinkedList<K,V>> m =
 	new HashMap<Map.Entry<ID<K,V>,K>,DoublyLinkedList<K,V>>();
+    /** Returns the key of the backing store for <code>key</code> in
+     *  the submap <code>id</code>. */
+    private static <K,V,T> Map.Entry<ID<K,V>,T> storeKey(ID<K,V> id, T key) {
+	return new AbstractMap.SimpleImmutableEntry<>(id, key);
+    }
     /** The submaps that are garbage, queued by the garbage collector. */
     private transient ReferenceQueue<Object> collected;
     /** Keeps the {@link MapRef}s reachable until they are queued. */
@@ -66,7 +71,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	    refs.remove(mr);
 	    for (DoublyLinkedList<K,V> dll=mr.identity.entries; dll!=null;
 		 dll=dll.next)
-		m.remove(Default.entry(mr.identity, dll.getKey()));
+		m.remove(storeKey(mr.identity, dll.getKey()));
 	}
     }
 
@@ -112,14 +117,14 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	public V put(K key, V value) {
 	    expunge();
 	    DoublyLinkedList<K,V> entry=new DoublyLinkedList<K,V>(key, value);
-	    DoublyLinkedList<K,V> old=m.put(Default.entry(IDENTITY,key),entry);
+	    DoublyLinkedList<K,V> old=m.put(storeKey(IDENTITY,key),entry);
 	    if (old!=null) unlink(old);
 	    link(entry);
 	    return (old==null) ? null : old.getValue();
 	}
 	@Override
 	public boolean containsKey(Object key) {
-	    return m.containsKey(Default.entry(IDENTITY, key));
+	    return m.containsKey(storeKey(IDENTITY, key));
 	}
 	@Override
 	public boolean containsValue(Object value) {
@@ -151,8 +156,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 				    if (last==null)
 					throw new
 					    UnsupportedOperationException();
-				    m.remove(Default.entry(IDENTITY,
-							  last.getKey()));
+				    m.remove(storeKey(IDENTITY, last.getKey()));
 				    unlink(last);
 				    last=null;
 				}
@@ -173,7 +177,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 		    @Override
 		    public boolean contains(Object o) {
 			if (!(o instanceof Map.Entry<?,?> me)) return false;
-			Map.Entry<?,?> pair = Default.entry(IDENTITY, me.getKey());
+			Map.Entry<?,?> pair = storeKey(IDENTITY, me.getKey());
 			if (!m.containsKey(pair)) return false;
 			return me.equals(m.get(pair));
 		    }
@@ -188,12 +192,12 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	}
 	@Override
 	public V get(Object key) {
-	    DoublyLinkedList<K,V> entry = m.get(Default.entry(IDENTITY, key));
+	    DoublyLinkedList<K,V> entry = m.get(storeKey(IDENTITY, key));
 	    return (entry==null)?null:entry.getValue();
 	}
 	@Override
 	public V remove(Object key) {
-	    DoublyLinkedList<K,V> entry = m.remove(Default.entry(IDENTITY, key));
+	    DoublyLinkedList<K,V> entry = m.remove(storeKey(IDENTITY, key));
 	    if (entry!=null) unlink(entry);
 	    return (entry==null)?null:entry.getValue();
 	}

@@ -4,6 +4,7 @@
 package net.cscott.jutil;
 
 import java.util.AbstractCollection;
+import java.util.AbstractMap;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Collections;
@@ -422,11 +423,13 @@ public abstract class Default  {
      *  <code>31*(31+key.hashCode())+value.hashCode()</code> ). This is
      *  an annoying distinction; I wish the JDK API authors had made
      *  these consistent. The {@link java.util.Map.Entry} returned is immutable.
+     *  @deprecated Use
+     *  {@link java.util.AbstractMap.SimpleImmutableEntry}, which this
+     *  method now returns, or {@link Map#entry(Object,Object)}, which
+     *  does not permit <code>null</code>s.
      */
+    @Deprecated(since="2.0")
     public static <K,V> Map.Entry<K,V> entry(final K key, final V value) {
-	return new AbstractMapEntry<K,V>() {
-		@Override public K getKey() { return key; }
-		@Override public V getValue() { return value; }
-	    };
+	return new AbstractMap.SimpleImmutableEntry<K,V>(key, value);
     }
 }

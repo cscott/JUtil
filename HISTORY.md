@@ -90,6 +90,9 @@
   `left()` and `right()`.  Deprecated: `Default.PairList` and
   `Default.pair()`, for `Pair`.  A `PairList` is a mutable `List`,
   which a record cannot be, so `Pair` is a new class.
+* Deprecated: `Default.entry()`, for
+  `AbstractMap.SimpleImmutableEntry`, which it now returns, or
+  `Map.entry()`, which does not permit `null`s.
 
 ## 1.5 (2026-10-30)
 

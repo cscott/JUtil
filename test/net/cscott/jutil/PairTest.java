@@ -5,6 +5,7 @@ package net.cscott.jutil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -50,5 +52,15 @@ class PairTest {
 	p.set(1, 2);
 	assertEquals(2, p.right());
 	assertEquals("a", p.left());
+    }
+
+    @SuppressWarnings("deprecation") // Default.entry() is still tested
+    @Test void entry() {
+	Map.Entry<String,Integer> e = Default.entry("a", 1);
+	assertEquals(Map.entry("a", 1), e);
+	assertEquals(Map.entry("a", 1).hashCode(), e.hashCode());
+	assertEquals("a=1", e.toString());
+	assertEquals("null=null", Default.entry(null, null).toString());
+	assertThrows(UnsupportedOperationException.class, () -> e.setValue(2));
     }
 }
