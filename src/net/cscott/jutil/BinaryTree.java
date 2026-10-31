@@ -20,14 +20,15 @@ import java.util.Comparator;
     with a Tree, instead of abstract it into a Set or what-have-you.
     Have to think about adding that.
     
+    @param <K> the type of the elements in this tree
     @see "CLR section 13, (page 244)."
 */
-public class BinaryTree {
+public class BinaryTree<K> {
     
     /** A {@link Node} is an element of this tree.
      */
     public class Node {
-	public final Object key;
+	public final K key;
 	private Node left; 
 	private Node right; 
 	private Node parent; // called 'p' in CLR.  NIL if this is root. 
@@ -36,10 +37,10 @@ public class BinaryTree {
 	protected final Node right() { return right; }
 	protected final Node parent(){ return parent; }
 
-	/** Can only be called by makeNode(Object) 
+	/** Can only be called by makeNode(K)
 	    or by Node subclass constructors.
 	 */
-	protected Node(Object k) { 
+	protected Node(K k) {
 	    this.key = k; 
 	    left = right = parent = NIL;
 	}
@@ -71,7 +72,7 @@ public class BinaryTree {
 	allows null elements, because the NIL sentinel node has
 	<code>null</code> as its key.
     */
-    protected Node makeNode(Object key) { return new Node(key); }
+    protected Node makeNode(K key) { return new Node(key); }
 
     /** Sets the left child of p. 
 	Modifies: this, p, l
@@ -141,25 +142,31 @@ public class BinaryTree {
 
     protected final Node NIL;
 
-    protected Comparator comp; 
+    protected Comparator<? super K> comp;
 
-    private boolean lessThan(Object a, Object b) { 
-	return comp.compare(a,b) < 0;
+    // remove() and contains() take an Object, as Collection's do; an
+    // element of another type makes the comparator throw a
+    // ClassCastException.
+    @SuppressWarnings("unchecked")
+    private boolean lessThan(Object a, Object b) {
+	return comp.compare((K) a, (K) b) < 0;
     }
+    @SuppressWarnings("unchecked")
     private boolean eq(Object a, Object b) {
-	return comp.compare(a,b) == 0;
+	return comp.compare((K) a, (K) b) == 0;
     }
     
     /** Creates an empty tree which accepts only <i>mutually
         comparable</i> elements. 
 	@see java.lang.Comparable
     */
-    public BinaryTree() { this(Default.comparator); }
+    @SuppressWarnings("unchecked")
+    public BinaryTree() { this((Comparator<? super K>) Default.comparator); }
     
     /** Creates an empty tree which uses <code>c</code> to determine
         element ordering. 
     */
-    public BinaryTree(Comparator c) { 
+    public BinaryTree(Comparator<? super K> c) {
 	NIL = makeNode(null);
 	root = NIL;
 	comp = c; 
@@ -168,7 +175,7 @@ public class BinaryTree {
     /** Constructs a node for <code>k</code> and inserts it into this.  
 	Uses nodes' own methods to dispatch 
      */
-    public Node add(Object k) { 
+    public Node add(K k) {
 	Node n = makeNode(k); 
 	insertNode(n);
 	return n; 
@@ -184,12 +191,12 @@ public class BinaryTree {
     /** Returns the minimum element of <code>this</code>. 
 	Requires: this is non-empty.
      */
-    public Object minimum() { return minimum(root).key; }
+    public K minimum() { return minimum(root).key; }
 
     /** Returns the maximum element of <code>this</code>. 
 	Requires: this is non-empty.
      */
-    public Object maximum() { return maximum(root).key; }
+    public K maximum() { return maximum(root).key; }
 
     /** Finds the Node n (in the subtree rooted at x) 
 	such that n.key = k.

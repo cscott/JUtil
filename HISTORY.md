@@ -19,6 +19,14 @@
 * Fixed: the entry set, key set and values of a `HashEnvironment`
   support `Iterator.remove()` and `Map.Entry.setValue()`.
 * Fixed: the `toString()` of a multimap with a `null` key or value.
+* `BinaryTree` and `RedBlackTree` take a type parameter for their
+  elements, and `IntervalTree` is a `RedBlackTree<Interval>`; its
+  `allOverlapping()` returns an `Iterator<Interval>`.  Code which uses
+  the raw types still compiles and runs, but a subclass of
+  `IntervalTree` must override `makeNode(Interval)` instead of
+  `makeNode(Object)`.
+* Fixed: `IntervalTree` ordered intervals by subtracting their low
+  ends, which overflows for very large or very small values.
 * `AggregateSetFactory` and `AggregateMapFactory` no longer use
   `finalize()`, which is deprecated for removal.  The entries of a set
   or map which has been garbage-collected are now removed from the

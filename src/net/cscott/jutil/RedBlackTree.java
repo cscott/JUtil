@@ -8,9 +8,10 @@ import java.util.Comparator;
 /** A {@link RedBlackTree} is a {@link BinaryTree} that uses
     red-black properties to maintain a balanced form.
     
+    @param <K> the type of the elements in this tree
     @see "CLR section 14, (page 263)."
 */
-public class RedBlackTree extends BinaryTree {  
+public class RedBlackTree<K> extends BinaryTree<K> {
     // red black properties
     // 1. Every node is either red or black
     // 2. Every leaf (nil) is black
@@ -43,7 +44,7 @@ public class RedBlackTree extends BinaryTree {
      */
     protected class RBNode extends Node {
 	private int color = BLACK;
-	protected RBNode(Object key) { super(key); }
+	protected RBNode(K key) { super(key); }
 	@Override
 	public String toString() {
 	    return super.toString()+" col:"+ ((color ==BLACK)?"b":"r");
@@ -55,13 +56,12 @@ public class RedBlackTree extends BinaryTree {
 	subclasses of {@link RedBlackTree} can associate new data
 	with their own nodes by extending the {@link Node} class
 	and overriding this method. */
-    @Override protected Node makeNode(Object o) { return new RBNode(o); }
+    @Override protected Node makeNode(K o) { return new RBNode(o); }
 
     public RedBlackTree() { super(); }
-    public RedBlackTree(Comparator c) { super(c); }
+    public RedBlackTree(Comparator<? super K> c) { super(c); }
 
-    // helper method to clear out casts in code.  I can't wait for GJ
-    // so I'll be able to get around this in better ways.
+    // helper methods to clear out casts in code.
     private int color(Node n) { 
 	if (n == NIL)
 	    return BLACK; // see r.b. property (2) above.

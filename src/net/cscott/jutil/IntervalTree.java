@@ -23,17 +23,15 @@ import java.util.Iterator;
     @see IntervalTree#addInterval
 
     @see "CLR section 15.3, (page 290)."  */
-public class IntervalTree extends RedBlackTree { 
+public class IntervalTree extends RedBlackTree<IntervalTree.Interval> {
 
     /** Immutable record representing a closed interval
         [<code>low</code>,<code>high</code>] holding an object
         <code>obj</code>. 
     */
     public static class Interval {
-	static Comparator COMPARE = new Comparator() {
-	    @Override
-	    public int compare(Object a, Object b) {
-		return ((Interval)a).low - ((Interval)b).low; }};
+	static final Comparator<Interval> COMPARE =
+	    Comparator.comparingInt(i -> i.low);
 
 	public final int low; 
 	public final int high;
@@ -53,15 +51,13 @@ public class IntervalTree extends RedBlackTree {
 	// max value of any interval endpoint stored in the
 	// subtree rooted at this.
 	protected int max;
-	IntervalNode(Object o) { 
-	    super(o); 
-	    Interval i = (Interval) o;
-	    if (i != null) 
+	IntervalNode(Interval i) {
+	    super(i);
+	    if (i != null)
 		this.max = i.high;
 	}
     }
-    /** requires: o is-a {@link Interval}. */
-    @Override protected Node makeNode(Object o) { return new IntervalNode(o); }
+    @Override protected Node makeNode(Interval i) { return new IntervalNode(i); }
 
     @Override
     protected Node setLeft(Node p, Node l) { 
@@ -108,7 +104,7 @@ public class IntervalTree extends RedBlackTree {
     }
     private void setMax(Node n, int m) { ((IntervalNode) n).max = m; }
     
-    private Interval interval(Node n) { return (Interval) n.key; }
+    private Interval interval(Node n) { return n.key; }
     private int max(Node n) { return ((IntervalNode) n).max; }
 
     /** Constructs a new empty {@link IntervalTree}. */
@@ -142,14 +138,14 @@ public class IntervalTree extends RedBlackTree {
     /** Returns an {@link Iterator} over {@link Interval}s that 
 	yields every interval in this that overlaps <code>i</code>. 
     */
-    public Iterator allOverlapping(Interval i) {
+    public Iterator<Interval> allOverlapping(Interval i) {
 	return allOverlapping( root(), i );
     }
-    private Iterator allOverlapping(Node x, Interval i) {
+    private Iterator<Interval> allOverlapping(Node x, Interval i) {
 	if (x == NIL) {
-	    return Default.nullIterator;
+	    return Default.nullIterator();
 	} else if (interval(x).overlaps(i)) {
-	    return new CombineIterator(
+	    return new CombineIterator<Interval>(
 		Default.singletonIterator(interval(x)),
 		allOverlapping(x.left(), i),
 		allOverlapping(x.right(), i)
@@ -157,7 +153,7 @@ public class IntervalTree extends RedBlackTree {
 	} else if (x.left() != NIL && max(x.left()) >= i.low) {
 	    // FSK: I suspect there is a asymptotically more efficient
 	    // way to handle this case, but haven't worked it out yet.
-	    return new CombineIterator( allOverlapping(x.left(), i),
+	    return new CombineIterator<Interval>( allOverlapping(x.left(), i),
 					allOverlapping(x.right(), i));
 	} else {
 	    // see CLR, pg. 293, Theorem 15.2, case 2. for justification. 

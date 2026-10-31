@@ -26,7 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 class BinaryTreeTest {
     /** Makes the trees to test. */
-    record Factory(String name, Supplier<BinaryTree> empty) {
+    record Factory(String name, Supplier<BinaryTree<Object>> empty) {
 	@Override public String toString() { return name; }
     }
     static Stream<Factory> factories() {
@@ -35,25 +35,25 @@ class BinaryTreeTest {
     }
 
     /** Lists the keys of <code>t</code> with an inorder tree walk. */
-    static List<Object> inorder(BinaryTree t) {
-	List<Object> l = new ArrayList<>();
+    static <K> List<K> inorder(BinaryTree<K> t) {
+	List<K> l = new ArrayList<>();
 	inorder(t, t.root(), l);
 	return l;
     }
-    private static void inorder(BinaryTree t, BinaryTree.Node x,
-				List<Object> l) {
+    private static <K> void inorder(BinaryTree<K> t, BinaryTree<K>.Node x,
+				    List<K> l) {
 	if (x == t.NIL) return;
 	inorder(t, x.left(), l);
 	l.add(x.key);
 	inorder(t, x.right(), l);
     }
     /** Checks the tree's invariants. */
-    static void check(BinaryTree t) {
-	List<Object> keys = inorder(t);
-	List<Object> sorted = new ArrayList<>(keys);
+    static <K> void check(BinaryTree<K> t) {
+	List<K> keys = inorder(t);
+	List<K> sorted = new ArrayList<>(keys);
 	sorted.sort(t.comp);
 	assertEquals(sorted, keys, "keys out of order");
-	if (t instanceof RedBlackTree rbt)
+	if (t instanceof RedBlackTree<K> rbt)
 	    rbt.checkTree(rbt.root());
     }
 
@@ -63,7 +63,7 @@ class BinaryTreeTest {
 
     @ParameterizedTest(name="{0}") @MethodSource("factories")
     void addAndRemove(Factory f) {
-	BinaryTree t = f.empty().get();
+	BinaryTree<Object> t = f.empty().get();
 	List<Object> expected = new ArrayList<>();
 	for (String s : STRINGS) {
 	    t.add(s);
@@ -89,7 +89,7 @@ class BinaryTreeTest {
     /** Compares many random adds and removes with a sorted list. */
     @ParameterizedTest(name="{0}") @MethodSource("factories")
     void random(Factory f) {
-	BinaryTree t = f.empty().get();
+	BinaryTree<Object> t = f.empty().get();
 	List<Object> expected = new ArrayList<>();
 	Random r = new Random(42);
 	for (int i = 0; i < 2000; i++) {
@@ -111,11 +111,11 @@ class BinaryTreeTest {
     /** Walks the tree with {@code successor}. */
     @ParameterizedTest(name="{0}") @MethodSource("factories")
     void successor(Factory f) {
-	BinaryTree t = f.empty().get();
+	BinaryTree<Object> t = f.empty().get();
 	for (int i : new int[] { 5, 3, 8, 1, 4, 7, 9, 2, 6 })
 	    t.add(i);
 	List<Object> walk = new ArrayList<>();
-	for (BinaryTree.Node n = t.minimum(t.root()); n != t.NIL;
+	for (BinaryTree<Object>.Node n = t.minimum(t.root()); n != t.NIL;
 	     n = t.successor(n))
 	    walk.add(n.key);
 	assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9), walk);
