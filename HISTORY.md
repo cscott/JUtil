@@ -19,6 +19,12 @@
 * Fixed: the entry set, key set and values of a `HashEnvironment`
   support `Iterator.remove()` and `Map.Entry.setValue()`.
 * Fixed: the `toString()` of a multimap with a `null` key or value.
+* `AggregateSetFactory` and `AggregateMapFactory` no longer use
+  `finalize()`, which is deprecated for removal.  The entries of a set
+  or map which has been garbage-collected are now removed from the
+  factory's backing store the next time the factory adds an entry, on
+  the thread that uses the factory; `finalize()` modified the backing
+  store from the finalizer thread, which could corrupt it.
 * `UniqueVector` and `UniqueStack` have a `spliterator()` which reports
   `DISTINCT`.
 

@@ -3,9 +3,13 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -23,6 +27,35 @@ public class AggregateSetFactory<V> extends SetFactory<V>
     implements java.io.Serializable {
     private final Map<EntryList<V>,EntryList<V>> m =
 	new HashMap<EntryList<V>,EntryList<V>>();
+    /** The subsets that are garbage, queued by the garbage collector. */
+    private transient ReferenceQueue<Object> collected;
+    /** Keeps the {@link SetRef}s reachable until they are queued. */
+    private transient Set<SetRef<V>> refs;
+    private static final class SetRef<V> extends WeakReference<Object> {
+	final ID<V> identity;
+	SetRef(Object set, ID<V> identity, ReferenceQueue<Object> q) {
+	    super(set, q);
+	    this.identity = identity;
+	}
+    }
+    /** Removes the entries of the subsets that are garbage from the
+     *  backing store.  This runs on the thread that uses this factory,
+     *  so the backing store needs no synchronization; the
+     *  <code>finalize()</code> method it replaces ran on the
+     *  finalizer thread. */
+    private void expunge() {
+	if (collected==null) {
+	    collected = new ReferenceQueue<Object>();
+	    refs = new HashSet<SetRef<V>>();
+	}
+	for (Reference<?> r; (r = collected.poll()) != null; ) {
+	    @SuppressWarnings("unchecked")
+	    SetRef<V> sr = (SetRef<V>) r;
+	    refs.remove(sr);
+	    for (EntryList<V> e = sr.identity.next; e != null; e = e.next)
+		m.remove(e);
+	}
+    }
 
     /** Creates an {@link AggregateSetFactory}. */
     public AggregateSetFactory() { /* nothing to do here */ }
@@ -36,7 +69,10 @@ public class AggregateSetFactory<V> extends SetFactory<V>
      */
     @Override
     public Set<V> makeSet(Collection<? extends V> c) {
-	return new AggregateSet(c);
+	expunge();
+	AggregateSet as = new AggregateSet(c);
+	refs.add(new SetRef<V>(as, as.IDENTITY, collected));
+	return as;
     }
     private class AggregateSet extends AbstractSet<V> {
 	// list header is the IDENTITY object for the set.
@@ -49,6 +85,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	}
 	@Override
 	public boolean add(V o) {
+	    expunge();
 	    EntryList<V> entry = new EntryList<V>(IDENTITY, o);
 	    if (m.containsKey(entry)) return false;
 	    IDENTITY.add(entry);
@@ -103,10 +140,6 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	    return true;
 	}
 	@Override public int size() { return size; }
-	// garbage-collect entries in backing store, too!
-	protected void finalize() {
-	    clear();
-	}
     }
     /** Header for linked list of set elements. */
     private static abstract class Header<E>
