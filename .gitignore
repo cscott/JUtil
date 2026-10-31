@@ -7,3 +7,5 @@ src/net/cscott/jutil/Version.java
 build.properties
 TEST-*.txt
 ChangeLog
+lib/error_prone_core-*.jar
+lib/dataflow-errorprone-*.jar

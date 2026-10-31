@@ -277,7 +277,6 @@ public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
 		MultiMapImpl.this.root = MapNode.remove(root, keyComparator,
 							key, mapAllocator);
 		setRoot = null;
-		return;
 	    }
 	    @Override
 	    @SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap

@@ -20,7 +20,11 @@ public interface MultiMapFactory<K,V> extends MapFactory<K,V> {
     default MultiMap<K,V> makeMap() {
 	return makeMultiMap();
     }
+    // A lambda for a MapFactory implements this method, and one for a
+    // MultiMapFactory implements makeMultiMap(), which this method
+    // calls: the factories of 1.x did the same.
     @Override
+    @SuppressWarnings("FunctionalInterfaceMethodChanged")
     default MultiMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 	MultiMap<K,V> mm = makeMap();
 	mm.putAll(map);

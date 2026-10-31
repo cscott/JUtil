@@ -157,12 +157,12 @@ public abstract class Default  {
 	    @Override
 	    public boolean equals(Object o) {
 		// note we implement Set, not Collection, interface
-		if (!(o instanceof Set)) return false;
-		return ((Set)o).size()==0;
+		return o instanceof Set<?> s && s.isEmpty();
 	    }
 	    @Override public int hashCode() { return 0; }
     }
     /** Implementation of an immutable empty sorted set. */
+    @SuppressWarnings("JdkObsolete") // for the deprecated EMPTY_SET
     private static class EmptySortedSet<E> extends EmptySet<E>
 	implements SortedSet<E> {
 	    @java.io.Serial
@@ -222,8 +222,7 @@ public abstract class Default  {
 	}
 	@Override
 	public boolean equals(Object o) {
-	    if (!(o instanceof Map)) return false;
-	    return ((Map)o).size()==0;
+	    return o instanceof Map<?,?> m && m.isEmpty();
 	}
 	@Override public V get(Object key) { return null; }
 	@Override public int hashCode() { return 0; }
@@ -246,6 +245,7 @@ public abstract class Default  {
 	//private Object readResolve() { return Default.EMPTY_MAP; }
     }
     /** Implementation of an immutable empty sorted map. */
+    @SuppressWarnings("JdkObsolete") // for the deprecated EMPTY_MAP
     private static class EmptySortedMap<K,V> extends EmptyMap<K,V>
 	implements SortedMap<K,V> {
 	@java.io.Serial

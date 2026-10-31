@@ -13,6 +13,7 @@ import java.util.Iterator;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
+@SuppressWarnings("JdkObsolete") // making an Enumeration is its job
 public class IteratorEnumerator<E> implements Enumeration<E> {
     private final Iterator<? extends E> i;
     /** Creates a {@link IteratorEnumerator}. */

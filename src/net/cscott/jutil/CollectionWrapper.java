@@ -92,6 +92,7 @@ public abstract class CollectionWrapper<E> implements Collection<E> {
 	return wrapped().toString();
     }
     @Override
+    @SuppressWarnings("UndefinedEquals") // equal as the wrapped one is
     public boolean equals(Object o) {
 	return wrapped().equals(o);
     }

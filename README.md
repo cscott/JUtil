@@ -78,6 +78,24 @@ task, which Debian and Ubuntu ship in `ant-optional`):
 `junit-platform-console-standalone`, JDoctest and Rhino.  None of them
 is needed to use JUtil.
 
+### Error Prone
+
+`ant errorprone` checks the code with [Error Prone], which finds
+common bugs that `javac` does not warn about.  It is optional, and its
+jars are not in git.  Download them into `lib/` once, from Maven
+Central, using the versions which `build.xml` names
+(`errorprone.version` and `dataflow.version`):
+
+    cd lib
+    curl -fLO https://repo1.maven.org/maven2/com/google/errorprone/error_prone_core/2.51.0/error_prone_core-2.51.0-with-dependencies.jar
+    curl -fLO https://repo1.maven.org/maven2/io/github/eisop/dataflow-errorprone/3.41.0-eisop1/dataflow-errorprone-3.41.0-eisop1.jar
+
+A newer JDK may need a newer Error Prone.  To upgrade, change
+`errorprone.version` in `build.xml`, and set `dataflow.version` to the
+version of `dataflow-errorprone` which the new release's
+[`error_prone_parent` POM][ep-pom] names as
+`dataflow.version`.
+
 ## License
 
     JUtil, a library of generic collection classes.
@@ -98,3 +116,5 @@ is needed to use JUtil.
 [HISTORY.md]: HISTORY.md
 [Ant]:        https://ant.apache.org/
 [JDoctest]:   https://github.com/cscott/JDoctest
+[Error Prone]: https://errorprone.info/
+[ep-pom]:     https://repo1.maven.org/maven2/com/google/errorprone/error_prone_parent/

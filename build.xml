@@ -11,6 +11,8 @@ JUtil build file.
 <property name="junit.version" value="6.1.3" />
 <property name="jdoctest.version" value="2.1" />
 <property name="rhino.version" value="1.9.2" />
+<property name="errorprone.version" value="2.51.0" />
+<property name="dataflow.version" value="3.41.0-eisop1" />
 
     <!-- define some variables for the script -->
     <target name="init">
@@ -101,6 +103,66 @@ JUtil build file.
 		   includeantruntime="false">
 		   <classpath refid="classpath.path" />
 		   <compilerarg value="-Xlint:all,-this-escape" />
+	    </javac>
+    </target>
+
+    <!-- check the code with Error Prone; see README.md for its jars -->
+    <target name="errorprone" depends="init,version"
+            description="Checks the code in ${src_dir} with Error Prone">
+	    <property name="errorprone.jar"
+		      value="${lib_dir}/error_prone_core-${errorprone.version}-with-dependencies.jar"/>
+	    <property name="dataflow.jar"
+		      value="${lib_dir}/dataflow-errorprone-${dataflow.version}.jar"/>
+	    <fail message="Error Prone needs ${errorprone.jar} and ${dataflow.jar}; README.md says how to download them.">
+	      <condition><not><and>
+		<available file="${errorprone.jar}"/>
+		<available file="${dataflow.jar}"/>
+	      </and></not></condition>
+	    </fail>
+	    <!-- the classes are thrown away: the jar is built by 'compile' -->
+	    <property name="errorprone_dir" value="${build_dir}/errorprone"/>
+	    <delete dir="${errorprone_dir}" />
+	    <mkdir dir="${errorprone_dir}" />
+	    <!-- Error Prone runs inside javac, so javac must be forked to
+	         open the compiler's internals to it. -->
+	    <javac srcdir="${src_dir}"
+		   destdir="${errorprone_dir}"
+		   excludes=".git"
+		   release="21" debug="true"
+		   includeantruntime="false"
+		   fork="yes">
+		   <classpath refid="classpath.path" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" />
+		   <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" />
+		   <compilerarg value="-XDcompilePolicy=simple" />
+		   <compilerarg value="-XDaddTypeAnnotationsToSymbol=true" />
+		   <compilerarg value="--should-stop=ifError=FLOW" />
+		   <compilerarg value="-processorpath" />
+		   <compilerarg path="${errorprone.jar}:${dataflow.jar}" />
+		   <!-- Checks which are off, with their reasons:
+		        ReferenceEquality: the trees, persistent nodes and
+		          factories compare by identity on purpose.
+		        ExposedPrivateType, NonApiType, PreferThrowsTag,
+		        EffectivelyPrivate: changing these would change
+		          the public API, or its documentation's style.
+		        AssignmentExpression, UnnecessaryParentheses,
+		        StatementSwitchToExpressionSwitch: style only.
+		        InlineMeSuggester: @InlineMe needs a dependency.
+		        InvalidBlockTag: it doesn't know JDoctest's
+		          @doc.test. -->
+		   <compilerarg value="-Xplugin:ErrorProne -Xep:ReferenceEquality:OFF -Xep:ExposedPrivateType:OFF -Xep:NonApiType:OFF -Xep:PreferThrowsTag:OFF -Xep:EffectivelyPrivate:OFF -Xep:AssignmentExpression:OFF -Xep:UnnecessaryParentheses:OFF -Xep:StatementSwitchToExpressionSwitch:OFF -Xep:InlineMeSuggester:OFF -Xep:InvalidBlockTag:OFF" />
+		   <compilerarg value="-Xmaxwarns" />
+		   <compilerarg value="10000" />
 	    </javac>
     </target>
 

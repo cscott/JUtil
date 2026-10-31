@@ -138,8 +138,7 @@ public class PersistentSetFactory<T> implements SetFactory<T> {
 	boolean containsAll(Node<T> container, Node<T> subset) {
 	    if (subset==null || container==subset) return true;
 	    if (container==null) return false; // subset not null.
-	    assert container!=null && subset!=null;
-	    assert container!=subset; // needed for next test to be correct
+	    // container!=subset here, which the next test needs.
 	    if (subset.size >= container.size) return false; // pigeonhole
 	    Pair<Node<T>,Node<T>> pair =
 		removeAndSplit(subset, container.key);
