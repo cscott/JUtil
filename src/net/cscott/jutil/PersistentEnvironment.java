@@ -63,18 +63,24 @@ public class PersistentEnvironment<K,V> extends AbstractMap<K,V>
 
     // ------------- ENVIRONMENT INTERFACE ---------------
     /** A mark into an {@link PersistentEnvironment}. */
-    private static class Mark<K,V> implements Environment.Mark {
+    private class Mark implements Environment.Mark {
 	final PersistentMap<K,V> m;
 	Mark(PersistentMap<K,V> m) { this.m = m; }
+	PersistentEnvironment<K,V> owner() { return PersistentEnvironment.this; }
+	@Override public void close() { undoToMark(this); }
     }
     /** Get a mark that will allow you to restore the current state of
      *  this environment. */
-    @Override public Environment.Mark getMark() { return new Mark<K,V>(m); }
+    @Override public Environment.Mark getMark() { return new Mark(m); }
     /** Undo all changes since the supplied mark, restoring the map to
      *  its state at the time the mark was taken. */
     @Override
-    @SuppressWarnings("unchecked") // the mark must come from this environment.
-    public void undoToMark(Environment.Mark m) { this.m = ((Mark<K,V>)m).m; }
+    @SuppressWarnings("unchecked") // the mark is from this environment
+    public void undoToMark(Environment.Mark m) {
+	if (!(m instanceof PersistentEnvironment<?,?>.Mark pm && pm.owner() == this))
+	    throw new IllegalArgumentException("not a mark of this environment");
+	this.m = ((Mark) pm).m;
+    }
 
     // ------------- THE DREADED ENTRYSET ---------------
     /** Returns a set view of the mappings contained in this map.

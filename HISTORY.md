@@ -65,6 +65,15 @@
   has the bugs that `BitString` was written to avoid.  Its
   documentation says which `BitSet` method replaces each of its
   methods.  `BitSetFactory` still uses it.
+* `Environment.Mark` is `AutoCloseable`: closing a mark of a
+  `HashEnvironment` or a `PersistentEnvironment` undoes all changes
+  since the mark, so `try (Environment.Mark scope = env.getMark())`
+  makes a scope.  A mark of another `Environment` implementation
+  inherits a `close()` which throws `UnsupportedOperationException`.
+* `HashEnvironment.undoToMark()` and `PersistentEnvironment.undoToMark()`
+  throw `IllegalArgumentException` for a mark of another
+  environment, which used to corrupt a `HashEnvironment` and replace
+  the contents of a `PersistentEnvironment`.
 * Every serializable class declares its `serialVersionUID`.  Objects
   serialized by JUtil 1.x, other than a `Default.PairList`, cannot be
   read by 2.0.

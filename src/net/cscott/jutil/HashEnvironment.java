@@ -94,11 +94,13 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     }
     @Override
     public void undoToMark(Environment.Mark m) {
-	for (int i = ((Mark)m).i; scope.size() > i; ) {
+	if (!(m instanceof HashEnvironment<?,?>.Mark hm && hm.owner() == this))
+	    throw new IllegalArgumentException("not a mark of this environment");
+	for (int i = hm.i; scope.size() > i; ) {
 	    pop(scope.get(scope.size()-1));
 	    scope.remove(scope.size()-1);
 	}
-	assert scope.size()==((Mark)m).i : "undoToMark not repeatable!";
+	assert scope.size()==hm.i : "undoToMark not repeatable!";
     }
 
     // --- EVIL EVIL SET VIEW
@@ -155,9 +157,11 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     static abstract class AbstractMapSet<K,V>
 	extends AbstractSet<Map.Entry<K,V>> implements MapSet<K,V> { }
 	
-    private static class Mark implements Environment.Mark {
+    private class Mark implements Environment.Mark {
 	final int i;
 	Mark(int i) { this.i = i; }
+	HashEnvironment<K,V> owner() { return HashEnvironment.this; }
+	@Override public void close() { undoToMark(this); }
     }
     private static abstract class LList<T> {
 	final LList<T> next;
