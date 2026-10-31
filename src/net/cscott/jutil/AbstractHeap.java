@@ -110,5 +110,7 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
 	    }
 	    return false;
 	}
+	@Override
+	public int hashCode() { return (cc==null) ? 0 : cc.hashCode(); }
     }
 }

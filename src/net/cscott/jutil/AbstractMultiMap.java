@@ -20,7 +20,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 
     @Override
     public String toString() {
-	StringBuffer sb = new StringBuffer();
+	StringBuilder sb = new StringBuilder();
 	sb.append('{');
 	for (Iterator<K> it = keySet().iterator(); it.hasNext(); ) {
 	    K k = it.next();

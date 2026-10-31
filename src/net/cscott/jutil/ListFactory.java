@@ -123,30 +123,6 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	
     }
 
-    /** Creates and returns an unmodifiable {@link List} view of
-	the list made from connecting <code>lists</code> together in
-	order. 
-	<BR> <B>effects:</B> 
-	<pre>let l0 = lists[0]
-	         l1 = lists[1]
-		 ...
-		 ln = lists[n] where n is lists.length-1
-	     returns a list view
-	         [ l0.get(0) , l0.get(1), ... , l0.get(l0.size()-1), 
-		   l1.get(0) , l1.get(1), ... , l1.get(l1.size()-1),
-		   ...
-		   ln.get(0) , ln.get(1), ... , ln.get(ln.size()-1) ]
-	</pre>
-	Note that changes to the elements of <code>lists</code> are
-	reflected in <code>this</code>. 
-
-    */
-    /* arrays of generic types are no longer allowed.
-    public static <E> List<E> concatenate(final List<E>[] lists) {
-	return concatenate(Arrays.asList(lists));
-    }
-    */
-
     /** Creates and returns an immutable {@link List} of one element. 
 	<BR> <B>effects:</B> returns the list [ o ]
 	@deprecated Use {@link java.util.Collections#singletonList(java.lang.Object) Collections.singletonList} instead.

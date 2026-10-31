@@ -242,7 +242,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 
 	@Override
 	public String toString() {
-	    StringBuffer sb = new StringBuffer("[");
+	    StringBuilder sb = new StringBuilder("[");
 	    for (EntryList<E> elp = this; elp!=null; elp=elp.next) {
 		sb.append(elp.o);
 		if (elp.next!=null)

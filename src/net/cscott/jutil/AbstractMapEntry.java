@@ -45,12 +45,9 @@ public abstract class AbstractMapEntry<K,V> implements Map.Entry<K,V> {
      *  entry and the two entries represent the same mapping. */
     @Override
     public boolean equals(Object o) {
-	Map.Entry e1 = this;
-	Map.Entry e2;
+	Map.Entry<K,V> e1 = this;
 	if (this==o) return true;
-	if (null==o) return false;
-	try { e2 = (Map.Entry) o; }
-	catch (ClassCastException e) { return false; }
+	if (!(o instanceof Map.Entry<?,?> e2)) return false;
 	return 
 	    (e1.getKey()==null ?
 	     e2.getKey()==null : e1.getKey().equals(e2.getKey())) &&

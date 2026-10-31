@@ -13,7 +13,7 @@ public abstract class Util {
    *          times. */
   public static final String repeatString(String s, int n) {
     assert n>=0;
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     for (int bit=fls(n)-1; bit>=0; bit--) {
       sb = sb.append(sb.toString());
       if ( (n & (1<<bit)) != 0)

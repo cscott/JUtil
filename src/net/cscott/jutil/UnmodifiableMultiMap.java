@@ -5,7 +5,6 @@ package net.cscott.jutil;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
 
 /** {@link UnmodifiableMultiMap} is an abstract superclass to
@@ -23,16 +22,7 @@ public abstract class UnmodifiableMultiMap<K,V>
 	backed by <code>mmap</code>.
     */
     public static <K,V> MultiMap<K,V> proxy(final MultiMap<K,V> mmap) {
-        final MultiMapSet<K,V> mms;
-        if (mmap.entrySet() instanceof MultiMapSet) {
-            mms = (MultiMapSet<K,V>) mmap.entrySet();
-        } else {
-            mms = new Factories.MultiMapSetWrapper<K,V>() {
-                @Override
-                protected Set<Map.Entry<K,V>> wrapped(){return mmap.entrySet();}
-                @Override public MultiMap<K, V> asMultiMap() { return mmap; }
-            };
-        }
+        final MultiMapSet<K,V> mms = mmap.entrySet();
 	return new UnmodifiableMultiMap<K,V>() {
             @Override
             protected MultiMap<K,V> wrapped() { return mmap; }

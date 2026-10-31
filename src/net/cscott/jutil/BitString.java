@@ -43,24 +43,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
   private static int subscript(int bitIndex) {
     return bitIndex >> BITS_PER_UNIT;
   }
-  /**
-   * Convert a subscript into the bits[] array to a (maximum) bitIndex.
-   */
-  private static int bitIndex(int subscript) {
-    return (subscript << BITS_PER_UNIT) + MASK;
-  }
-  
-  /**
-   * Creates an empty string of default length.
-   */
-  // THIS IS DANGEROUS!
-  // YOU MUST SPECIFY LENGTH OF BITSTRING, SINCE IT DOESN'T GROW AUTOMATICALLY
-  /*
-  public BitString() {
-    this(1);
-  }
-  */
-  
+
   /**
    * Creates an empty string with the specified size.
    * @param nbits the size of the string
@@ -328,11 +311,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
    */
   @Override
   public boolean equals(Object obj) {
-    BitString set;
-    if (obj==null) return false;
     if (this==obj) return true; //should help alias analysis
-    try { set = (BitString)obj; }
-    catch (ClassCastException e) { return false; }
+    if (!(obj instanceof BitString set)) return false;
     if (length() != set.length()) return false;
     int n = bits.length - 1;
     while (n>=0 && bits[n]==0) n--;
@@ -398,7 +378,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
    */
   @Override
   public String toString() {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     boolean needSeparator = false;
     buffer.append('{');
     int limit = size();

@@ -380,10 +380,10 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	if (n.parent==null) // special rules for root.
 	    return 
 		(n.sibling==null || n.sibling.parent==null) &&
-		(n.child==null || 
-		 (isTreeOrdered(n.child, c)) &&
-		 (n.degree==n.child.degree+1) &&
-		 (n==n.child.parent)) &&
+		(n.child==null ||
+		 (isTreeOrdered(n.child, c) &&
+		  n.degree==n.child.degree+1 &&
+		  n==n.child.parent)) &&
 		((n.child==null) == (n.degree==0));
 	// rules for non-root nodes.
 	if (! (c.compare(n.entry, n.parent.entry) >= 0)) return false;

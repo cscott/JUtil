@@ -248,7 +248,6 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 		    @Override public K next() { return (lastKey=it.next()); }
 		    @Override
 		    public void remove() {
-			Collection<V> c = internMap.get(lastKey);
 			it.remove();
 		    }
 		};

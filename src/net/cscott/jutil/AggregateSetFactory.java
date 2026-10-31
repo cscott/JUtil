@@ -153,8 +153,6 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	    if (nel.next!=null) nel.next.prev = nel;
 	    this.next = nel;
 	}
-	/** Return the set identifier which this list belongs to. */
-	abstract ID<E> identity();
     }
     /** Linked list of set elements. */
     private static final class EntryList<E> extends Header<E> {
@@ -171,7 +169,6 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	    if (this.next!=null) this.next.prev = this.prev;
 	    this.prev = this.next = null; // safety.
 	}
-	@Override ID<E> identity() { return id; }
 
 	@Override
 	public boolean equals(Object o) {
@@ -187,7 +184,5 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	}
     }
     /** Type for 'set identity' object. */
-    private static final class ID<E> extends Header<E> {
-	@Override ID<E> identity() { return this; }
-    }
+    private static final class ID<E> extends Header<E> { }
 }
