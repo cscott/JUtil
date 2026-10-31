@@ -50,6 +50,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	@Override public int size() { return (root==null)?0:root.size; }
 	@Override public int hashCode() { return (root==null)?0:root.setHashCode; }
 	@Override
+	@SuppressWarnings("unchecked") // from the same factory, so of the same type
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
 	    if (o instanceof PersistentSetFactory.SetImpl &&
@@ -69,12 +70,14 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	// constant-time!
 	@Override public SetImpl clone() { return new SetImpl(this.root); }
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public boolean contains(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
 	    return (Node.get(this.root, comparator, (T)key)!=null);
 	}
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public boolean remove(Object key) {
 	    Node<T> old_root = this.root;
 	    this.root = Node.remove(this.root, comparator, (T)key, allocator);
@@ -87,6 +90,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    return old_root!=this.root;
 	}
 	@Override
+	@SuppressWarnings("unchecked") // from the same factory, so of the same type
 	public boolean addAll(Collection<? extends T> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
@@ -100,6 +104,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 		return super.addAll(c);
 	}
 	@Override
+	@SuppressWarnings("unchecked") // from the same factory, so of the same type
 	public boolean containsAll(Collection<?> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
@@ -185,8 +190,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
 	@Override
 	public boolean equals(Object o) {
-	    if (!(o instanceof Node)) return false;
-	    Node n = (Node) o;
+	    if (!(o instanceof Node<?> n)) return false;
 	    return ((key==null)?n.key==null:key.equals(n.key)) &&
 		left == n.left && right == n.right;
 	}

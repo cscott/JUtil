@@ -47,6 +47,7 @@ class SetTest {
     private static final String NOT_NULL = " this is a null.  No, really! ";
     static final Object ONE_OF_THESE = new Object();
 
+    @SuppressWarnings("deprecation") // WorkSet is still tested
     static Stream<Factory> factories() {
 	return Stream.of(
 	    new Factory("HashSet", HashSet::new, HashSet::new),

@@ -119,11 +119,13 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 	    // constant-time clone.
 	    @Override public Map<K,V> clone() { return PersistentMap.this.asMap(); }
 	    @Override
+	    @SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	    public boolean containsKey(Object key) {
 		// ack, not safe if key is not a K!
 		return PersistentMap.this.containsKey((K)key);
 	    }
 	    @Override
+	    @SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	    public V get(Object key) {
 		// ack, not safe is key is not a K!
 		return PersistentMap.this.get((K)key);

@@ -120,6 +120,7 @@ public class PersistentSet<T>  implements Iterable<T> {
 	    // constant-time clone.
 	    @Override public Set<T> clone() { return PersistentSet.this.asSet(); }
 	    @Override
+	    @SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	    public boolean contains(Object o) {
 		// oops, not safe if we pass a non-T o in here!
 		return PersistentSet.this.contains((T)o);

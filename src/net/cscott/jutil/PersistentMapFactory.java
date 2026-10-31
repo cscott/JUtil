@@ -48,6 +48,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	@Override public int size() { return (root==null)?0:root.size; }
 	@Override public int hashCode() { return (root==null)?0:root.mapHashCode; }
 	@Override
+	@SuppressWarnings("unchecked") // from the same factory, so of the same type
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
 	    if (o instanceof PersistentMapFactory.MapImpl &&
@@ -67,18 +68,21 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	// constant-time!
 	@Override public MapImpl clone() { return new MapImpl(this.root); }
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public boolean containsKey(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
 	    return (Node.get(this.root, comparator, (K)key)!=null);
 	}
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public V get(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
 	    Node<K,V> np = Node.get(this.root, comparator, (K)key);
 	    return (np==null)?null:np.value;
 	}
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	void removeFast(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -100,6 +104,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    return oldValue;
 	}
 	@Override
+	@SuppressWarnings("unchecked") // from the same factory, so of the same type
 	public void putAll(Map<? extends K,? extends V> mm) {
 	    // special fast case for maps from the same factory
 	    // maps from the same factory can be compared very quickly
@@ -177,8 +182,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
 	@Override
 	public boolean equals(Object o) {
-	    if (!(o instanceof Node)) return false;
-	    Node n = (Node) o;
+	    if (!(o instanceof Node<?,?> n)) return false;
 	    return ((key==null)?n.key==null:key.equals(n.key)) &&
 		// XXX: using value.equals() *may* produce surprising
 		// behavior if equal value objects are distinguishable.

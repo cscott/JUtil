@@ -57,6 +57,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	@Override public int size() { return (root==null)?0:root.size; }
 	@Override public int hashCode() { return (root==null)?0:root.mapHashCode; }
 	@Override
+	@SuppressWarnings("unchecked") // from the same factory, so of the same type
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
 	    if (o instanceof PersistentMultiMapFactory.MultiMapImpl &&
@@ -76,6 +77,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	// constant-time!
 	@Override public MultiMapImpl clone() { return new MultiMapImpl(this.root); }
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public boolean containsKey(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -83,6 +85,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return np!=null && np.value.size()>0;
 	}
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public boolean contains(Object a, Object b) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -96,6 +99,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public V get(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -105,6 +109,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return np.value.key;
 	}
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public V remove(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -115,6 +120,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return np.value.key;
 	}
 	@Override
+	@SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	public boolean remove(Object key, Object value) {
 	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, (K)key);
 	    if (np==null) return false;
@@ -127,6 +133,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return true;
 	}
 	@Override
+	@SuppressWarnings("unchecked") // from the same factory, so of the same type
 	public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	    if (!(mm instanceof PersistentMultiMapFactory.MultiMapImpl))
 		return super.addAll(mm);
@@ -149,7 +156,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 
 	@Override
 	public Set<V> getValues(K key) {
-	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, (K)key);
+	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, key);
 	    return new ValuesSet(key, np==null?null:np.value);
 	}
 
@@ -237,6 +244,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		return (setRoot==null)?0:setRoot.setHashCode;
 	    }
 	    @Override
+	    @SuppressWarnings("unchecked") // from the same factory, so of the same type
 	    public boolean equals(Object o) {
 		// sets from the same factory can be compared very quickly
 		if (o instanceof PersistentMultiMapFactory.MultiMapImpl.ValuesSet &&
@@ -256,6 +264,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		return true;
 	    }
 	    @Override
+	    @SuppressWarnings("unchecked") // from the same factory, so of the same type
 	    public boolean addAll(Collection<? extends V> c) {
 		if (!(c instanceof PersistentMultiMapFactory.MultiMapImpl.ValuesSet))
 		    return super.addAll(c);
@@ -280,12 +289,14 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		return;
 	    }
 	    @Override
+	    @SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	    public boolean contains(Object o) {
 		if (setRoot==null) return false;
 		// unpleasant cast to V
 		return null != SetNode.get(setRoot, valueComparator, (V)o);
 	    }
 	    @Override
+	    @SuppressWarnings("unchecked") // a key of another type makes the comparator throw, as in TreeMap
 	    public boolean remove(Object o) {
 		if (setRoot==null) return false;
 		SetNode<V> v2 = SetNode.remove(setRoot, valueComparator, (V)o,
@@ -363,8 +374,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
 	@Override
 	public boolean equals(Object o) {
-	    if (!(o instanceof MapNode)) return false;
-	    MapNode n = (MapNode) o;
+	    if (!(o instanceof MapNode<?,?> n)) return false;
 	    return ((key==null)?n.key==null:key.equals(n.key)) &&
 		// XXX: using value.equals() *may* produce surprising
 		// behavior if equal value objects are distinguishable.
@@ -394,8 +404,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
 	@Override
 	public boolean equals(Object o) {
-	    if (!(o instanceof SetNode)) return false;
-	    SetNode n = (SetNode) o;
+	    if (!(o instanceof SetNode<?> n)) return false;
 	    return ((key==null)?n.key==null:key.equals(n.key)) &&
 		left == n.left && right == n.right;
 	}
