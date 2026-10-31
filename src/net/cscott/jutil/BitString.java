@@ -10,6 +10,9 @@ package net.cscott.jutil;
  * actually works.  Also, {@link BitString} has some groovy features
  * which {@link java.util.BitSet} doesn't; mostly related to efficient iteration
  * over <code>true</code> and <code>false</code> components, I think.
+ * (That was true of the {@link java.util.BitSet} of Java 1.2.  Since
+ * Java 7, {@link java.util.BitSet} works, and searches backward as
+ * well as forward.)
  * <p>
  * Each component of the {@link BitString} has a boolean value.
  * The bits of a {@link BitString} are indexed by non-negative
@@ -29,8 +32,28 @@ package net.cscott.jutil;
  * and is defined independently of implementation.
  *
  * @author  John Whaley &lt;jwhaley@alum.mit.edu&gt;
+ * @deprecated Use {@link java.util.BitSet}, which grows as needed:
+ * <ul>
+ * <li>{@code firstSet(where)} is {@code nextSetBit(where+1)}, and
+ *     {@code lastSet(where)} is {@code previousSetBit(where-1)};
+ * <li>{@code setUpTo(bit)} is {@code set(0, bit+1)}, and
+ *     {@code clearUpTo(bit)} is {@code clear(0, bit+1)};
+ * <li>{@code setAll()} is {@code set(0, n)} for a size {@code n};
+ *     {@code clearAll()} is {@code clear()};
+ * <li>{@code intersectionEmpty(o)} is {@code !intersects(o)};
+ *     {@code isZero()} is {@code isEmpty()};
+ * <li>{@code copyBits(o)} is {@code clear()} then {@code or(o)};
+ * <li>{@code numberOfOnes()} is {@code cardinality()}, and
+ *     {@code numberOfOnes(where)} is
+ *     {@code get(0, where+1).cardinality()};
+ * <li>{@code or_upTo(o, bit)} is {@code or(o.get(0, bit+1))}.
+ * </ul>
+ * {@link java.util.BitSet}'s {@code and()}, {@code or()} and
+ * {@code xor()} do not return whether they changed the set: compare
+ * its {@code cardinality()} before and after an {@code and()} or an
+ * {@code or()}.
  */
-
+@Deprecated
 public final class BitString implements Cloneable, java.io.Serializable {
     @java.io.Serial
     private static final long serialVersionUID = 1L;

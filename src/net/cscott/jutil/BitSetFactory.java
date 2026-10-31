@@ -122,6 +122,9 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	return (Set<V>) bitUniverse.clone();
     }
 
+    // BitString's and() and or() say whether they changed the set,
+    // which BitSet's do not.
+    @SuppressWarnings("deprecation")
     private static class BitStringSet<V> extends AbstractSet<V>
 	implements Cloneable {
 	/** internal representation for set. */

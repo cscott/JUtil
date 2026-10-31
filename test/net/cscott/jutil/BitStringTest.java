@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("deprecation") // BitString is still tested
 class BitStringTest {
     @Test void empty() {
 	BitString bs = new BitString(100);

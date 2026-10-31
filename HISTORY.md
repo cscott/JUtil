@@ -61,6 +61,10 @@
 * Fixed: `BitString.setUpTo()`, `clearUpTo()`, `or_upTo()` and
   `numberOfOnes(int)` ignored a whole unit of 32 bits when given the
   last bit of a unit, such as 31 or 63.
+* Deprecated: `BitString`, for `java.util.BitSet`, which no longer
+  has the bugs that `BitString` was written to avoid.  Its
+  documentation says which `BitSet` method replaces each of its
+  methods.  `BitSetFactory` still uses it.
 * Every serializable class declares its `serialVersionUID`.  Objects
   serialized by JUtil 1.x, other than a `Default.PairList`, cannot be
   read by 2.0.
