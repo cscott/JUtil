@@ -77,10 +77,28 @@ public class IntervalTree extends RedBlackTree {
         if (p==NIL)
             return;
 
-        if (p.left() == NIL || p.right() == NIL)
-            setMax(p, interval(p).high);
-        else
-            setMax(p, Math.max( max(p.left()), max(p.right()) ));
+	int m = interval(p).high;
+	if (p.left() != NIL) m = Math.max(m, max(p.left()));
+	if (p.right() != NIL) m = Math.max(m, max(p.right()));
+	setMax(p, m);
+    }
+    /** Fixes the max of <code>p</code> and all of its ancestors. */
+    private void fixMaxToRoot(Node p) {
+	for ( ; p != NIL; p = p.parent())
+	    fixMax(p);
+    }
+    // The superclass changes the tree without calling setLeft(),
+    // setRight() and setParent() for every link, and rotations fix
+    // the max of a node before that of its new parent, so fix the
+    // max all the way up from the change.
+    protected void insertNode(Node z) {
+	super.insertNode(z);
+	fixMaxToRoot(z);
+    }
+    protected void deleteNode(Node z) {
+	super.deleteNode(z);
+	// z is no longer in the tree, but still points to its last parent.
+	fixMaxToRoot(z.parent());
     }
     private void setMax(Node n, int m) { ((IntervalNode) n).max = m; }
     
@@ -151,38 +169,4 @@ public class IntervalTree extends RedBlackTree {
 	add(i);
 	return i;
     }
-
-    
-    public static void main(String[] args) {
-	IntervalTree t = new IntervalTree();
-	
-	// using example data from CLR pg 291
-	addTestIval( t,  0,  3);
-
-	addTestIval( t,  5,  8);
-	addTestIval( t, 15, 23);
-
-	addTestIval( t,  6, 10);
-	addTestIval( t, 16, 21);
-
-	addTestIval( t,  8,  9);
-	addTestIval( t, 17, 19);
-	addTestIval( t, 25, 30);
-
-	addTestIval( t, 19, 20);
-	addTestIval( t, 26, 26);
-
-	System.out.println(t.dump());
-	testSearchOverlap(t,22,25);
-	testSearchOverlap(t,11,14);
-    }
-
-    private static void addTestIval(IntervalTree t, int low, int high) {
-	t.addInterval(low+"-"+high, low, high);
-    }
-    private static void testSearchOverlap(IntervalTree t, int low, int high) {
-	System.out.println("overlaps "+low+"-"+high+" : "+
-			   t.searchOverlapping(new Interval(null, low, high)));
-    }
-    
 }

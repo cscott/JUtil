@@ -1,133 +1,91 @@
-// TestSet.java, created Wed Nov  7 17:44:45 2001 by cananian
+// SetTest.java, created Wed Nov  7 17:44:45 2001 by cananian
 // Copyright (C) 2000 C. Scott Ananian <cananian@alumni.princeton.edu>
 // Portions copyright (C) 2001 ACUNIA; borrowed from Mauve.
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * The {@link TestSet} class tests our various {@link Set}
+ * {@link SetTest} tests our various {@link Set}
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-class TestSet {
+@SuppressWarnings({"rawtypes", "unchecked"})
+class SetTest {
     private final static boolean DEBUG=false;
-    abstract static class Factory {
-	abstract Set build();
-	abstract Set build(Collection m);
-    }
-
-    public static void main(String[] args) {
-	Object[] universe = new Object[] { null, "a", "b", "c", "d",
-					   "smartmove", "rules", "cars",
-					   ONE_OF_THESE };
-	TestSet mt;
-	doit(HashSet.class);
-	//doit(TreeSet.class);//sortedset
-	//doit(ArraySet.class);//immutable.
-	//doit(PersistentSet.class);//immutable
-	// these next ones don't handle 'null's.  change NULL to something else
-	NULL = " this is a null.  No, really! ";
-	doit(UniqueVector.class);
-	doit(UniqueStack.class);
-	doit(WorkSet.class);
-	// okay, change NULL back.
-	NULL = null;
-	doit(LinearSet.class);
-	// SetFactories.
-	doit(new AggregateSetFactory(), "AggregateSetFactory");
-	//doit(new BitSetFactory(new ArraySet(universe)), "BitSetFactory");
-	doit(Factories.synchronizedSetFactory(Factories.hashSetFactory),
-	     "synchronized HashSet");
-	doit(new PersistentSetFactory(new java.util.Comparator() {
-		public int compare(Object o1, Object o2) {
-		    // null is lowest
-		    if (o1==null) return (o2==null)?0:-1;
-		    if (o2==null) return (o1==null)?0: 1;
-		    // now can't be null.
-		    if (o1 instanceof Comparable && o2 instanceof Comparable)
-			return ((Comparable)o1).compareTo(o2);
-		    return o1.hashCode() - o2.hashCode();
-		}
-	    }), "PersistentSetFactory");//sortedset
-    }
-    public final static TestSet ONE_OF_THESE = new TestSet(null);
-    // this next field can be changed for impl's w/ problems w/ real 'null'
-    public static String NULL = null;
-
-    static void doit(Class c) {
-	try {
-	    final Constructor c1 = c.getConstructor(new Class[0]);
-	    final Constructor c2 = c.getConstructor
-		(new Class[] { Class.forName("java.util.Collection") });
-	    Factory f = new Factory() {
-		    Set build() {
-			try {
-			    return (Set) c1.newInstance(new Object[0]);
-			} catch (InvocationTargetException ite) {
-			    throw (RuntimeException) ite.getTargetException();
-			} catch (Throwable t) {
-			    throw new RuntimeException(t.toString());
-			}
-		    }
-		    Set build(Collection m) {
-			try {
-			    return (Set) c2.newInstance(new Object[] { m });
-			} catch (InvocationTargetException ite) {
-			    throw (RuntimeException) ite.getTargetException();
-			} catch (Throwable t) {
-			    throw new RuntimeException(t.toString());
-			}
-		    }
-		};
-	    doit(f, c.toString());
-	} catch (RuntimeException re) {
-	    System.err.println("SKIPPING: "+re);
-	    throw re;
-	} catch (Error e) {
-	    System.err.println("SKIPPING: "+e);
-	    throw e;
-	} catch (Throwable t) {
-	    System.err.println("SKIPPING: "+t);
+    /** Makes the sets to test.  For sets which don't allow
+     *  <code>null</code>, <code>nullValue</code> stands in for it. */
+    record Factory(String name, Supplier<Set> empty,
+		   Function<Collection,Set> copy, String nullValue) {
+	Factory(String name, Supplier<Set> empty,
+		Function<Collection,Set> copy) {
+	    this(name, empty, copy, null);
 	}
+	Set build() { return empty.get(); }
+	Set build(Collection c) { return copy.apply(c); }
+	@Override public String toString() { return name; }
     }
-    static void doit(final SetFactory mf, String str) {
-	doit(new Factory() {
-		Set build() { return mf.makeSet(); }
-		Set build(Collection m) { return mf.makeSet(m); }
-	    }, str);
+    static Factory of(String name, SetFactory sf) {
+	return new Factory(name, sf::makeSet, sf::makeSet);
     }
-    static void doit(Factory f, String str) {
-	System.err.println("TESTING "+str);
-	TestSet mt = new TestSet(f);
-	mt.test();
-	if (mt.failed) {
-	    System.err.println("FAILURES testing "+str);
-	}
+    // these sets don't handle 'null's.
+    private static final String NOT_NULL = " this is a null.  No, really! ";
+    static final Object ONE_OF_THESE = new Object();
+
+    static Stream<Factory> factories() {
+	return Stream.of(
+	    new Factory("HashSet", HashSet::new, HashSet::new),
+	    new Factory("UniqueVector",
+			UniqueVector::new, UniqueVector::new, NOT_NULL),
+	    new Factory("UniqueStack",
+			UniqueStack::new, UniqueStack::new, NOT_NULL),
+	    new Factory("WorkSet", WorkSet::new, WorkSet::new, NOT_NULL),
+	    new Factory("LinearSet", LinearSet::new, LinearSet::new),
+	    of("AggregateSetFactory", new AggregateSetFactory()),
+	    of("synchronized HashSet",
+	       Factories.synchronizedSetFactory(Factories.hashSetFactory)),
+	    of("PersistentSetFactory",
+	       new PersistentSetFactory(MapTest.NULL_FIRST)));
     }
 
     // my local state.
-    final TestSet th = this;
-    final Factory f;
-    TestSet(Factory f) {  this.f = f; }
+    final SetTest th = this;
+    private Factory f;
+    private String NULL;
+    /** Returns a test instance for the given factory.  (JUnit's own
+     *  instance, made with the no-argument constructor, only runs the
+     *  parameterized tests.) */
+    static SetTest of(Factory f) {
+	SetTest t = new SetTest(); t.f = f; t.NULL = f.nullValue(); return t;
+    }
 
     // methods of test harness.
-    boolean failed = false;
+    private final List<String> failures = new ArrayList<>();
     void check(boolean cond) {
-	if (!cond) {
-	    System.err.println("FAIL("+section+"): "+last_check);
-	    failed = true;
-	}
+	if (!cond) failures.add(section+": "+last_check);
     }
     void debug(String s) { if (DEBUG) System.err.println(s); }
+    /** Fails if any check failed, listing each failed check. */
+    void assertPassed() {
+	if (!failures.isEmpty())
+	    Assertions.fail(failures.size()+" check(s) failed:\n"+
+			    String.join("\n", failures));
+    }
     void checkPoint(String name) {
 	section = name; 
     }
@@ -215,25 +173,124 @@ class TestSet {
     }
     // end bit from gnu.testlet.TestHarness
 
-    public void test ()
-    {
-	// from AcuniaAbstractSetTest.java:
-	test_equals();
-	test_hashCode();
-	// from AcuniaAbstractCollectionTest.java:
-	test_add();
-	test_addAll();
-	test_clear();
-	test_remove();
-	test_removeAll();
-	test_retainAll();
-	test_contains();
-	test_containsAll();
-	test_isEmpty();
-	test_size();
-	test_iterator();
-	test_toArray();
-	test_toString();
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void equals(Factory f) {
+	SetTest t = of(f);
+	t.test_equals();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void hashCode(Factory f) {
+	SetTest t = of(f);
+	t.test_hashCode();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void add(Factory f) {
+	SetTest t = of(f);
+	t.test_add();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void addAll(Factory f) {
+	SetTest t = of(f);
+	t.test_addAll();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void clear(Factory f) {
+	SetTest t = of(f);
+	t.test_clear();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void remove(Factory f) {
+	SetTest t = of(f);
+	t.test_remove();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void removeAll(Factory f) {
+	SetTest t = of(f);
+	t.test_removeAll();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void retainAll(Factory f) {
+	SetTest t = of(f);
+	t.test_retainAll();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void contains(Factory f) {
+	SetTest t = of(f);
+	t.test_contains();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void containsAll(Factory f) {
+	SetTest t = of(f);
+	t.test_containsAll();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void isEmpty(Factory f) {
+	SetTest t = of(f);
+	t.test_isEmpty();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void size(Factory f) {
+	SetTest t = of(f);
+	t.test_size();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void iterator(Factory f) {
+	SetTest t = of(f);
+	t.test_iterator();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void toArray(Factory f) {
+	SetTest t = of(f);
+	t.test_toArray();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void toString(Factory f) {
+	SetTest t = of(f);
+	t.test_toString();
+	t.assertPassed();
     }
 
     // from AcuniaAbstractSetTest.java: ///////////////////////////////

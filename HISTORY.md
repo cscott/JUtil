@@ -1,5 +1,27 @@
 # JUtil history
 
+## 2.0 (unreleased)
+
+* JDK 21 or later is required, to build and to run JUtil.
+* The tests use JUnit 6, and are in `test/` instead of the jar.  They
+  replace `TestMap`, `TestSet`, and the `main()` self-test methods of
+  `BinaryHeap`, `BinomialHeap`, `FibonacciHeap`, `BinaryTree` (with its
+  public `test()` method), `RedBlackTree`, `IntervalTree`,
+  `DisjointSet`, `BitString`, `HashEnvironment` and
+  `PersistentTreeNode`.
+* Fixed: removing an element from a `BinaryTree`, `RedBlackTree` or
+  `IntervalTree` could corrupt the tree when the element's successor
+  was its child.  `BinaryTree.swapPositions()` now requires both nodes
+  to be in the tree.
+* Fixed: `IntervalTree` could miss overlapping intervals, because it
+  did not keep the maximum endpoint of each subtree up to date.
+* Fixed: `BinaryTree.successor()` of a node with no right child.
+* Fixed: the entry set, key set and values of a `HashEnvironment`
+  support `Iterator.remove()` and `Map.Entry.setValue()`.
+* Fixed: the `toString()` of a multimap with a `null` key or value.
+* `UniqueVector` and `UniqueStack` have a `spliterator()` which reports
+  `DISTINCT`.
+
 ## 1.5 (2026-10-30)
 
 The last release of the 1.x line, which builds on JDK 1.5 through 8.

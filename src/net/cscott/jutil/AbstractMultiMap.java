@@ -25,10 +25,10 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	    K k = it.next();
 	    Collection<V> values = getValues(k);
 	    if (values.size()==0) continue;
-	    sb.append(k.toString());
+	    sb.append(k);
 	    sb.append('=');
 	    if (values.size()==1)
-		sb.append(values.iterator().next().toString());
+		sb.append(values.iterator().next());
 	    else
 		sb.append(values.toString());
             if (it.hasNext())

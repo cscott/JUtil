@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 /**
  * A {@link HashEnvironment} is an {@link Environment} using
@@ -99,19 +100,40 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
 	return new AbstractMapSet<K,V>() {
 	    public int size() { return HashEnvironment.this.size; }
 	    public Iterator<Map.Entry<K,V>> iterator() {
-		return new FilterIterator<Map.Entry<K,LList<V>>,Map.Entry<K,V>>
-		    (HashEnvironment.this.back.entrySet().iterator(),
-		     new FilterIterator.Filter<Map.Entry<K,LList<V>>,Map.Entry<K,V>>() {
-		    public boolean isElement(Map.Entry<K,LList<V>> e) {
-			return e.getValue().hasValue();
+		final Iterator<Map.Entry<K,LList<V>>> it =
+		    HashEnvironment.this.back.entrySet().iterator();
+		return new Iterator<Map.Entry<K,V>>() {
+		    Map.Entry<K,LList<V>> next = advance(), last = null;
+		    private Map.Entry<K,LList<V>> advance() {
+			while (it.hasNext()) {
+			    Map.Entry<K,LList<V>> e = it.next();
+			    if (e.getValue().hasValue()) return e;
+			}
+			return null;
 		    }
-		    public Map.Entry<K,V> map(final Map.Entry<K,LList<V>> e) {
+		    public boolean hasNext() { return next!=null; }
+		    public Map.Entry<K,V> next() {
+			if (next==null) throw new NoSuchElementException();
+			final Map.Entry<K,LList<V>> e = last = next;
+			next = advance();
 			return new AbstractMapEntry<K,V>() {
 			    public K getKey() { return e.getKey(); }
 			    public V getValue() { return e.getValue().getValue(); }
+			    // put() replaces the value of an existing key in
+			    // the backing map, which doesn't disturb the
+			    // iteration.
+			    public V setValue(V value) {
+				return HashEnvironment.this.put(e.getKey(), value);
+			    }
 			};
 		    }
-		});
+		    public void remove() {
+			if (last==null) throw new IllegalStateException();
+			// as above, this does not disturb the iteration.
+			HashEnvironment.this.remove(last.getKey());
+			last = null;
+		    }
+		};
 	    }
 	    public HashEnvironment<K,V> asMap(){ return HashEnvironment.this; }
 	};
@@ -142,34 +164,4 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
 	T getValue() { return value; }
     }
 
-    /** Self-test function. */
-    public static void main(String argv[]) {
-	Environment<String,String> e = new HashEnvironment<String,String>();
-	assert e.size()==0 && !e.containsKey("a") && !e.containsKey("b");
-	e.put("a","a"); e.put("a","b");
-	assert e.size()==1 && e.containsKey("a") && e.containsValue("b");
-	assert !e.containsValue("a") && !e.containsValue("c");
-	Environment.Mark m = e.getMark();
-	e.remove("a"); e.remove("a");
-	assert e.size()==0 && !e.containsKey("a");
-	assert !e.containsKey("b") && !e.containsValue("b");
-	assert !e.containsValue("a");
-	e.put("b","b"); e.put("b","c");
-	assert e.size()==1 && e.containsKey("b");
-	assert !e.containsKey("a") && e.containsValue("c");
-	assert !e.containsValue("b");
-	System.out.println(e);
-	e.undoToMark(m);
-	assert e.size()==1 && e.containsKey("a") && !e.containsKey("b");
-	System.out.println(e);
-	e.put("c", "d"); e.put("c", "d");  
-	assert e.size()==2 && e.containsKey("c") && e.containsValue("d");
-	m = e.getMark();
-	e.clear();
-	assert e.size()==0 && !e.containsKey("a") && !e.containsKey("b");
-	e.undoToMark(m);
-	assert e.size()==2 && e.containsKey("c") && e.containsValue("d");
-	assert e.containsKey("a") && !e.containsKey("b");
-	System.out.println(e);
-    }
 }

@@ -412,35 +412,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
     return buffer.toString();
   }
 
-  /** Self-test function. */
-  public static void main(String argv[]) {
-    // NOT COMPLETE: just checking firstSet() and lastSet() for now.
-    BitString bs = new BitString(100);
-    assert bs.length()==0 && bs.firstSet()==-1 && bs.lastSet()==-1;
-    assert bs.firstSet(100)==-1 && bs.firstSet(-100)==-1;
-    assert bs.lastSet(100)==-1 && bs.lastSet(-100)==-1;
-    assert bs.size()>=bs.length();
-    bs.set(52); bs.set(53); bs.set(76); bs.set(77);
-    // test get()
-    assert bs.get(52) && bs.get(53) && bs.get(76) && bs.get(77);
-    assert !bs.get(51) &&!bs.get(54) &&!bs.get(75) &&!bs.get(78);
-    // test length()
-    assert bs.length()==78 && bs.size()>=bs.length();
-    // test firstSet()
-    assert bs.firstSet()==bs.firstSet(-100);
-    assert bs.firstSet(-1)==52 && bs.firstSet(52)==53;
-    assert bs.firstSet(53)==76 && bs.firstSet(76)==77;
-    assert bs.firstSet(77)==-1 && bs.firstSet(1000)==-1;
-    // test lastSet()
-    assert bs.lastSet()==bs.lastSet(99);
-    assert bs.lastSet(99)==77 && bs.lastSet(77)==76;
-    assert bs.lastSet(76)==53 && bs.lastSet(53)==52;
-    assert bs.lastSet(52)==-1 && bs.lastSet(-100)==-1;
-    // test toString()
-    assert bs.toString().equals("{52, 53, 76, 77}");
-    // communicate success.
-    System.out.println("TESTS PASSED");
-  }
 }
 
 // set emacs indentation style.

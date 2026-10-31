@@ -8,6 +8,7 @@ JUtil build file.
 <property name="package" value="jutil" />
 <property name="package_topdir" value="net/cscott/jutil" />
 <property name="version" value="2.0" /> <!-- change version # here! -->
+<property name="junit.version" value="6.1.3" />
 
     <!-- define some variables for the script -->
     <target name="init">
@@ -17,12 +18,19 @@ JUtil build file.
       <property name="api_dir"            value="${basedir}/api"/>
       <property name="lib_dir"            value="${basedir}/lib"/>
       <property name="src_dir"            value="${basedir}/src"/>
+      <property name="test_dir"           value="${basedir}/test"/>
       <property name="classes_dir"	value="${basedir}/bin"/>
       <property name="build_dir"	value="${basedir}/build"/>
+      <property name="test_classes_dir"	value="${build_dir}/test-classes"/>
       <property name="jar.file"	value="${package}-${version}.jar"/>
       <!-- set the classpath -->
       <path id="classpath.path">
         <pathelement path="${classes_dir}"/>
+      </path>
+      <path id="test.classpath.path">
+        <path refid="classpath.path"/>
+        <pathelement path="${test_classes_dir}"/>
+        <pathelement path="${lib_dir}/junit-platform-console-standalone-${junit.version}.jar"/>
       </path>
     </target>
 
@@ -86,6 +94,33 @@ JUtil build file.
 		   includeantruntime="false">
 		   <classpath refid="classpath.path" />
 	    </javac>
+    </target>
+
+    <!-- compile the tests -->
+    <target name="compile-tests" depends="compile"
+            description="Compiles the tests in ${test_dir}">
+	    <mkdir dir="${test_classes_dir}" />
+	    <javac srcdir="${test_dir}"
+		   destdir="${test_classes_dir}"
+		   deprecation="on" release="21" debug="true"
+		   includeantruntime="false">
+		   <classpath refid="test.classpath.path" />
+	    </javac>
+    </target>
+
+    <!-- run all tests -->
+    <target name="test" depends="compile-tests"
+	    description="Runs the JUnit tests">
+      <junitlauncher printsummary="true" haltonfailure="true">
+	<classpath refid="test.classpath.path" />
+	<testclasses outputdir="${build_dir}">
+	  <fileset dir="${test_classes_dir}" includes="**/*Test.class" />
+	  <fork>
+	    <jvmarg value="-ea:net.cscott..." />
+	  </fork>
+	  <listener type="legacy-plain" />
+	</testclasses>
+      </junitlauncher>
     </target>
 
     <!-- run the javadoc tool on the source code -->

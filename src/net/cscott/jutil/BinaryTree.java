@@ -100,52 +100,38 @@ public class BinaryTree {
     }
     
     /** Switches the positions of <code>a</code> and <code>b</code>
-	within <code>this</code>.  Subclasses are expected to swap any
+	within <code>this</code>.  Both must be in the tree; one may be
+	the other's parent.  Subclasses are expected to swap any
 	data derived from the positions as well.
     */
     protected void swapPositions(Node a, Node b) { 
-	// System.out.println("swapping "+a+" and "+b);
-	Node tl  = a.left, tr = a.right, tp = a.parent;
-	setLeft(  a, b.left);
-	setRight( a, b.right);
-	setParent(a, b.parent);
-	setLeft(b, tl);
-	setRight(b, tr);
-	setParent(b, tp);
+	Node al = a.left, ar = a.right, ap = a.parent;
+	Node bl = b.left, br = b.right, bp = b.parent;
+	boolean aWasLeft = (ap != NIL && ap.left == a);
+	boolean bWasLeft = (bp != NIL && bp.left == b);
 
-	// this method can be called with nodes that are not
-	// present in the tree (even though the nodes themselves
-	// remember where they were) so we only update tree
-	// pointers if they do indeed point to the swapped nodes. 
-	// Thus these cases are more complex than one would think. 
+	// each takes the other's links; if they were adjacent, the
+	// link from one to the other is reversed.
+	setLeft(  a, (bl == a) ? b : bl);
+	setRight( a, (br == a) ? b : br);
+	setParent(a, (bp == a) ? b : bp);
+	setLeft(  b, (al == b) ? a : al);
+	setRight( b, (ar == b) ? a : ar);
+	setParent(b, (ap == b) ? a : ap);
 
-	if ( a.left  != NIL && a.left.parent == b)  a.left.parent = a;
-	if (a.right  != NIL && a.right.parent == b) a.right.parent = a;
-	if (a.parent != NIL) {
-	    if (a.parent.left == b) {
-		a.parent.left = a;
-	    } else if (a.parent.right == b) {  
-		a.parent.right = a;
-	    }
+	// now point the neighbors at the new nodes.
+	if (a.left  != NIL && a.left  != b) setParent(a.left,  a);
+	if (a.right != NIL && a.right != b) setParent(a.right, a);
+	if (b.left  != NIL && b.left  != a) setParent(b.left,  b);
+	if (b.right != NIL && b.right != a) setParent(b.right, b);
+	if (a.parent == NIL) root = a;
+	else if (a.parent != b) {
+	    if (bWasLeft) setLeft(a.parent, a); else setRight(a.parent, a);
 	}
-	
-	// Analogous case as above.
-	if ( b.left != NIL && b.left.parent == a) b.left.parent = b;
-	if (b.right != NIL && b.right.parent == a) b.right.parent = b;
-	if (b.parent != NIL) {
-	    if (b.parent.left == a) {
-		b.parent.left = b;
-	    } else if (b.parent.right == a) {
-		b.parent.right = b;
-	    }
+	if (b.parent == NIL) root = b;
+	else if (b.parent != a) {
+	    if (aWasLeft) setLeft(b.parent, b); else setRight(b.parent, b);
 	}
-	
-	if (a == root) 
-	    root = b;
-	else if (b == root)
-	    root = a;
-	
-	// System.out.println("swapped "+a+" and "+b);
     } 
 
     private Node root;
@@ -245,7 +231,7 @@ public class BinaryTree {
 	if (x.right != NIL) 
 	    return minimum(x.right); 
 	Node y = x.parent; 
-	while(y!=NIL && eq(x, y.right)) { 
+	while(y!=NIL && x == y.right) { 
 	    x = y; 
 	    y = y.parent; 
 	} 
@@ -283,70 +269,25 @@ public class BinaryTree {
 	modifies: this, z
      */
     protected void deleteNode(Node z) {
-	// System.out.println(dump());
-	Node x, y;
-	
-	if (z.left == NIL || z.right == NIL) 
-	    y = z;
-	else 
-	    // fun fact: (z has 2 children) ==> (y has at most 1 child)
-	    y = successor(z);
-	
-	if (y.left != NIL)
-	    x = y.left;
-	else
-	    x = y.right;
-	
-	if (x != NIL) 
-	    x.parent = y.parent;
-
-	if (y.parent == NIL) 
-	    root = x;
-	else if (y == y.parent.left) 
-	    y.parent.left = x;
-	else
-	    y.parent.right = x;
-	
 	// deviation from CLR; Node data is immutable, so we 
-	// shift the nodes themselves around instead. 
-	if (y != NIL && y != z) 
-	    swapPositions(y,z);
-	
+	// shift the nodes themselves around instead.
+	if (z.left != NIL && z.right != NIL)
+	    // fun fact: (z has 2 children) ==> (y has at most 1 child)
+	    swapPositions(successor(z), z);
+
+	// z now has at most one child, x
+	Node x = (z.left != NIL) ? z.left : z.right;
+	if (x != NIL) 
+	    x.parent = z.parent;
+
+	if (z.parent == NIL) 
+	    root = x;
+	else if (z == z.parent.left) 
+	    z.parent.left = x;
+	else
+	    z.parent.right = x;
     }
 
-    /** some quick display method for testing purposes. */
-    private void inorderTreeWalk() { inorderTreeWalk(root); }
-    private void inorderTreeWalk(Node x) {
-	if (x != NIL) {
-	    inorderTreeWalk(x.left);
-	    System.out.print(x.key);
-	    System.out.print(' ');
-	    inorderTreeWalk(x.right);	    
-	}
-    }
-    public void test() {
-	String[] strings = { "foo", "bar", "wistfully_3", "willing_4", "whilst_5",  
-			     "whitling_6", "away_7", "at_8", "the_9", "bar" };
-
-	for(int i=0; i<strings.length; i++) {
-	    // System.out.println(dump());
-	    add( strings[i] );
-	    inorderTreeWalk(); 
-	    System.out.println();
-	}
-	
-	for(int i=0; i<strings.length; i++) {
-	    // System.out.println(dump());
-	    remove( strings[i] );
-	    inorderTreeWalk();
-	    System.out.println();
-	}
-
-    }
-    public static void main(String[] args) {
-	BinaryTree t = new BinaryTree();
-	t.test();
-    }
     public String dump() { return dump(root); }
     public String dump(Node x) {
 	if (x == NIL) 

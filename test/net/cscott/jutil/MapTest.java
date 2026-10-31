@@ -1,125 +1,97 @@
-// TestMap.java, created Sat Nov  3 17:00:03 2001 by cananian
+// MapTest.java, created Sat Nov  3 17:00:03 2001 by cananian
 // Copyright (C) 2000 C. Scott Ananian <cananian@alumni.princeton.edu>
 // Portions copyright (C) 2001 ACUNIA; borrowed from Mauve.
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
- * The {@link TestMap} class tests our various {@link Map}
+ * {@link MapTest} tests our various {@link Map}
  * implementations for correctness.  Large portions borrowed from Mauve.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-class TestMap {
+@SuppressWarnings({"rawtypes", "unchecked"})
+class MapTest {
     private final static boolean DEBUG=false;
-    abstract static class Factory {
-	abstract Map build();
-	abstract Map build(Map m);
+    /** Makes the maps to test. */
+    record Factory(String name, Supplier<Map> empty, UnaryOperator<Map> copy) {
+	Map build() { return empty.get(); }
+	Map build(Map m) { return copy.apply(m); }
+	@Override public String toString() { return name; }
     }
+    static Factory of(String name, MapFactory mf) {
+	return new Factory(name, mf::makeMap, mf::makeMap);
+    }
+    // null is lowest; otherwise order by class name, then compare
+    // Comparables, then hash codes.
+    static final Comparator NULL_FIRST = (o1, o2) -> {
+	if (o1==null) return (o2==null)?0:-1;
+	if (o2==null) return 1;
+	if (o1.getClass() != o2.getClass())
+	    return o1.getClass().getName().compareTo(o2.getClass().getName());
+	if (o1 instanceof Comparable c1)
+	    return c1.compareTo(o2);
+	return Integer.compare(o1.hashCode(), o2.hashCode());
+    };
 
-    public static void main(String[] args) {
-	TestMap mt;
-	doit(HashMap.class);
-	//doit(TreeMap.class);//sortedmap
-	doit(HashEnvironment.class);
-	//doit(PersistentEnvironment.class);//sortedmap.
-	doit(LinearMap.class);
-	doit(GenericInvertibleMap.class);
-	doit(GenericInvertibleMultiMap.class);
-	doit(GenericMultiMap.class);
-	// MapFactories.
-	doit(new AggregateMapFactory(), "AggregateMapFactory");
-	doit(Factories.synchronizedMapFactory(Factories.hashMapFactory),
-	     "synchronized HashMap");
-	doit(new PersistentMapFactory(new java.util.Comparator() {
-		public int compare(Object o1, Object o2) {
-		    // null is lowest
-		    if (o1==null) return (o2==null)?0:-1;
-		    if (o2==null) return (o1==null)?0: 1;
-		    // now can't be null.
-		    if (o1 instanceof Comparable && o2 instanceof Comparable)
-			return ((Comparable)o1).compareTo(o2);
-		    return o1.hashCode() - o2.hashCode();
-		}
-	    }), "PersistentMapFactory");//sortedmap
-    }
-
-    static void doit(Class c) {
-	try {
-	    final Constructor c1 = c.getConstructor(new Class[0]);
-	    final Constructor c2 = c.getConstructor
-		(new Class[] { Class.forName("java.util.Map") });
-	    Factory f = new Factory() {
-		    Map build() {
-			try {
-			    return (Map) c1.newInstance(new Object[0]);
-			} catch (InvocationTargetException ite) {
-			    throw (RuntimeException) ite.getTargetException();
-			} catch (Throwable t) {
-			    throw new RuntimeException(t.toString());
-			}
-		    }
-		    Map build(Map m) {
-			try {
-			    return (Map) c2.newInstance(new Object[] { m });
-			} catch (InvocationTargetException ite) {
-			    throw (RuntimeException) ite.getTargetException();
-			} catch (Throwable t) {
-			    throw new RuntimeException(t.toString());
-			}
-		    }
-		};
-	    doit(f, c.toString());
-	} catch (RuntimeException re) {
-	    System.err.println("SKIPPING: "+re);
-	    throw re;
-	} catch (Error e) {
-	    System.err.println("SKIPPING: "+e);
-	    throw e;
-	} catch (Throwable t) {
-	    System.err.println("SKIPPING: "+t);
-	}
-    }
-    static void doit(final MapFactory mf, String str) {
-	doit(new Factory() {
-		Map build() { return mf.makeMap(); }
-		Map build(Map m) { return mf.makeMap(m); }
-	    }, str);
-    }
-    static void doit(Factory f, String str) {
-	System.err.println("TESTING "+str);
-	TestMap mt = new TestMap(f);
-	mt.test();
-	if (mt.failed) {
-	    System.err.println("FAILURES testing "+str);
-	}
+    static Stream<Factory> factories() {
+	return Stream.of(
+	    new Factory("HashMap", HashMap::new, HashMap::new),
+	    new Factory("HashEnvironment",
+			HashEnvironment::new, HashEnvironment::new),
+	    new Factory("LinearMap", LinearMap::new, LinearMap::new),
+	    new Factory("GenericInvertibleMap",
+			GenericInvertibleMap::new, GenericInvertibleMap::new),
+	    new Factory("GenericInvertibleMultiMap",
+			GenericInvertibleMultiMap::new,
+			GenericInvertibleMultiMap::new),
+	    new Factory("GenericMultiMap",
+			GenericMultiMap::new, GenericMultiMap::new),
+	    of("AggregateMapFactory", new AggregateMapFactory()),
+	    of("synchronized HashMap",
+	       Factories.synchronizedMapFactory(Factories.hashMapFactory)),
+	    of("PersistentMapFactory", new PersistentMapFactory(NULL_FIRST)));
     }
 
     // my local state.
-    final TestMap th = this;
-    final Factory f;
-    TestMap(Factory f) {  this.f = f; }
+    final MapTest th = this;
+    private Factory f;
+    /** Returns a test instance for the given factory.  (JUnit's own
+     *  instance, made with the no-argument constructor, only runs the
+     *  parameterized tests.) */
+    static MapTest of(Factory f) { MapTest t = new MapTest(); t.f = f; return t; }
 
     // methods of test harness.
-    boolean failed = false;
+    private final List<String> failures = new ArrayList<>();
     void check(boolean cond) {
-	if (!cond) {
-	    System.err.println("FAIL("+section+"): "+last_check);
-	    failed = true;
-	}
+	if (!cond) failures.add(section+": "+last_check);
     }
     void debug(String s) { if (DEBUG) System.err.println(s); }
+    /** Fails if any check failed, listing each failed check. */
+    void assertPassed() {
+	if (!failures.isEmpty())
+	    Assertions.fail(failures.size()+" check(s) failed:\n"+
+			    String.join("\n", failures));
+    }
     void checkPoint(String name) {
 	section = name; 
     }
@@ -207,22 +179,117 @@ class TestMap {
     }
     // end bit from gnu.testlet.TestHarness
 
-    public void test ()   {
-       test_Map();
-       test_get();
-       test_containsKey();
-       test_containsValue();
-       test_isEmpty();
-       test_size();
-       test_clear();
-       test_put();
-       test_putAll();
-       test_remove();
-       test_entrySet(false/*don't test concurrent modification exceptions*/);
-       test_keySet();
-       test_values();
-       //test_behaviour();
-  }
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void Map(Factory f) {
+	MapTest t = of(f);
+	t.test_Map();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void get(Factory f) {
+	MapTest t = of(f);
+	t.test_get();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void containsKey(Factory f) {
+	MapTest t = of(f);
+	t.test_containsKey();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void containsValue(Factory f) {
+	MapTest t = of(f);
+	t.test_containsValue();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void isEmpty(Factory f) {
+	MapTest t = of(f);
+	t.test_isEmpty();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void size(Factory f) {
+	MapTest t = of(f);
+	t.test_size();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void clear(Factory f) {
+	MapTest t = of(f);
+	t.test_clear();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void put(Factory f) {
+	MapTest t = of(f);
+	t.test_put();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void putAll(Factory f) {
+	MapTest t = of(f);
+	t.test_putAll();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void remove(Factory f) {
+	MapTest t = of(f);
+	t.test_remove();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void entrySet(Factory f) {
+	MapTest t = of(f);
+	t.test_entrySet(false/*don't test concurrent modification exceptions*/);
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void keySet(Factory f) {
+	MapTest t = of(f);
+	t.test_keySet();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void values(Factory f) {
+	MapTest t = of(f);
+	t.test_values();
+	t.assertPassed();
+    }
+
+    @ParameterizedTest(name="{0}")
+    @MethodSource("factories")
+    void behaviour(Factory f) {
+	MapTest t = of(f);
+	t.test_behaviour();
+	t.assertPassed();
+    }
 
   protected Map buildHM() {
       Map hm = f.build();
@@ -440,6 +507,8 @@ class TestMap {
     	th.fail("should throw an UnsupportedOperationException");
     }
     catch (UnsupportedOperationException uoe) { th.check(true); }
+    // a MultiMap's entry set supports add(), but not of a null entry
+    catch (NullPointerException npe) { th.check(f.name().contains("MultiMap")); }
     th.check( s.size() == 16 );
     hm.remove("a12");
     th.check( s.size() == 15 );

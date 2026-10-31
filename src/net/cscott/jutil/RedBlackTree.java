@@ -20,17 +20,20 @@ public class RedBlackTree extends BinaryTree {
 
     private static final boolean DEBUG = false;
     private void checkRep() { if (DEBUG) checkTree(root()); }
-    private void checkTree(Node n) {
-	if (n == NIL) 
+    /** Checks the red-black properties of the subtree rooted at
+	<code>n</code>, and returns its black-height. */
+    int checkTree(Node n) {
+	if (n == NIL) {
 	    assert color(n) == BLACK : "(2) viol.";
+	    return 0;
+	}
 	if (color(n) == RED) { // (3)
 	    assert color(n.left()) == BLACK : "(3) left viol. on "+n;
 	    assert color(n.right()) == BLACK : "(3) right viol. on "+n;
 	}
-	if (n != NIL) { 
-	    checkTree(n.left());
-	    checkTree(n.right());
-	}
+	int lh = checkTree(n.left()), rh = checkTree(n.right());
+	assert lh == rh : "(4) viol. on "+n;
+	return lh + ((color(n) == BLACK) ? 1 : 0);
     }
 
     private static final int RED = 0;
@@ -119,39 +122,23 @@ public class RedBlackTree extends BinaryTree {
     protected void deleteNode(Node z) {
 	checkRep();
 
-	Node x, y;
-	if (z.left() == NIL || z.right() == NIL) 
-	    y = z;
-	else
-	    y = successor(z);
+	if (z.left() != NIL && z.right() != NIL)
+	    // swaps the colors as well
+	    swapPositions(successor(z), z);
 
-	if (y.left() != NIL)
-	    x = y.left();
-	else 
-	    x = y.right();
-	
-	setParent(x, y.parent());
+	// z now has at most one child, x
+	Node x = (z.left() != NIL) ? z.left() : z.right();
+	setParent(x, z.parent());
 
-	if (y.parent() == NIL)
+	if (z.parent() == NIL)
 	    setRoot(x);
-	else if (y == y.parent().left())
-	    setLeft(y.parent(), x);
+	else if (z == z.parent().left())
+	    setLeft(z.parent(), x);
 	else
-	    setRight(y.parent(), x);
-	
-	// System.out.println(" x:"+x+" y:"+y+" z:"+z);
-	if (y != z) {
-	    swapPositions(y,z);
-	}
-	
-	// sadly, below are the only significant differences versus
-	// the superclass implementation.  But I can't find a clean
-	// way to communicate the values for x and y between the two
-	// procedures without making the whole thing an obvious hack.
-	if (color(z) == BLACK) // we swap above, so z's col instead of y's col 
-	    rbDeleteFixup(x);
+	    setRight(z.parent(), x);
 
-	// System.out.println(dump());
+	if (color(z) == BLACK)
+	    rbDeleteFixup(x);
 
 	checkRep();
     }
@@ -261,5 +248,4 @@ public class RedBlackTree extends BinaryTree {
 	setParent(x, y);
     }
 
-    public static void main(String[] args) { (new RedBlackTree()).test(); }
 }

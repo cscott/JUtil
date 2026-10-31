@@ -128,22 +128,4 @@ public class DisjointSet<E>  {
 	    this.parent = this; this.element = element; this.rank = 0;
 	}
     }
-    /** Self-test method. */
-    public static void main(String[] args) {
-	DisjointSet<String> ds = new DisjointSet<String>();
-	String a="a", b="b", c="c", d="d", e="e", f="f", g="g", h="h";
-	assert !ds.contains(a) && !ds.contains(b) && !ds.contains(c);
-	assert ds.find(a)==a && ds.find(b)==b && ds.find(c)==c;
-	assert !ds.contains(a) && !ds.contains(b) && !ds.contains(c);
-	ds.union(e, c); ds.union(b, h); ds.union(h, c);
-	assert ds.find(e)==ds.find(c) && ds.find(h)==ds.find(e);
-	assert ds.find(b)==ds.find(c) && ds.find(b)!=ds.find(a);
-	ds.union(d, f); ds.union(g, d);
-	assert ds.find(d)==ds.find(f) && ds.find(f)==ds.find(g);
-	assert ds.find(d)!=ds.find(c) && ds.find(d)!=ds.find(a);
-	ds.union(c, f);
-	assert ds.find(e)==ds.find(f);
-	assert ds.find(a)==a;
-	System.err.println("PASSED.");
-    }
 }
