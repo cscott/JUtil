@@ -53,7 +53,7 @@ package net.cscott.jutil;
  * its {@code cardinality()} before and after an {@code and()} or an
  * {@code or()}.
  */
-@Deprecated
+@Deprecated(since="2.0")
 public final class BitString implements Cloneable, java.io.Serializable {
     @java.io.Serial
     private static final long serialVersionUID = 1L;

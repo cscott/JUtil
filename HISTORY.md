@@ -145,6 +145,8 @@
   compiles.
 * `SnapshotIterator` and `IteratorEnumerator` take an
   `Iterator<? extends E>`.
+* Each deprecated class and member says which release deprecated it,
+  as `@Deprecated(since="1.3")` or `@Deprecated(since="2.0")`.
 * The documentation of `MultiMap`, `PersistentMap` and `DisjointSet`
   has examples, which `ant test` runs with [JDoctest].
 
@@ -189,8 +191,11 @@ The jar runs on Java 1.5 and later.
   `UnmodifiableMap` is an `UnmodifiableMapSet`.
 * `UnmodifiableIterator.proxy()`.
 * `BitSetFactory` constructors take a `Collection` instead of a `Set`.
-* Deprecated `WorkSet` (use `java.util.LinkedHashSet`) and
-  `ListFactory.singleton` (use `java.util.Collections.singletonList`).
+* Deprecated `WorkSet` (use `java.util.LinkedHashSet`),
+  `ListFactory.singleton` (use `java.util.Collections.singletonList`),
+  and `Default.EMPTY_SET`, `Default.EMPTY_LIST()` and
+  `Default.EMPTY_MAP` (use the empty collections of
+  `java.util.Collections`).
 * Fixed a `NullPointerException` in `containsAll()` of the sets made by
   `PersistentSetFactory`.
 * `jutil-source.jar`, for Eclipse.

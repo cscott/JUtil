@@ -12,7 +12,7 @@ public abstract class Util {
    *  @return a string consisting of <code>s</code> repeated <code>n</code>
    *          times.
    *  @deprecated Use {@link String#repeat(int)}. */
-  @Deprecated
+  @Deprecated(since="2.0")
   public static final String repeatString(String s, int n) {
     assert n>=0;
     return s.repeat(n);
@@ -49,28 +49,28 @@ public abstract class Util {
   /** Return the number of zeros in the binary representation of the
    *  value of the argument.
    *  @deprecated Use {@link Integer#bitCount(int) Integer.bitCount(~v)}. */
-  @Deprecated
+  @Deprecated(since="2.0")
   public static final int zerocount(int v) {
     return Integer.bitCount(~v);
   }
   /** Return the number of zeros in the binary representation of the
    *  value of the argument.
    *  @deprecated Use {@link Long#bitCount(long) Long.bitCount(~v)}. */
-  @Deprecated
+  @Deprecated(since="2.0")
   public static final int zerocount(long v) {
     return Long.bitCount(~v);
   }
   /** Return the number of ones in the binary representation of the
    *  value of the argument.
    *  @deprecated Use {@link Integer#bitCount(int)}. */
-  @Deprecated
+  @Deprecated(since="2.0")
   public static final int popcount(int v) {
     return Integer.bitCount(v);
   }
   /** Return the number of ones in the binary representation of the
    *  value of the argument.
    *  @deprecated Use {@link Long#bitCount(long)}. */
-  @Deprecated
+  @Deprecated(since="2.0")
   public static final int popcount(long v) {
     return Long.bitCount(v);
   }

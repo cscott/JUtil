@@ -46,7 +46,7 @@ public abstract class Default  {
      *  {@link Comparator#nullsFirst(Comparator) Comparator.nullsFirst}<code>(</code>{@link Comparator#naturalOrder()}<code>)</code>,
      *  which this is, or {@link #comparator()}.
      */
-    @Deprecated
+    @Deprecated(since="2.0")
     @SuppressWarnings("rawtypes")
     public static final Comparator comparator = NULLS_FIRST;
     /** A {@link Comparator} for objects that implement 
@@ -58,7 +58,7 @@ public abstract class Default  {
      *  {@link Comparator#nullsFirst(Comparator) Comparator.nullsFirst}<code>(</code>{@link Comparator#naturalOrder()}<code>)</code>,
      *  which this returns.
      */
-    @Deprecated
+    @Deprecated(since="2.0")
     public static final <T extends Comparable<T>> Comparator<T> comparator() {
 	return nullsFirst();
     }
@@ -70,7 +70,7 @@ public abstract class Default  {
      *  {@link IllegalStateException}, not
      *  {@link UnsupportedOperationException}.
      */
-    @Deprecated
+    @Deprecated(since="2.0")
     @SuppressWarnings("rawtypes")
     public static final Iterator nullIterator = nullIterator();
     /** An {@link Iterator} over the empty set, parameterized to
@@ -81,7 +81,7 @@ public abstract class Default  {
      *  {@link IllegalStateException}, not
      *  {@link UnsupportedOperationException}.
      */
-    @Deprecated
+    @Deprecated(since="2.0")
     public static final <E> Iterator<E> nullIterator() {
 	return new Iterator<E>() {
 	    @Override public boolean hasNext() { return false; }
@@ -110,7 +110,7 @@ public abstract class Default  {
      *  {@link Collections#emptySet()} when the set need not be a
      *  {@link SortedSet}.
      */
-    @Deprecated
+    @Deprecated(since="1.3")
     @SuppressWarnings("rawtypes")
     public static final SortedSet EMPTY_SET = EMPTY_SET();
     /** An empty set; the parameterized version.
@@ -119,7 +119,7 @@ public abstract class Default  {
      *  {@link Collections#emptySet()} when the set need not be a
      *  {@link SortedSet}.
      */
-    @Deprecated
+    @Deprecated(since="1.3")
     public static final <E> SortedSet<E> EMPTY_SET() {
 	return new EmptySortedSet<>();
     }
@@ -180,7 +180,7 @@ public abstract class Default  {
      * @deprecated Use {@link Collections#emptyList()}, which this
      *  returns.
      */
-    @Deprecated
+    @Deprecated(since="1.3")
     public static final <E> List<E> EMPTY_LIST() {
 	return Collections.<E>emptyList();
     }
@@ -190,7 +190,7 @@ public abstract class Default  {
      *  {@link Collections#emptyMap()} when the map need not be a
      *  {@link SortedMap}.
      */
-    @Deprecated
+    @Deprecated(since="1.3")
     @SuppressWarnings("rawtypes")
     public static final SortedMap EMPTY_MAP = EMPTY_MAP();
     /** An empty map, parameterized to play nicely with Java's type system.
@@ -198,7 +198,7 @@ public abstract class Default  {
      *  {@link Collections#emptyMap()} when the map need not be a
      *  {@link SortedMap}.
      */
-    @Deprecated
+    @Deprecated(since="1.3")
     public static final <K,V> SortedMap<K,V> EMPTY_MAP() {
 	return new EmptySortedMap<>();
     }
@@ -262,7 +262,7 @@ public abstract class Default  {
      * @deprecated Use {@link #EMPTY_MULTIMAP()}, which is
      *  parameterized.
      */
-    @Deprecated
+    @Deprecated(since="2.0")
     @SuppressWarnings("rawtypes")
     public static final MultiMap EMPTY_MULTIMAP = EMPTY_MULTIMAP();
     /** An empty multi-map, parameterized to play nicely with Java's

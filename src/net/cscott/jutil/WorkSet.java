@@ -19,7 +19,7 @@ import java.util.Stack;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  * @deprecated Use {@link java.util.LinkedHashSet LinkedHashSet} instead.
  */
-@Deprecated
+@Deprecated(since="1.3")
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 {
     @java.io.Serial

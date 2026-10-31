@@ -124,7 +124,7 @@ public interface ListFactory<V> extends CollectionFactory<V> {
 	<BR> <B>effects:</B> returns the list [ o ]
 	@deprecated Use {@link java.util.Collections#singletonList(java.lang.Object) Collections.singletonList} instead.
      */
-    @Deprecated
+    @Deprecated(since="1.3")
     static <E> List<E> singleton(final E o) {
 	return new AbstractList<E>() {
 	    @Override
