@@ -33,7 +33,11 @@ public final class Factories {
         
     }
     
-    /** A {@link MapFactory} that generates {@link HashMap}s. */ 
+    /** A {@link MapFactory} that generates {@link HashMap}s.
+     *  @deprecated Use {@link #hashMapFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final MapFactory hashMapFactory = hashMapFactory();
     public static final <K,V> MapFactory<K,V> hashMapFactory() {
 	return new SerialMapFactory<K,V>() {
@@ -44,7 +48,11 @@ public final class Factories {
 	};
     }
     
-    /** A {@link MapFactory} that generates {@link LinkedHashMap}s. */ 
+    /** A {@link MapFactory} that generates {@link LinkedHashMap}s.
+     *  @deprecated Use {@link #linkedHashMapFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final MapFactory linkedHashMapFactory = linkedHashMapFactory();
     public static final <K,V> MapFactory<K,V> linkedHashMapFactory() {
 	return new SerialMapFactory<K,V>() {
@@ -68,7 +76,11 @@ public final class Factories {
         };
     }
     
-    /** A {@link SetFactory} that generates {@link HashSet}s. */
+    /** A {@link SetFactory} that generates {@link HashSet}s.
+     *  @deprecated Use {@link #hashSetFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final SetFactory hashSetFactory = hashSetFactory();
     public static final <V> SetFactory<V> hashSetFactory() {
 	return new SerialSetFactory<V>() {
@@ -83,7 +95,11 @@ public final class Factories {
 	};
     }
     
-    /** A {@link SetFactory} that generates {@link LinkedHashSet}s. */
+    /** A {@link SetFactory} that generates {@link LinkedHashSet}s.
+     *  @deprecated Use {@link #linkedHashSetFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final SetFactory linkedHashSetFactory = linkedHashSetFactory();
     public static final <V> SetFactory<V> linkedHashSetFactory() {
 	return new SerialSetFactory<V>() {
@@ -115,8 +131,20 @@ public final class Factories {
         };
     }
     
-    /** A {@link SetFactory} that generates {@link WorkSet}s. */
+    /** A {@link SetFactory} that generates {@link WorkSet}s.
+     *  @deprecated Use {@link #linkedHashSetFactory()}:
+     *  {@link WorkSet} is deprecated in favor of
+     *  {@link LinkedHashSet}.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final SetFactory workSetFactory = workSetFactory();
+    /** A {@link SetFactory} that generates {@link WorkSet}s.
+     *  @deprecated Use {@link #linkedHashSetFactory()}:
+     *  {@link WorkSet} is deprecated in favor of {@link LinkedHashSet}.
+     */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public static final <V> SetFactory<V> workSetFactory() {
 	return new SerialSetFactory<V>() {
 	    @Override
@@ -131,7 +159,11 @@ public final class Factories {
     }
     
     /** A {@link SetFactory} that generates
-	{@link LinearSet}s backed by {@link ArrayList}s. */
+	{@link LinearSet}s backed by {@link ArrayList}s.
+     *  @deprecated Use {@link #linearSetFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final SetFactory linearSetFactory = linearSetFactory();
     public static final <V> SetFactory<V> linearSetFactory() {
       return new SerialSetFactory<V>() {
@@ -153,7 +185,11 @@ public final class Factories {
       };
     }
 
-    /** A {@link SetFactory} that generates {@link TreeSet}s. */
+    /** A {@link SetFactory} that generates {@link TreeSet}s.
+     *  @deprecated Use {@link #treeSetFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final SetFactory treeSetFactory = Factories.<Comparable>treeSetFactory();
     public static final <V extends Comparable<V>> SetFactory<V> treeSetFactory() {
 	return new SerialSetFactory<V>() {
@@ -174,7 +210,11 @@ public final class Factories {
 	};
     }
 
-    /** A {@link MapFactory} that generates {@link TreeMap}s. */
+    /** A {@link MapFactory} that generates {@link TreeMap}s.
+     *  @deprecated Use {@link #treeMapFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final MapFactory treeMapFactory = Factories.<Comparable,Object>treeMapFactory();
     public static final <K extends Comparable<K>,V> MapFactory<K,V> treeMapFactory() {
 	return new SerialMapFactory<K,V>() {
@@ -195,7 +235,11 @@ public final class Factories {
 	};
     }
     
-    /** A {@link ListFactory} that generates {@link LinkedList}s. */
+    /** A {@link ListFactory} that generates {@link LinkedList}s.
+     *  @deprecated Use {@link #linkedListFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final ListFactory linkedListFactory = linkedListFactory();
     public static final <V> ListFactory<V> linkedListFactory() {
 	return new SerialListFactory<V>() {
@@ -207,7 +251,11 @@ public final class Factories {
     }
 
     /** Returns a {@link ListFactory} that generates
-	{@link ArrayList}s. */
+	{@link ArrayList}s.
+     *  @deprecated Use {@link #arrayListFactory()}, which is parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings({"rawtypes","unchecked"})
     public static final ListFactory arrayListFactory = arrayListFactory();
     public static final <V> ListFactory<V> arrayListFactory() {
 	return new SerialListFactory<V>() {

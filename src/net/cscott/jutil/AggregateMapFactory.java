@@ -169,17 +169,15 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 		    }
 		    @Override
 		    public boolean contains(Object o) {
-			if (!(o instanceof Map.Entry)) return false;
-			Map.Entry me = (Map.Entry) o;
-			Map.Entry pair = Default.entry(IDENTITY, me.getKey());
+			if (!(o instanceof Map.Entry<?,?> me)) return false;
+			Map.Entry<?,?> pair = Default.entry(IDENTITY, me.getKey());
 			if (!m.containsKey(pair)) return false;
 			return me.equals(m.get(pair));
 		    }
 		    @Override
 		    public boolean remove(Object o) {
 			if (!contains(o)) return false;
-			Map.Entry me = (Map.Entry) o;
-			AggregateMap.this.remove(me.getKey());
+			AggregateMap.this.remove(((Map.Entry<?,?>) o).getKey());
 			return true;
 		    }
 		    @Override public Map<K,V> asMap() { return AggregateMap.this; }

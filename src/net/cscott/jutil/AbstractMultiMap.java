@@ -108,14 +108,9 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 
     @Override
     public boolean equals(Object o) {
-	if (o==null) return false;
 	if (o==this) return true;
-	try {
-	    Set entrySet = ((Map) o).entrySet();
-	    return this.entrySet().equals(entrySet);
-	} catch (ClassCastException e) {
-	    return false;
-	}
+	if (!(o instanceof Map<?,?> m)) return false;
+	return this.entrySet().equals(m.entrySet());
     }
 
     /** Copies the mappings from the specified map to this
@@ -160,6 +155,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     @Override public int size() { return entrySet().size(); }
 
     @Override
+    @SuppressWarnings("unchecked") // safe, since key is in the map.
     public V get(Object key) {
 	if (!containsKey(key)) return null;
 	return getValues((K)key).iterator().next();

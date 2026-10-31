@@ -64,6 +64,7 @@ public class FilterIterator<A,B> extends UnmodifiableIterator<B> {
 	    <BR> Default implementation returns <code>o</code>
 	    (identity mapping). 
 	 */
-	public B map(A o) { return (B) o; } // cast is only safe if A extends B
+	@SuppressWarnings("unchecked") // only safe if A extends B
+	public B map(A o) { return (B) o; }
     }
 }

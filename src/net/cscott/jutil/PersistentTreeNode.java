@@ -59,7 +59,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     /** equals() merely checks that key and value are equivalent;
      *  isSame() checks that left and right branches are equivalent, too.
      */
-    public boolean isSame(PersistentTreeNode n) {
+    public boolean isSame(PersistentTreeNode<?,?,?> n) {
 	if (this==n) return true; // quick common case
 	if (null==n) return false; // protect us from evil; this!=null
 	return
@@ -69,7 +69,8 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     private static boolean isSame(Object o1, Object o2) {
 	return (o1==null)?(o2==null):(o1.equals(o2));
     }
-    private static boolean isSame(PersistentTreeNode n1,PersistentTreeNode n2){
+    private static boolean isSame(PersistentTreeNode<?,?,?> n1,
+				  PersistentTreeNode<?,?,?> n2){
 	return (n1==null)?(n2==null):(n1.isSame(n2));
     }
 

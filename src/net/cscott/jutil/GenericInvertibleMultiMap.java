@@ -33,19 +33,22 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	this.inverse = new GenericInvertibleMultiMap<V,K>(imap, map, this);
     }
     
-    /* have to put up w/ unchecked-type warnings on these; no way to say
-     * 'this method only makes sense if K==V'. */
-    public GenericInvertibleMultiMap(MultiMapFactory mmf) {
+    /* The same factory makes both the map and its inverse, which have
+     * the key and value types swapped; the types can't say that the
+     * factory must accept both K and V, so the casts are unchecked. */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public GenericInvertibleMultiMap(MultiMapFactory<?,?> mmf) {
 	this((MultiMap<K,V>)mmf.makeMultiMap(), (MultiMap<V,K>)mmf.makeMultiMap());
     }
-    public GenericInvertibleMultiMap(MapFactory mf, CollectionFactory cf) {
-	this((MultiMap<K,V>)new GenericMultiMap(mf,cf), (MultiMap<V,K>)new GenericMultiMap(mf,cf));
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public GenericInvertibleMultiMap(MapFactory<?,?> mf, CollectionFactory<?> cf) {
+	this((MultiMap<K,V>)new GenericMultiMap((MapFactory)mf,cf), (MultiMap<V,K>)new GenericMultiMap((MapFactory)mf,cf));
     }
-    public GenericInvertibleMultiMap(CollectionFactory cf) {
-	this(Factories.hashMapFactory, cf);
+    public GenericInvertibleMultiMap(CollectionFactory<?> cf) {
+	this(Factories.hashMapFactory(), cf);
     }
     public GenericInvertibleMultiMap() {
-	this(Factories.hashSetFactory);
+	this(Factories.hashSetFactory());
     }
 
     /* Collections API */
@@ -127,8 +130,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 		@Override public void clear() { GenericInvertibleMultiMap.this.clear(); }
 		@Override
 		public boolean contains(Object o) {
-		    if (!(o instanceof Map.Entry)) return false;
-		    Map.Entry<K,V> me = (Map.Entry) o;
+		    if (!(o instanceof Map.Entry<?,?> me)) return false;
 		    return GenericInvertibleMultiMap.this.contains
 			(me.getKey(), me.getValue());
 		}
@@ -138,8 +140,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 		}
 		@Override
 		public boolean remove(Object o) {
-		    if (!(o instanceof Map.Entry)) return false;
-		    Map.Entry<K,V> me = (Map.Entry) o;
+		    if (!(o instanceof Map.Entry<?,?> me)) return false;
 		    return GenericInvertibleMultiMap.this.remove
 			(me.getKey(), me.getValue());
 		}
@@ -248,6 +249,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	}
     }
     @Override
+    @SuppressWarnings("unchecked") // getValues() of a key of another type is empty
     public V remove(Object key) {
 	V old = null;
 	for (Iterator<V> it=this.getValues((K)key).iterator(); it.hasNext(); ){

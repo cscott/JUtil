@@ -93,9 +93,15 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	    size++;
 	    return true;
 	}
+	/** Returns an entry which equals the entry for <code>o</code> in
+	 *  this set, to look it up in the backing store. */
+	@SuppressWarnings("unchecked") // only equals() and hashCode() see o.
+	private EntryList<V> probe(Object o) {
+	    return new EntryList<V>(IDENTITY, (V) o);
+	}
 	@Override
 	public boolean contains(Object o) {
-	    return m.containsKey(new EntryList(IDENTITY, o));
+	    return m.containsKey(probe(o));
 	}
 	@Override
 	public boolean isEmpty() {
@@ -134,7 +140,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	}
 	@Override
 	public boolean remove(Object o) {
-	    EntryList<V> entry = m.get(new EntryList(IDENTITY, o));
+	    EntryList<V> entry = m.get(probe(o));
 	    if (entry==null) return false;
 	    remove(entry);
 	    return true;
@@ -172,8 +178,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 
 	@Override
 	public boolean equals(Object o) {
-	    if (!(o instanceof EntryList)) return false;
-	    EntryList e = (EntryList) o;
+	    if (!(o instanceof EntryList<?> e)) return false;
 	    return this.id==e.id &&
 		(this.value==null? e.value==null : this.value.equals(e.value));
 	}

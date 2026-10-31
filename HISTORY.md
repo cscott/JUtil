@@ -41,6 +41,14 @@
   for `Default.EMPTY_MULTIMAP()`.  The deprecated `EMPTY_SET` and
   `EMPTY_MAP` now point to `Collections.emptySortedSet()` and
   `Collections.emptySortedMap()`.
+* Deprecated: the raw-typed constants of `Factories`, such as
+  `Factories.hashSetFactory`, for the parameterized methods of the
+  same name, such as `Factories.hashSetFactory()`; and
+  `Factories.workSetFactory()`, for `linkedHashSetFactory()`, since
+  `WorkSet` is deprecated for `LinkedHashSet`.
+* The `GenericInvertibleMultiMap` constructors which take factories
+  take wildcard types, such as `MultiMapFactory<?,?>`, instead of raw
+  types.
 * `UniqueVector` and `UniqueStack` have a `spliterator()` which reports
   `DISTINCT`.
 

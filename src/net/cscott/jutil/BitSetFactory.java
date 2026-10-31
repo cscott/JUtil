@@ -170,9 +170,8 @@ public class BitSetFactory<V> extends SetFactory<V> {
 
 	@Override
 	public boolean addAll(Collection<? extends V> c) {
-	    if (c instanceof BitStringSet &&
-		((BitStringSet)c).fact == this.fact) {
-		BitStringSet bss = (BitStringSet) c;
+	    if (c instanceof BitStringSet<?> bss &&
+		bss.fact == this.fact) {
 		this.hashCodeValid=false; // invalidate cache.
 		return this.bs.or(bss.bs);
 	    } else return super.addAll(c);
@@ -186,6 +185,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked") // safe, since o is in the universe.
 	public boolean contains(Object o) {
 	    if (fact.universe.contains(o)) {
 		int i = fact.indexer.getID((V)o);
@@ -201,14 +201,12 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	public boolean containsAll(Collection<?> c) {
 	    // check that ('c' - this) is nullset
 	    // (which is the same as C /\ NOT(this) )
-	    if (c instanceof BitStringSet &&
-		((BitStringSet)c).fact == this.fact) {
-		BitString notBS = 
-		    (BitString) this.bs.clone();
+	    if (c instanceof BitStringSet<?> bss &&
+		bss.fact == this.fact) {
+		BitString notBS = this.bs.clone();
 		notBS.setAll(); // -> string of ones
 		notBS.xor(this.bs);  // -> complement(bs)
 
-		BitStringSet bss = (BitStringSet) c;
 		return bss.bs.intersectionEmpty(notBS);
 	    } else return super.containsAll(c);
 	}
@@ -222,8 +220,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	public boolean equals(Object o) {
 	    if (o==null) return false;
 	    if (o==this) return true;
-	    if (o instanceof BitStringSet) {
-		BitStringSet bss = (BitStringSet) o;
+	    if (o instanceof BitStringSet<?> bss) {
 		if (this.fact == bss.fact)
 		    return this.bs.equals(bss.bs);
 	    }
@@ -300,6 +297,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked") // safe, since o is in the universe.
 	public boolean remove(Object o) {
 	    if (!fact.universe.contains(o)) {
 		// o is not member of universe, therefore cannot be in set.
@@ -319,11 +317,10 @@ public class BitSetFactory<V> extends SetFactory<V> {
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-	    if (c instanceof BitStringSet &&
-		((BitStringSet)c).fact == this.fact) {
+	    if (c instanceof BitStringSet<?> bss &&
+		bss.fact == this.fact) {
 		this.hashCodeValid=false;
-		BitStringSet bss = (BitStringSet) c;
-		BitString notBSS = (BitString) bss.bs.clone();
+		BitString notBSS = bss.bs.clone();
 		notBSS.setAll(); // -> string of ones
 		notBSS.xor(bss.bs); // -> complement(bss)
 		return this.bs.and(notBSS);
@@ -342,10 +339,9 @@ public class BitSetFactory<V> extends SetFactory<V> {
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-	    if (c instanceof BitStringSet &&
-		((BitStringSet)c).fact == this.fact) {
+	    if (c instanceof BitStringSet<?> bss &&
+		bss.fact == this.fact) {
 		this.hashCodeValid=false;
-		BitStringSet bss = (BitStringSet) c;
 		return this.bs.and(bss.bs);
 	    } else {
 		return super.retainAll(c); // slower generic implementation

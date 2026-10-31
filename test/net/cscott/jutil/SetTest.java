@@ -58,7 +58,7 @@ class SetTest {
 	    new Factory("LinearSet", LinearSet::new, LinearSet::new),
 	    of("AggregateSetFactory", new AggregateSetFactory()),
 	    of("synchronized HashSet",
-	       Factories.synchronizedSetFactory(Factories.hashSetFactory)),
+	       Factories.synchronizedSetFactory(Factories.hashSetFactory())),
 	    of("PersistentSetFactory",
 	       new PersistentSetFactory(MapTest.NULL_FIRST)));
     }

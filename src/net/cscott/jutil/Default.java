@@ -349,7 +349,7 @@ public abstract class Default  {
      *  differs from pairs implemented as {@link java.util.Map.Entry}s; the
      *  parameterization is different as well.
      */
-    public static class PairList<A,B> extends AbstractList
+    public static class PairList<A,B> extends AbstractList<Object>
 	implements java.io.Serializable {
 	private A left;
 	private B right;
@@ -370,6 +370,7 @@ public abstract class Default  {
 	    }
 	}
 	@Override
+	@SuppressWarnings("unchecked") // the caller must pass an A or a B.
 	public Object set(int index, Object element) {
 	    Object prev;
 	    switch(index) {

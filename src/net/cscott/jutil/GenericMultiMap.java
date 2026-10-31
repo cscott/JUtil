@@ -308,23 +308,17 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	public boolean equals(Object o) {
 	    if (o == this)
 		return true;
-	    else if (o instanceof Set && ((Set) o).size() ==
-		     EntrySet.this.size())
-		return EntrySet.this.containsAll((Collection/*<Map.Entry<K,V>>*/) o);
+	    else if (o instanceof Set<?> s && s.size() == EntrySet.this.size())
+		return EntrySet.this.containsAll(s);
 	    else
 		return false;
 	}
 	@Override
 	public int hashCode() {
-	    Iterator itr = EntrySet.this.iterator();
-	    int size = EntrySet.this.size();
 	    int hash = 0;
-	    for (int pos = 0; pos < size; pos++)
-		{
-		    Object obj = itr.next();
-		    if (obj != null)
-			hash += obj.hashCode();
-		}
+	    for (Map.Entry<K,V> me : EntrySet.this)
+		if (me != null)
+		    hash += me.hashCode();
 	    return hash;
 	}
 	// get down to business: Implement AbstractCollection
@@ -377,15 +371,13 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	}
 	@Override
 	public boolean remove(Object o) {
-	    if (!(o instanceof Map.Entry)) return false;
-	    Map.Entry me = (Map.Entry) o;
+	    if (!(o instanceof Map.Entry<?,?> me)) return false;
 	    return GenericMultiMap.this.remove(me.getKey(), me.getValue());
 	}
 	// other methods for efficiency.
 	@Override
 	public boolean contains(Object o) {
-	    if (!(o instanceof Map.Entry)) return false;
-	    Map.Entry me = (Map.Entry) o;
+	    if (!(o instanceof Map.Entry<?,?> me)) return false;
 	    return GenericMultiMap.this.contains(me.getKey(), me.getValue());
 	}
 	@Override

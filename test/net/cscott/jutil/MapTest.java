@@ -68,7 +68,7 @@ class MapTest {
 			GenericMultiMap::new, GenericMultiMap::new),
 	    of("AggregateMapFactory", new AggregateMapFactory()),
 	    of("synchronized HashMap",
-	       Factories.synchronizedMapFactory(Factories.hashMapFactory)),
+	       Factories.synchronizedMapFactory(Factories.hashMapFactory())),
 	    of("PersistentMapFactory", new PersistentMapFactory(NULL_FIRST)));
     }
 

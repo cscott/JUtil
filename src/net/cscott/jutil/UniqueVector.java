@@ -359,8 +359,7 @@ public class UniqueVector<E> extends AbstractList<E>
   @Override
   public boolean equals(Object o) {
       if (!asSet) return super.equals(o);
-      if (!(o instanceof Set)) return false;
-      Set s = (Set) o;
+      if (!(o instanceof Set<?> s)) return false;
       if (hashCode() != s.hashCode()) return false; // "quick" test.
       return containsAll(s) && s.containsAll(this); // slower accurate test.
   }

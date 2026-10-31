@@ -58,6 +58,7 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     }
     /** Removes the mapping for this key from this map if present. */
     @Override
+    @SuppressWarnings("unchecked")
     public V remove(Object key) {
 	LList<V> l = back.get(key);
 	if (l==null || !l.hasValue()) return null;

@@ -86,7 +86,9 @@ public class DisjointSet<E>  {
 		return elmap.containsKey(key);
 	    }
 	    // XXX: returns identity mapping for objects not in set.
-	    @Override public E get(Object key) { return find((E)key); }
+	    @Override
+	    @SuppressWarnings("unchecked") // as Map.get(), may throw ClassCastException
+	    public E get(Object key) { return find((E)key); }
 	    @Override
 	    public Set<Map.Entry<E,E>> entrySet() {
 		final Set<E> objects = elmap.keySet();

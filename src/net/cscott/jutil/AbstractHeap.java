@@ -94,23 +94,17 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     /** Compares {@link java.util.Map.Entry}s by key. */
     private static class EntryComparator<K,V> implements Comparator<Map.Entry<K,V>> {
 	final Comparator<K> cc;
-	EntryComparator(Comparator<K> cc) { this.cc = cc; }
+	EntryComparator(Comparator<K> cc) { this.cc = cc; } // never null
 	@Override
 	public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
 	    K k1 = e1.getKey(), k2 = e2.getKey();
-	    return (cc==null) ?
-		((Comparable)k1).compareTo(k2) :
-		cc.compare(k1, k2);
+	    return cc.compare(k1, k2);
 	}
 	@Override
 	public boolean equals(Object obj) {
-	    if (obj instanceof EntryComparator) {
-		EntryComparator ec = (EntryComparator) obj;
-		return (cc==null) ? (ec.cc==null) : cc.equals(ec.cc);
-	    }
-	    return false;
+	    return obj instanceof EntryComparator<?,?> ec && cc.equals(ec.cc);
 	}
 	@Override
-	public int hashCode() { return (cc==null) ? 0 : cc.hashCode(); }
+	public int hashCode() { return cc.hashCode(); }
     }
 }
