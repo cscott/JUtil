@@ -3,6 +3,9 @@
 ## 2.0 (unreleased)
 
 * JDK 21 or later is required, to build and to run JUtil.
+* Published on Maven Central, as `net.cscott:jutil`; `ant release`
+  builds the bundle to upload.  The jar is an automatic module,
+  `net.cscott.jutil`.
 * The tests use JUnit 6, and are in `test/` instead of the jar.  They
   replace `TestMap`, `TestSet`, and the `main()` self-test methods of
   `BinaryHeap`, `BinomialHeap`, `FibonacciHeap`, `BinaryTree` (with its

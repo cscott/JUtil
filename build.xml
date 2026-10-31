@@ -203,9 +203,65 @@ JUtil build file.
         <tarfileset dir="api" prefix="${package}-${version}/api" />
         <tarfileset dir="src" prefix="${package}-${version}/src"
                     includes="**/*.java **/*.html **/*.java.in" />
+        <tarfileset dir="test" prefix="${package}-${version}/test" />
+        <tarfileset dir="lib" prefix="${package}-${version}/lib" />
+        <tarfileset dir="maven" prefix="${package}-${version}/maven" />
         <tarfileset dir="." prefix="${package}-${version}"
-         includes="README AUTHORS HISTORY.md COPYING build.xml
+         includes="README.md AUTHORS HISTORY.md COPYING build.xml
                    ${jar.file}" />
       </tar>
     </target>
+
+    <!-- Maven Central: the POM, sources and javadoc jars, signatures and
+         checksums, laid out as a Maven repository and zipped into a
+         bundle for upload to https://central.sonatype.com/ .
+         Signing runs gpg; set gpg.keyname to choose the key, or
+         skip.sign to build an unsigned bundle (for testing only: Maven
+         Central rejects it). -->
+    <target name="maven" depends="jar,javadoc"
+	    description="Builds the Maven Central bundle">
+      <property name="maven_dir" value="${build_dir}/maven" />
+      <property name="main_dir"
+		value="${maven_dir}/net/cscott/${package}/${version}" />
+      <delete dir="${maven_dir}" />
+      <mkdir dir="${main_dir}" />
+      <copy file="maven/${package}.pom.in"
+	    tofile="${main_dir}/${package}-${version}.pom">
+        <filterset>
+         <filter token="VERSION" value="${version}"/>
+        </filterset>
+      </copy>
+      <copy file="${jar.file}" todir="${main_dir}" />
+      <jar destfile="${main_dir}/${package}-${version}-sources.jar">
+        <fileset dir="${src_dir}" includes="**/*.java **/*.html" />
+      </jar>
+      <jar destfile="${main_dir}/${package}-${version}-javadoc.jar">
+        <fileset dir="${api_dir}" excludes="tests/**" />
+      </jar>
+      <!-- signatures and checksums -->
+      <antcall target="maven-sign" />
+      <checksum algorithm="MD5" fileext=".md5" forceoverwrite="yes">
+        <fileset dir="${maven_dir}" includes="**/*.jar **/*.pom" />
+      </checksum>
+      <checksum algorithm="SHA-1" fileext=".sha1" forceoverwrite="yes">
+        <fileset dir="${maven_dir}" includes="**/*.jar **/*.pom" />
+      </checksum>
+      <zip destfile="${package}-${version}-bundle.zip" basedir="${maven_dir}"
+           includes="net/**" />
+      <echo message="Upload ${package}-${version}-bundle.zip to https://central.sonatype.com/publishing" />
+    </target>
+    <target name="maven-sign" unless="skip.sign">
+      <apply executable="gpg" failonerror="true" parallel="false">
+        <arg value="--batch" />
+        <arg value="--yes" />
+        <arg value="--armor" />
+        <arg value="--local-user=${gpg.keyname}" if:set="gpg.keyname" />
+        <arg value="--detach-sign" />
+        <srcfile />
+        <fileset dir="${build_dir}/maven" includes="**/*.jar **/*.pom" />
+      </apply>
+    </target>
+
+    <target name="release" depends="test,dist,maven"
+	    description="Builds all release artifacts; use 'ant clean release'"/>
 </project>
