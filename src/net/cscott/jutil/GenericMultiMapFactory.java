@@ -9,7 +9,7 @@ import java.util.*;
  *
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class GenericMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
+public class GenericMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
     final MapFactory<K,Collection<V>> mf;
     final CollectionFactory<V> cf;
     /** Create a new {@link GenericMultiMapFactory}, specifying

@@ -20,7 +20,7 @@ import java.util.WeakHashMap;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
+public class PersistentMapFactory<K,V> implements MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<K,V>();
     final Comparator<K> comparator;
 

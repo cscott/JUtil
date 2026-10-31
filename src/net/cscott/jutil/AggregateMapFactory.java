@@ -26,8 +26,8 @@ import java.util.Set;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class AggregateMapFactory<K,V> extends MapFactory<K,V>
-    implements java.io.Serializable {
+public class AggregateMapFactory<K,V> implements MapFactory<K,V>,
+    java.io.Serializable {
     @java.io.Serial
     private static final long serialVersionUID = 1L;
     /** The identity of a submap, which also heads its list of

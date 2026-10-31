@@ -9,8 +9,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 /** {@link SetFactory} is a {@link Set} generator.
-    Subclasses should implement constructions of specific types of
-    {@link Set}s.
+    Implementations construct specific types of {@link Set}s.
+    It is a functional interface, so a constructor which copies a
+    collection is a {@link SetFactory}:
+    <pre>SetFactory&lt;String&gt; sf = HashSet::new;</pre>
+    A lambda or a method reference is not serializable unless it is
+    cast to a serializable type, as in
+    <code>(SetFactory&lt;V&gt; &amp; Serializable) HashSet::new</code>.
+    The factories of {@link Factories} are serializable.
     <p>
     Note also that the current limitations on parametric types in
     Java mean that we can't easily type this class as
@@ -21,44 +27,37 @@ import java.util.Set;
  * 
  * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
-public abstract class SetFactory<V> extends CollectionFactory<V> {
-    
-    /** Creates a {@link SetFactory}. */
-    public SetFactory() {
-        super();
-    }
-    
+@FunctionalInterface
+public interface SetFactory<V> extends CollectionFactory<V> {
     @Override
-    public final Set<V> makeCollection() {
+    default Set<V> makeCollection() {
 	return makeSet();
     }
 
     @Override
-    public final Set<V> makeCollection(Collection<? extends V> c) {
+    default Set<V> makeCollection(Collection<? extends V> c) {
 	return makeSet(c);
     }
 
     @Override
-    public final Set<V> makeCollection(int initCapacity) {
+    default Set<V> makeCollection(int initCapacity) {
 	return makeSet(initCapacity);
     }
 
     /** Generates a new, mutable, empty {@link Set}. */
-    public Set<V> makeSet() {
+    default Set<V> makeSet() {
 	return makeSet(Collections.<V>emptySet());
     }
 
     /** Generates a new, mutable, empty {@link Set}, using
 	<code>initialCapacity</code> as a hint to use for the capacity
 	for the produced {@link Set}. */
-    public Set<V> makeSet(int initialCapacity) {
+    default Set<V> makeSet(int initialCapacity) {
 	return makeSet();
     }
 
     /** Generates a new mutable {@link Set}, using the elements
 	of <code>c</code> as a template for its initial contents. 
     */ 
-    public abstract Set<V> makeSet(Collection<? extends V> c);
-    
+    Set<V> makeSet(Collection<? extends V> c);
 }
- 

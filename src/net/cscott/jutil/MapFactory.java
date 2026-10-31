@@ -7,8 +7,9 @@ import java.util.Collections;
 import java.util.Map;
 
 /** {@link MapFactory} is a {@link Map} generator.
-    Subclasses should implement constructions of specific types of
-    {@link Map}s.
+    Implementations construct specific types of {@link Map}s.
+    It is a functional interface, so a constructor which copies a
+    map is a {@link MapFactory}: <code>HashMap::new</code>.
      <p>
     Note also that the current limitations on parametric types in
     Java mean that we can't easily type this class as
@@ -19,22 +20,15 @@ import java.util.Map;
 
     @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
-public abstract class MapFactory<K,V> {
-    
-    /** Creates a {@link MapFactory}. */
-    public MapFactory() {
-        
-    }
-
+@FunctionalInterface
+public interface MapFactory<K,V> {
     /** Generates a new, mutable, empty {@link Map}. */
-    public Map<K,V> makeMap() {
+    default Map<K,V> makeMap() {
 	return this.makeMap(Collections.<K,V>emptyMap());
     }
 
     /** Generates a new {@link Map}, using the entries of
 	<code>map</code> as a template for its initial mappings. 
     */
-    public abstract Map<K,V> makeMap(Map<? extends K,? extends V> map);
-
-    
+    Map<K,V> makeMap(Map<? extends K,? extends V> map);
 }

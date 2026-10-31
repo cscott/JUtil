@@ -9,8 +9,10 @@ import java.util.Collections;
 import java.util.List;
 
 /** {@link ListFactory} is a {@link List} generator.
-    Subclasses should implement constructions of specific types of  
-    {@link List}s.  {@link ListFactory} also has a set of
+    Implementations construct specific types of {@link List}s.
+    It is a functional interface, so a constructor which copies a
+    collection is a {@link ListFactory}: <code>ArrayList::new</code>.
+    {@link ListFactory} also has a set of
     static helper methods for building {@link List} objects. 
     <p>
     Note also that the current limitations on parametric types in
@@ -22,44 +24,39 @@ import java.util.List;
  * 
  * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
-public abstract class ListFactory<V> extends CollectionFactory<V> {
-    
-    /** Creates a {@link ListFactory}. */
-    public ListFactory() {
-        super();
-    }
-    
+@FunctionalInterface
+public interface ListFactory<V> extends CollectionFactory<V> {
     @Override
-    public final List<V> makeCollection() {
+    default List<V> makeCollection() {
 	return makeList();
     }
 
     @Override
-    public final List<V> makeCollection(int initCapacity) {
+    default List<V> makeCollection(int initCapacity) {
 	return makeList(initCapacity);
     }
 
     @Override
-    public final List<V> makeCollection(Collection<? extends V> c) {
+    default List<V> makeCollection(Collection<? extends V> c) {
 	return makeList(c);
     }
 
     /** Generates a new, mutable, empty {@link List}. */
-    public List<V> makeList() {
+    default List<V> makeList() {
 	return makeList(Collections.<V>emptyList());
     }
 
     /** Generates a new, mutable, empty {@link List}, using 
 	<code>initialCapacity</code> as a hint to use for the capacity
 	for the produced {@link List}. */
-    public List<V> makeList(int initialCapacity) {
+    default List<V> makeList(int initialCapacity) {
 	return makeList();
     }
 
     /** Generates a new mutable {@link List}, using the elements
 	of <code>c</code> as a template for its initial contents. 
     */
-    public abstract List<V> makeList(Collection<? extends V> c); 
+    List<V> makeList(Collection<? extends V> c); 
 
 
     /** Creates and returns an unmodifiable {@link List} view of
@@ -83,7 +80,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	{@link List}, but even changes to <code>lists</code>
 	itself (adding or removing lists) are also reflected.
     */
-    public static <E> List<E> concatenate(final List<List<E>> lists) {
+    static <E> List<E> concatenate(final List<List<E>> lists) {
 	return new AbstractList<E>(){
 	    @Override
 	    public E get(int index) {
@@ -128,7 +125,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 	@deprecated Use {@link java.util.Collections#singletonList(java.lang.Object) Collections.singletonList} instead.
      */
     @Deprecated
-    public static <E> List<E> singleton(final E o) {
+    static <E> List<E> singleton(final E o) {
 	return new AbstractList<E>() {
 	    @Override
 	    public E get(int index) {

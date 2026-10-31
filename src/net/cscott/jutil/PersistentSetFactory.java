@@ -20,7 +20,7 @@ import java.util.WeakHashMap;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class PersistentSetFactory<T> extends SetFactory<T> {
+public class PersistentSetFactory<T> implements SetFactory<T> {
     final Allocator<T> allocator = new Allocator<T>();
     final Comparator<T> comparator;
 

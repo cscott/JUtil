@@ -8,8 +8,10 @@ import java.util.Collections;
 import java.util.Set;
 
 /** {@link CollectionFactory} is a {@link Collection}
-    generator.  Subclasses should implement constructions of specific
-    types of {@link Collection}s.  
+    generator.  Implementations construct specific types of
+    {@link Collection}s.  It is a functional interface, so a
+    constructor which copies a collection is a
+    {@link CollectionFactory}: <code>ArrayList::new</code>.
     <p>
     Note that since some types of {@link Collection}s have
     implicit constraints (such as {@link Set}s, which cannot
@@ -27,22 +29,17 @@ import java.util.Set;
  * 
  * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
-public abstract class CollectionFactory<V> {
-    
-    /** Creates a {@link CollectionFactory}. */
-    public CollectionFactory() {
-	
-    }
-    
+@FunctionalInterface
+public interface CollectionFactory<V> {
     /** Generates a new, mutable, empty {@link Collection}. */
-    public Collection<V> makeCollection() {
+    default Collection<V> makeCollection() {
 	return makeCollection(Collections.<V>emptySet());
     }
 
     /** Generates a new, mutable, empty {@link Collection}, using
 	<code>initialCapacity</code> as a hint to use for the capacity
 	for the produced {@link Collection}. */
-    public Collection<V> makeCollection(int initialCapacity) {
+    default Collection<V> makeCollection(int initialCapacity) {
 	return makeCollection();
     }
 
@@ -53,8 +50,5 @@ public abstract class CollectionFactory<V> {
 	changes to <code>c</code> are not reflected in the returned
 	{@link Collection}. 
     */  
-    public abstract Collection<V> makeCollection(Collection<? extends V> c);
-
-    
-    
+    Collection<V> makeCollection(Collection<? extends V> c);
 }

@@ -27,7 +27,7 @@ import java.util.HashMap;
 
     @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
-public class BitSetFactory<V> extends SetFactory<V> {
+public class BitSetFactory<V> implements SetFactory<V> {
     
     /** Maps each object in the universe for <code>this</code> to an
 	index in the {@link BitString} for the {@link Set}s

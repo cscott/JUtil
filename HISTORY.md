@@ -93,6 +93,18 @@
 * Deprecated: `Default.entry()`, for
   `AbstractMap.SimpleImmutableEntry`, which it now returns, or
   `Map.entry()`, which does not permit `null`s.
+* `CollectionFactory`, `SetFactory`, `ListFactory`, `MapFactory` and
+  `MultiMapFactory` are functional interfaces instead of abstract
+  classes, so a copy constructor or a lambda is a factory:
+  `SetFactory<V> sf = HashSet::new`, or
+  `MultiMapFactory<K,V> mmf = GenericMultiMap::new`.  A class which
+  extended a factory must implement it instead, and code compiled
+  against 1.x must be recompiled.  `MultiMapFactory.makeMultiMap()`
+  is the method to implement; a subclass which implemented only
+  `makeMultiMap(MultiMap)` must implement `makeMultiMap()` too.
+  `ListFactory.concatenate()` is no longer inherited by
+  implementations of `ListFactory`: call it as
+  `ListFactory.concatenate()`.
 
 ## 1.5 (2026-10-30)
 

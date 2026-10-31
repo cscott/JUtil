@@ -3,40 +3,37 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
-import java.util.*;
+import java.util.Map;
 /** {@link MultiMapFactory} is a {@link MultiMap} generator.
- *  Subclasses should implement constructions of specific types of
- *  {@link MultiMap}s.  Subclasses *must* implement at least one of
- *  the <code>makeMultiMap</code> methods.
+ *  Implementations construct specific types of {@link MultiMap}s.
+ *  It is a functional interface, whose method is
+ *  {@link #makeMultiMap()}, so a constructor of an empty
+ *  {@link MultiMap} is a {@link MultiMapFactory}:
+ *  <code>GenericMultiMap::new</code>.
  *
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public abstract class MultiMapFactory<K,V> extends MapFactory<K,V> {
-    
-    /** Creates a {@link MultiMapFactory}. */
-    public MultiMapFactory() {
-    }
+@FunctionalInterface
+public interface MultiMapFactory<K,V> extends MapFactory<K,V> {
     // MapFactory interface
     @Override
-    public final MultiMap<K,V> makeMap() {
+    default MultiMap<K,V> makeMap() {
 	return makeMultiMap();
     }
     @Override
-    public final MultiMap<K,V> makeMap(Map<? extends K,? extends V> map) {
+    default MultiMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 	MultiMap<K,V> mm = makeMap();
 	mm.putAll(map);
 	return mm;
     }
     // MultiMapFactory interface.
     /** Create a new, empty, {@link MultiMap}. */
-    public MultiMap<K,V> makeMultiMap() {
-	return makeMultiMap(Default.<K,V>EMPTY_MULTIMAP());
-    }
+    MultiMap<K,V> makeMultiMap();
 
     /** Creates a new {@link MultiMap} initialized with all 
 	of the {@link java.util.Map.Entry}s in <code>map</code>
     */
-    public MultiMap<K,V> makeMultiMap(MultiMap<? extends K,? extends V> map) {
+    default MultiMap<K,V> makeMultiMap(MultiMap<? extends K,? extends V> map) {
 	MultiMap<K,V> mm = makeMultiMap();
 	mm.addAll(map);
 	return mm;

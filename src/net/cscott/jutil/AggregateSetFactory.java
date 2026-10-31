@@ -23,8 +23,8 @@ import java.util.Set;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class AggregateSetFactory<V> extends SetFactory<V>
-    implements java.io.Serializable {
+public class AggregateSetFactory<V> implements SetFactory<V>,
+    java.io.Serializable {
     @java.io.Serial
     private static final long serialVersionUID = 1L;
     @SuppressWarnings("serial") // serializable if its contents are

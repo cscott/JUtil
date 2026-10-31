@@ -28,7 +28,7 @@ import net.cscott.jutil.FilterIterator.Filter;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
+public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
     final MapAllocator<K,V> mapAllocator = new MapAllocator<K,V>();
     final SetAllocator<V> setAllocator = new SetAllocator<V>();
     final Comparator<K> keyComparator;

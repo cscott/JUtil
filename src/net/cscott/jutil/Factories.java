@@ -431,22 +431,22 @@ public final class Factories {
     // if we could make anonymous types w/ multiple inheritance, we wouldn't
     // need these.
     private static abstract class SerialMapFactory<K,V>
-	extends MapFactory<K,V> implements java.io.Serializable {
+	implements MapFactory<K,V>, java.io.Serializable {
 	@java.io.Serial
 	private static final long serialVersionUID = 1L;
     }
     private static abstract class SerialSetFactory<V>
-	extends SetFactory<V> implements java.io.Serializable {
+	implements SetFactory<V>, java.io.Serializable {
 	@java.io.Serial
 	private static final long serialVersionUID = 1L;
     }
     private static abstract class SerialListFactory<V>
-	extends ListFactory<V> implements java.io.Serializable {
+	implements ListFactory<V>, java.io.Serializable {
 	@java.io.Serial
 	private static final long serialVersionUID = 1L;
     }
     private static abstract class SerialCollectionFactory<V>
-	extends CollectionFactory<V> implements java.io.Serializable {
+	implements CollectionFactory<V>, java.io.Serializable {
 	@java.io.Serial
 	private static final long serialVersionUID = 1L;
     }
