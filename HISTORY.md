@@ -51,6 +51,13 @@
   types.
 * `UniqueVector` and `UniqueStack` have a `spliterator()` which reports
   `DISTINCT`.
+* Fixed: `Util.ffs(0)` and `Util.ffs(0L)` return 0, as documented,
+  instead of 24 and 56.  `Util`'s bit operations use the JDK's
+  `numberOfLeadingZeros()`, `numberOfTrailingZeros()` and
+  `bitCount()`.
+* Deprecated: `Util.repeatString()`, for `String.repeat()`;
+  `Util.popcount()`, for `Integer.bitCount()` and `Long.bitCount()`;
+  and `Util.zerocount()`, for `bitCount(~v)`.
 * Every serializable class declares its `serialVersionUID`.  Objects
   serialized by JUtil 1.x, other than a `Default.PairList`, cannot be
   read by 2.0.

@@ -355,7 +355,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
   }
 
   private static int howManyOneBits(int x) {
-    return Util.popcount(x);
+    return Integer.bitCount(x);
   }
   
   /**
