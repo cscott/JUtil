@@ -30,7 +30,7 @@ public class PersistentMap<K,V> implements java.io.Serializable {
      */
     public PersistentMap() {
 	// cast below is safe iff K implements Comparable.
-	this((Comparator<K>)Default.comparator); // safe iff K is Comparable
+	this(Default.<K>nullsFirst()); // safe iff K is Comparable
     }
     /** Creates an empty {@link PersistentMap} whose
      *  key objects are ordered by the given {@link Comparator}.

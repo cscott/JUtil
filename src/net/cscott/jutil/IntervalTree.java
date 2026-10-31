@@ -3,6 +3,7 @@
 // Licensed under the terms of the GNU GPL; see COPYING for details.
 package net.cscott.jutil;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -143,7 +144,7 @@ public class IntervalTree extends RedBlackTree<IntervalTree.Interval> {
     }
     private Iterator<Interval> allOverlapping(Node x, Interval i) {
 	if (x == NIL) {
-	    return Default.nullIterator();
+	    return Collections.emptyIterator();
 	} else if (interval(x).overlaps(i)) {
 	    return new CombineIterator<Interval>(
 		Default.singletonIterator(interval(x)),

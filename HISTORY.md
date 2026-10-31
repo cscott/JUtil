@@ -33,6 +33,14 @@
   factory's backing store the next time the factory adds an entry, on
   the thread that uses the factory; `finalize()` modified the backing
   store from the finalizer thread, which could corrupt it.
+* Deprecated, with notes on the JDK methods to use instead:
+  `Default.comparator` and `Default.comparator()`, which are now
+  `Comparator.nullsFirst(Comparator.naturalOrder())`;
+  `Default.nullIterator` and `Default.nullIterator()`, for
+  `Collections.emptyIterator()`; and the raw `Default.EMPTY_MULTIMAP`,
+  for `Default.EMPTY_MULTIMAP()`.  The deprecated `EMPTY_SET` and
+  `EMPTY_MAP` now point to `Collections.emptySortedSet()` and
+  `Collections.emptySortedMap()`.
 * `UniqueVector` and `UniqueStack` have a `spliterator()` which reports
   `DISTINCT`.
 

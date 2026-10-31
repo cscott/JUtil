@@ -23,7 +23,7 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     private final EntryComparator<K,V> entryComparator;
     /** Sole constructor, for invocation by subclass constructors. */
     protected AbstractHeap(Comparator<K> c) {
-	if (c==null) c = (Comparator) Default.comparator; // JDK1.1 hack.
+	if (c==null) c = Default.nullsFirst();
 	this.keyComparator = c; // should never be null, JDK1.1 hack or no.
 	this.entryComparator = new EntryComparator<K,V>(c);
     }

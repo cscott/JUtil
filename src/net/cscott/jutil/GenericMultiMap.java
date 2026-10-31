@@ -6,6 +6,7 @@ package net.cscott.jutil;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -332,7 +333,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	public Iterator<Map.Entry<K,V>> iterator() {
 	    return new Iterator<Map.Entry<K,V>>() {
 		    Iterator<Map.Entry<K,Collection<V>>> mapit = internMap.entrySet().iterator();
-		    Iterator<V> setit = Default.nullIterator();
+		    Iterator<V> setit = Collections.emptyIterator();
 		    Iterator<V> lastit;
 		    K key;
 		    { advance(); }

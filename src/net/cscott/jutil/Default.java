@@ -24,31 +24,62 @@ import java.util.SortedSet;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public abstract class Default  {
+    /** The natural order, with <code>null</code> before everything
+     *  else. */
+    @SuppressWarnings({"rawtypes","unchecked"})
+    private static final Comparator NULLS_FIRST =
+	Comparator.nullsFirst(Comparator.<Comparable>naturalOrder());
+    /** Returns the natural order of the elements, with
+     *  <code>null</code> before everything else, for the classes
+     *  whose constructors default to it.  The elements must be
+     *  {@link Comparable} (checked dynamically at run-time). */
+    @SuppressWarnings("unchecked")
+    static <T> Comparator<T> nullsFirst() {
+	return (Comparator<T>) NULLS_FIRST;
+    }
     /** A {@link Comparator} for objects that implement 
-     *   {@link Comparable} (checked dynamically at run-time). */
-    public static final Comparator comparator =
-	 Default.<Comparable>comparator();
+     *   {@link Comparable} (checked dynamically at run-time).
+     *  <code>null</code> is less than everything else.
+     * @deprecated Use
+     *  {@link Comparator#nullsFirst(Comparator) Comparator.nullsFirst}<code>(</code>{@link Comparator#naturalOrder()}<code>)</code>,
+     *  which this is, or {@link #comparator()}.
+     */
+    @Deprecated
+    @SuppressWarnings("rawtypes")
+    public static final Comparator comparator = NULLS_FIRST;
     /** A {@link Comparator} for objects that implement 
      *  {@link Comparable} (checked dynamically at run-time).
+     *  <code>null</code> is less than everything else.
      *  This version is parameterized to play nicely with Java's
-     *  type system. */
+     *  type system.
+     * @deprecated Use
+     *  {@link Comparator#nullsFirst(Comparator) Comparator.nullsFirst}<code>(</code>{@link Comparator#naturalOrder()}<code>)</code>,
+     *  which this returns.
+     */
+    @Deprecated
     public static final <T extends Comparable<T>> Comparator<T> comparator() {
-	return new SerializableComparator<T>() {
-	    @Override
-	    public int compare(T t1, T t2) {
-		if (t1==null && t2==null) return 0;
-		// null is less than everything
-		if (t1==null) return -1;
-		if (t2==null) return 1;
-		// okay, cast to Comparable.
-		return t1.compareTo(t2);
-	    }
-	};
+	return nullsFirst();
     }
-    /** An {@link Iterator} over the empty set. */
+    /** An {@link Iterator} over the empty set.
+     * @deprecated Use {@link Collections#emptyIterator()}, or
+     *  {@link #nullIterator()}.  Unlike this iterator, the
+     *  <code>remove()</code> method of
+     *  {@link Collections#emptyIterator()} throws
+     *  {@link IllegalStateException}, not
+     *  {@link UnsupportedOperationException}.
+     */
+    @Deprecated
+    @SuppressWarnings("rawtypes")
     public static final Iterator nullIterator = nullIterator();
     /** An {@link Iterator} over the empty set, parameterized to
-     *  play nicely with Java's type system. */
+     *  play nicely with Java's type system.
+     * @deprecated Use {@link Collections#emptyIterator()}.  Unlike
+     *  this iterator, the <code>remove()</code> method of
+     *  {@link Collections#emptyIterator()} throws
+     *  {@link IllegalStateException}, not
+     *  {@link UnsupportedOperationException}.
+     */
+    @Deprecated
     public static final <E> Iterator<E> nullIterator() {
 	return new UnmodifiableIterator<E>() {
 	    @Override public boolean hasNext() { return false; }
@@ -67,13 +98,18 @@ public abstract class Default  {
 	};
     }
     /** An empty set.
-     * @deprecated Use Collections.EMPTY_SET
+     * @deprecated Use {@link Collections#emptySortedSet()}, or
+     *  {@link Collections#emptySet()} when the set need not be a
+     *  {@link SortedSet}.
      */
     @Deprecated
+    @SuppressWarnings("rawtypes")
     public static final SortedSet EMPTY_SET = EMPTY_SET();
     /** An empty set; the parameterized version.
      *  Plays nicely with Java's type system.
-     * @deprecated Use Collections.emptySet()
+     * @deprecated Use {@link Collections#emptySortedSet()}, or
+     *  {@link Collections#emptySet()} when the set need not be a
+     *  {@link SortedSet}.
      */
     @Deprecated
     public static final <E> SortedSet<E> EMPTY_SET() {
@@ -129,7 +165,8 @@ public abstract class Default  {
     }
     /** An empty list.  The parameterized version.
      *  Made necessary by limitations in GJ's type system.
-     * @deprecated Use Collections.emptyList()
+     * @deprecated Use {@link Collections#emptyList()}, which this
+     *  returns.
      */
     @Deprecated
     public static final <E> List<E> EMPTY_LIST() {
@@ -137,12 +174,17 @@ public abstract class Default  {
     }
     /** An empty map. Missing from {@link java.util.Collections} in
      *  Java 1.2.
-     * @deprecated Use Collections.EMPTY_MAP
+     * @deprecated Use {@link Collections#emptySortedMap()}, or
+     *  {@link Collections#emptyMap()} when the map need not be a
+     *  {@link SortedMap}.
      */
     @Deprecated
+    @SuppressWarnings("rawtypes")
     public static final SortedMap EMPTY_MAP = EMPTY_MAP();
     /** An empty map, parameterized to play nicely with Java's type system.
-     * @deprecated Use Collections.emptyMap()
+     * @deprecated Use {@link Collections#emptySortedMap()}, or
+     *  {@link Collections#emptyMap()} when the map need not be a
+     *  {@link SortedMap}.
      */
     @Deprecated
     public static final <K,V> SortedMap<K,V> EMPTY_MAP() {
@@ -198,7 +240,12 @@ public abstract class Default  {
 	@Override public SortedMap<K,V> tailMap(K fromKey) { return this; }
 	@Override public SortedMap<K,V> subMap(K fromKey, K toKey) { return this; }
     }
-    /** An empty multi-map. */
+    /** An empty multi-map.
+     * @deprecated Use {@link #EMPTY_MULTIMAP()}, which is
+     *  parameterized.
+     */
+    @Deprecated
+    @SuppressWarnings("rawtypes")
     public static final MultiMap EMPTY_MULTIMAP = EMPTY_MULTIMAP();
     /** An empty multi-map, parameterized to play nicely with Java's
      *  type system. */
@@ -350,8 +397,4 @@ public abstract class Default  {
 		@Override public V getValue() { return value; }
 	    };
     }
-
-    /** A serializable comparator. */
-    private static interface SerializableComparator<A>
-	extends Comparator<A>, java.io.Serializable { /* only declare */ }
 }

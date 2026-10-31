@@ -160,8 +160,7 @@ public class BinaryTree<K> {
         comparable</i> elements. 
 	@see java.lang.Comparable
     */
-    @SuppressWarnings("unchecked")
-    public BinaryTree() { this((Comparator<? super K>) Default.comparator); }
+    public BinaryTree() { this(Default.<K>nullsFirst()); }
     
     /** Creates an empty tree which uses <code>c</code> to determine
         element ordering. 

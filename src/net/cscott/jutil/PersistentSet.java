@@ -27,7 +27,7 @@ public class PersistentSet<T>  implements Iterable<T> {
      *  required. */
     public PersistentSet() {
 	// cast below is safe iff T implements Comparable.
-	this((Comparator<T>)Default.comparator); // safe iff T is Comparable
+	this(Default.<T>nullsFirst()); // safe iff T is Comparable
     }
     /** Creates an empty {@link PersistentSet} whose member objects
      *  are ordered by the given {@link Comparator}.  Note that
