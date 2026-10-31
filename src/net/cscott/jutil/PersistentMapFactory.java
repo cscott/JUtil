@@ -161,6 +161,9 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
     // PersistentTreeNode subclass
     private static class Node<K,V>
 	extends PersistentTreeNode<Node<K,V>,K,V> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("serial") // serializable if its contents are
 	final V value;
 	/** The hash code of a {@link java.util.Map} with the
 	 *  contents of the tree rooted at this node. */

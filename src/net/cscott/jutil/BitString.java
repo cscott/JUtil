@@ -32,6 +32,8 @@ package net.cscott.jutil;
  */
 
 public final class BitString implements Cloneable, java.io.Serializable {
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
   /* There are 2^BITS_PER_UNIT bits in each unit (int) */
   private final static int BITS_PER_UNIT = 5;
   private final static int MASK = (1<<BITS_PER_UNIT)-1;

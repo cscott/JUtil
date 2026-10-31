@@ -25,6 +25,9 @@ import java.util.Set;
  */
 public class AggregateSetFactory<V> extends SetFactory<V>
     implements java.io.Serializable {
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
+    @SuppressWarnings("serial") // serializable if its contents are
     private final Map<EntryList<V>,EntryList<V>> m =
 	new HashMap<EntryList<V>,EntryList<V>>();
     /** The subsets that are garbage, queued by the garbage collector. */
@@ -150,6 +153,8 @@ public class AggregateSetFactory<V> extends SetFactory<V>
     /** Header for linked list of set elements. */
     private static abstract class Header<E>
 	implements java.io.Serializable {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	EntryList<E> next=null;
 	Header() { }
 	/** Link in the supplied entry after this one. */
@@ -162,7 +167,10 @@ public class AggregateSetFactory<V> extends SetFactory<V>
     }
     /** Linked list of set elements. */
     private static final class EntryList<E> extends Header<E> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	final ID<E> id;
+	@SuppressWarnings("serial") // serializable if its contents are
 	final E value;
 	Header<E> prev=null;
 	EntryList(ID<E> id, E value) { this.id = id; this.value = value; }
@@ -189,5 +197,8 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	}
     }
     /** Type for 'set identity' object. */
-    private static final class ID<E> extends Header<E> { }
+    private static final class ID<E> extends Header<E> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
+    }
 }

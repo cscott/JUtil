@@ -16,6 +16,9 @@ class PersistentTreeNodeTest {
     /** Sample implementation of {@link PersistentTreeNode}. */
     static class WithValue<K,V>
 	extends PersistentTreeNode<WithValue<K,V>,K,V> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("serial") // serializable if its contents are
 	final V value;
 	WithValue(K key, V value, WithValue<K,V> left, WithValue<K,V> right) {
 	    super(key, left, right);

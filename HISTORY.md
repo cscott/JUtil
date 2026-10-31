@@ -51,6 +51,9 @@
   types.
 * `UniqueVector` and `UniqueStack` have a `spliterator()` which reports
   `DISTINCT`.
+* Every serializable class declares its `serialVersionUID`.  Objects
+  serialized by JUtil 1.x, other than a `Default.PairList`, cannot be
+  read by 2.0.
 
 ## 1.5 (2026-10-30)
 

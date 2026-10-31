@@ -24,7 +24,10 @@ import java.util.Iterator;
  */
 abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     extends AbstractMapEntry<K,V> implements java.io.Serializable {
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
 
+    @SuppressWarnings("serial") // serializable if its contents are
     public final K key;
     /* also an optional value field of type 'V'; not included in base class.*/
     public final N left;

@@ -350,6 +350,8 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     // PersistentTreeNode subclasses
     private static class MapNode<K,V>
 	extends PersistentTreeNode<MapNode<K,V>,K,SetNode<V>> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	final SetNode<V> value;
 	/** The hash code of a {@link java.util.MultiMap} with the
 	 *  contents of the tree rooted at this node. */
@@ -386,6 +388,8 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     }
     private static class SetNode<V>
 	extends PersistentTreeNode<SetNode<V>,V,V> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	/** The hash code of a {@link java.util.Set} with the
 	 *  contents of the tree rooted at this node. */
 	final int setHashCode;

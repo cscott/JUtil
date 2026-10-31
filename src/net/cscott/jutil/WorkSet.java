@@ -22,6 +22,8 @@ import java.util.Stack;
 @Deprecated
 public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 {
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
     private final HashMap<E,EntryList<E>> hm;
     private EntryList<E> listhead = EntryList.init(); // header and footer nodes.
     private EntryList<E> listfoot = listhead.next;
@@ -236,6 +238,9 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 
     // INNER CLASS. -------------------------------------------
     private static final class EntryList<E> implements Serializable {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("serial") // serializable if its contents are
 	final E o;
 	EntryList<E> prev=null, next=null;
 	EntryList(E o) { this.o = o; }

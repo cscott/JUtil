@@ -172,6 +172,8 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
     // PersistentTreeNode subclass
     private static class Node<T>
 	extends PersistentTreeNode<Node<T>,T,T> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	/** The hash code of a {@link java.util.Set} with the
 	 *  contents of the tree rooted at this node. */
 	final int setHashCode;

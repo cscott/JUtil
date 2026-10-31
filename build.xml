@@ -93,6 +93,7 @@ JUtil build file.
 		   deprecation="on" release="21" debug="true"
 		   includeantruntime="false">
 		   <classpath refid="classpath.path" />
+		   <compilerarg value="-Xlint:all,-this-escape" />
 	    </javac>
     </target>
 
@@ -105,6 +106,7 @@ JUtil build file.
 		   deprecation="on" release="21" debug="true"
 		   includeantruntime="false">
 		   <classpath refid="test.classpath.path" />
+		   <compilerarg value="-Xlint:all,-this-escape" />
 	    </javac>
     </target>
 

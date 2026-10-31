@@ -117,6 +117,8 @@ public abstract class Default  {
     }
     /** Implementation of an immutable empty set. */
     private static class EmptySet<E> implements Set<E>, java.io.Serializable {
+	    @java.io.Serial
+	    private static final long serialVersionUID = 1L;
 	    @Override public int size() { return 0; }
 	    @Override public boolean isEmpty() { return true; }
 	    @Override public boolean contains(Object e) { return false; }
@@ -155,6 +157,8 @@ public abstract class Default  {
     /** Implementation of an immutable empty sorted set. */
     private static class EmptySortedSet<E> extends EmptySet<E>
 	implements SortedSet<E> {
+	    @java.io.Serial
+	    private static final long serialVersionUID = 1L;
 	    // sorted set interface:
 	    @Override public Comparator<E> comparator() { return null; }
 	    @Override public SortedSet<E> subSet(E fromEl, E toEl) { return this; }
@@ -193,6 +197,8 @@ public abstract class Default  {
     /** Implementation of an immutable empty map. */
     private static class EmptyMap<K,V>
 	implements Map<K,V>, java.io.Serializable {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	@Override public void clear() { }
 	@Override public boolean containsKey(Object key) { return false; }
 	@Override public boolean containsValue(Object value) { return false; }
@@ -202,6 +208,8 @@ public abstract class Default  {
 	}
 	private class EmptyMapSet extends EmptySortedSet<Map.Entry<K,V>>
 	    implements MapSet<K,V> {
+	    @java.io.Serial
+	    private static final long serialVersionUID = 1L;
 	    @Override public Map<K,V> asMap() { return EmptyMap.this; }
 	}
 	@Override
@@ -232,6 +240,8 @@ public abstract class Default  {
     /** Implementation of an immutable empty sorted map. */
     private static class EmptySortedMap<K,V> extends EmptyMap<K,V>
 	implements SortedMap<K,V> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	// SortedMap interface.
 	@Override public Comparator<? super K> comparator() { return null; }
 	@Override public K firstKey() { throw new NoSuchElementException(); }
@@ -255,12 +265,16 @@ public abstract class Default  {
     /** Implementation of an immutable empty multimap. */
     private static class EmptyMultiMap<K,V> extends EmptyMap<K,V>
 	implements MultiMap<K,V> {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
 	@Override
 	public MultiMapSet<K,V> entrySet() {
 	    return new EmptyMultiMapSet();
 	}
 	private class EmptyMultiMapSet extends EmptySortedSet<Map.Entry<K,V>>
 	    implements MultiMapSet<K,V> {
+	    @java.io.Serial
+	    private static final long serialVersionUID = 1L;
 	    @Override public MultiMap<K,V> asMap() { return EmptyMultiMap.this; }
 	    @Override public MultiMap<K,V> asMultiMap() { return EmptyMultiMap.this; }
 	}
@@ -351,7 +365,11 @@ public abstract class Default  {
      */
     public static class PairList<A,B> extends AbstractList<Object>
 	implements java.io.Serializable {
+	@java.io.Serial
+	private static final long serialVersionUID = -8393870012647259789L; // as in 1.5
+	@SuppressWarnings("serial") // serializable if its contents are
 	private A left;
+	@SuppressWarnings("serial") // serializable if its contents are
 	private B right;
 	public PairList(A left, B right) {
 	    this.left = left; this.right = right;

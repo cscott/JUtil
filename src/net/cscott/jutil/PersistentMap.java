@@ -19,7 +19,10 @@ import java.util.Set;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class PersistentMap<K,V> implements java.io.Serializable {
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
     final Node<K,V> root;
+    @SuppressWarnings("serial") // serializable if its contents are
     final Comparator<K> c;
     final Node.Allocator<K,V> allocator;
 
@@ -177,6 +180,9 @@ public class PersistentMap<K,V> implements java.io.Serializable {
     private static class Node<K,V>
 	extends PersistentTreeNode<Node<K,V>,K,V> 
 	implements java.io.Serializable {
+	@java.io.Serial
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("serial") // serializable if its contents are
 	final V value;
 	/** The hash code of a {@link java.util.Map} with the
 	 *  contents of the tree rooted at this node. */
@@ -197,6 +203,8 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 	static class Allocator<K,V>
 	    extends PersistentTreeNode.Allocator<Node<K,V>,K,V> 
 	    implements java.io.Serializable {
+	    @java.io.Serial
+	    private static final long serialVersionUID = 1L;
 	    @Override
 	    Node<K,V> newNode(K key, V value,
 			      Node<K,V> left, Node<K,V> right) {
