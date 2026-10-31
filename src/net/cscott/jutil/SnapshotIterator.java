@@ -19,13 +19,13 @@ import java.util.NoSuchElementException;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class SnapshotIterator<E> extends UnmodifiableIterator<E> {
+public class SnapshotIterator<E> implements Iterator<E> {
     final ArrayList<E> l = new ArrayList<E>();
     int i = 0;
 
     /** Creates a {@link SnapshotIterator} from {@link Iterator}
      *  <code>it</code>. */
-    public SnapshotIterator(Iterator<E> it) {
+    public SnapshotIterator(Iterator<? extends E> it) {
 	while (it.hasNext()) l.add(it.next());
 	l.trimToSize();
     }

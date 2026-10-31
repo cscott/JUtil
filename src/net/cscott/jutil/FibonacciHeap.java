@@ -224,7 +224,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	    @Override public int size() { return n; }
 	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
-		return new UnmodifiableIterator<Map.Entry<K,V>>() {
+		return new Iterator<Map.Entry<K,V>>() {
 		    Node<K,V> next = min;
 		    @Override public boolean hasNext() { return next!=null; }
 		    @Override

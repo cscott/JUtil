@@ -19,7 +19,7 @@ public abstract class UnmodifiableMapSet<K,V> extends MapSetWrapper<K,V> {
     @Override public abstract UnmodifiableMap<K,V> asMap();
     @Override
     public Iterator<Entry<K, V>> iterator() {
-        return UnmodifiableIterator.proxy(wrapped().iterator());
+        return Default.unmodifiableIterator(wrapped().iterator());
     }
     // disallowed methods.
     @Override

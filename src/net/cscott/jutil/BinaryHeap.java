@@ -133,7 +133,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 		it.next(); // filter out element 0 of the array list.
 		// weakness of the type system: we need to wrap this
 		// iterator to make it return Map.Entry instead of Entry.
-		return new UnmodifiableIterator<Map.Entry<K,V>>() {
+		return new Iterator<Map.Entry<K,V>>() {
 		    @Override public boolean hasNext() { return it.hasNext(); }
 		    @Override public Map.Entry<K,V> next() { return it.next(); }
 		};

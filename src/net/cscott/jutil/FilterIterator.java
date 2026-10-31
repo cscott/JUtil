@@ -30,7 +30,7 @@ import java.util.function.Predicate;
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
-public class FilterIterator<A,B> extends UnmodifiableIterator<B> {
+public class FilterIterator<A,B> implements Iterator<B> {
     final Iterator<? extends A> i;
     final Predicate<? super A> filter;
     final Function<? super A,? extends B> map;

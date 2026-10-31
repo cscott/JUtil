@@ -12,7 +12,12 @@ import java.util.Iterator;
  * {@link java.util.Collections} and etc.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ * @deprecated Implement {@link Iterator} instead: its default
+ *  {@link Iterator#remove() remove()} method throws
+ *  {@link UnsupportedOperationException}.  In place of
+ *  {@link #proxy(Iterator)}, use {@link Default#unmodifiableIterator}.
  */
+@Deprecated(since="2.0")
 public abstract class UnmodifiableIterator<E> implements Iterator<E> {
     /** Create an {@link UnmodifiableIterator} from the given (potentailly
      * modifiable) {@link Iterator}.

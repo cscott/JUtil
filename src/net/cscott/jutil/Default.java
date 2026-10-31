@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.function.Consumer;
 
 /**
  * {@link Default} contains one-off or 'standard, no-frills'
@@ -82,7 +83,7 @@ public abstract class Default  {
      */
     @Deprecated
     public static final <E> Iterator<E> nullIterator() {
-	return new UnmodifiableIterator<E>() {
+	return new Iterator<E>() {
 	    @Override public boolean hasNext() { return false; }
 	    @Override public E next() { throw new NoSuchElementException(); }
 	};
@@ -91,11 +92,17 @@ public abstract class Default  {
     public static final <E> Iterator<E> singletonIterator(E o) {
 	return Collections.singletonList(o).iterator();
     } 
-    /** An unmodifiable version of the given iterator. */
-    public static final <E> Iterator<E> unmodifiableIterator(final Iterator<E> i) {
-	return new UnmodifiableIterator<E>() {
+    /** An unmodifiable version of the given iterator: its
+     *  <code>remove()</code> method throws
+     *  {@link UnsupportedOperationException}. */
+    public static final <E> Iterator<E> unmodifiableIterator(final Iterator<? extends E> i) {
+	return new Iterator<E>() {
 	    @Override public boolean hasNext() { return i.hasNext(); }
 	    @Override public E next() { return i.next(); }
+	    @Override
+	    public void forEachRemaining(Consumer<? super E> action) {
+		i.forEachRemaining(action);
+	    }
 	};
     }
     /** An empty set.
@@ -338,11 +345,7 @@ public abstract class Default  {
 	    @Override public boolean isEmpty() { return cc.isEmpty(); }
 	    @Override
 	    public Iterator<A> iterator() {
-		final Iterator<? extends A> it = cc.iterator();
-		return new UnmodifiableIterator<A>() {
-		    @Override public boolean hasNext() { return it.hasNext(); }
-		    @Override public A next() { return it.next(); }
-		};
+		return unmodifiableIterator(cc.iterator());
 	    }
 	    @Override public int size() { return cc.size(); }
 	};

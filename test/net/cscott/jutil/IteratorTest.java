@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -71,5 +73,39 @@ class IteratorTest {
 	assertEquals(List.of(1, 2), toList(new CombineIterator<Integer>
 	    (FilterIterator.map(List.of(1, 2).iterator(),
 				i -> List.of(i).iterator()))));
+    }
+
+    /** The iterators which have no <code>remove()</code>. */
+    @Test void unmodifiable() {
+	List<Integer> l = new ArrayList<>(List.of(1, 2, 3));
+	Iterator<Integer> it = Default.unmodifiableIterator(l.iterator());
+	assertEquals(1, it.next());
+	assertThrows(UnsupportedOperationException.class, it::remove);
+	List<Number> rest = new ArrayList<>();
+	Default.<Number>unmodifiableIterator(it).forEachRemaining(rest::add);
+	assertEquals(List.of(2, 3), rest);
+
+	Iterator<Integer> snap = new SnapshotIterator<>(l.iterator());
+	l.clear();
+	assertEquals(1, snap.next());
+	assertThrows(UnsupportedOperationException.class, snap::remove);
+	assertEquals(2, snap.next());
+	assertEquals(3, snap.next());
+	assertFalse(snap.hasNext());
+	assertThrows(NoSuchElementException.class, snap::next);
+    }
+
+    @SuppressWarnings("deprecation") // the deprecated class still works
+    @Test void unmodifiableIterator() {
+	Iterator<Integer> it = UnmodifiableIterator.proxy(List.of(1).iterator());
+	assertEquals(1, it.next());
+	assertThrows(UnsupportedOperationException.class, it::remove);
+    }
+
+    @Test void iteratorEnumerator() {
+	Enumeration<Number> e = new IteratorEnumerator<>(List.of(1, 2).iterator());
+	assertEquals(List.of(1, 2), Collections.list(e));
+	UniqueVector<String> uv = new UniqueVector<>(List.of("a", "b"));
+	assertEquals(List.of("a", "b"), Collections.list(uv.elements()));
     }
 }

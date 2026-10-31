@@ -319,7 +319,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     }
     /** An iterator class over a tree of {@link PersistentTreeNode}s. */
     private static class NodeIterator<N extends PersistentTreeNode<N,K,V>,K,V>
-	extends UnmodifiableIterator<N> {
+	implements Iterator<N> {
 	NodeList<N,K,V> stack = null;
 	NodeIterator(N root) {
 	    for (N n=root; n!=null; n=n.left)

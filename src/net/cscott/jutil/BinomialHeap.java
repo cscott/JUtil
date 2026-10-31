@@ -266,7 +266,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	    @Override public int size() { return BinomialHeap.this.size(); }
 	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
-		return new UnmodifiableIterator<Map.Entry<K,V>>() {
+		return new Iterator<Map.Entry<K,V>>() {
 		    Node<K,V> next = head;
 		    @Override public boolean hasNext() { return next!=null; }
 		    @Override

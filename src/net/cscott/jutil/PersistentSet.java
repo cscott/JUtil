@@ -105,7 +105,7 @@ public class PersistentSet<T>  implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         final Iterator<Node<T>> it = Node.iterator(root);
-        return new UnmodifiableIterator<T>() {
+        return new Iterator<T>() {
             @Override
             public boolean hasNext() { return it.hasNext(); }
             @Override

@@ -7,14 +7,16 @@ import java.util.Enumeration;
 import java.util.Iterator;
 /**
  * An {@link IteratorEnumerator} converts an {@link Iterator}
- * into an {@link Enumeration}.
+ * into an {@link Enumeration}.  To enumerate a {@link java.util.Collection},
+ * {@link java.util.Collections#enumeration(java.util.Collection)} does
+ * the same; {@link Enumeration#asIterator()} converts the other way.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public class IteratorEnumerator<E> implements Enumeration<E> {
-    private final Iterator<E> i;
+    private final Iterator<? extends E> i;
     /** Creates a {@link IteratorEnumerator}. */
-    public IteratorEnumerator(Iterator<E> i) { this.i = i; }
+    public IteratorEnumerator(Iterator<? extends E> i) { this.i = i; }
     @Override public boolean hasMoreElements() { return i.hasNext(); }
     @Override public E nextElement() { return i.next(); }
 }

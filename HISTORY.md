@@ -128,6 +128,16 @@
 * Fixed: a `LinearMap` made by `new LinearMap(map)` shared the
   entries of `map`, so a `put()` on one map changed the other.  The
   constructor takes a `Map<? extends K,? extends V>`.
+* Deprecated: `UnmodifiableIterator`, for implementing `Iterator`,
+  whose default `remove()` throws `UnsupportedOperationException`;
+  and `UnmodifiableIterator.proxy()`, for
+  `Default.unmodifiableIterator()`, which takes an
+  `Iterator<? extends E>`.  `FilterIterator` and `SnapshotIterator`
+  implement `Iterator` instead of extending `UnmodifiableIterator`,
+  so code which assigns one to an `UnmodifiableIterator` no longer
+  compiles.
+* `SnapshotIterator` and `IteratorEnumerator` take an
+  `Iterator<? extends E>`.
 
 ## 1.5 (2026-10-30)
 

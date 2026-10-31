@@ -97,7 +97,7 @@ public class DisjointSet<E>  {
 		    @Override
 		    public Iterator<Map.Entry<E,E>> iterator() {
 			final Iterator<E> objit = objects.iterator();
-			return new UnmodifiableIterator<Map.Entry<E,E>>() {
+			return new Iterator<Map.Entry<E,E>>() {
 			    @Override public boolean hasNext(){ return objit.hasNext(); }
 			    @Override
 			    public Map.Entry<E,E> next() {
