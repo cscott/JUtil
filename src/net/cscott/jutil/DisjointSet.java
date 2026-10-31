@@ -81,23 +81,28 @@ public class DisjointSet<E>  {
      */
     public Map<E,E> asMap() {
 	return new AbstractMap<E,E>() {
+	    @Override
 	    public boolean containsKey(Object key) {
 		return elmap.containsKey(key);
 	    }
 	    // XXX: returns identity mapping for objects not in set.
-	    public E get(Object key) { return find((E)key); }
+	    @Override public E get(Object key) { return find((E)key); }
+	    @Override
 	    public Set<Map.Entry<E,E>> entrySet() {
 		final Set<E> objects = elmap.keySet();
 		return new AbstractSet<Map.Entry<E,E>>() {
-		    public int size() { return objects.size(); }
+		    @Override public int size() { return objects.size(); }
+		    @Override
 		    public Iterator<Map.Entry<E,E>> iterator() {
 			final Iterator<E> objit = objects.iterator();
 			return new UnmodifiableIterator<Map.Entry<E,E>>() {
-			    public boolean hasNext(){ return objit.hasNext(); }
+			    @Override public boolean hasNext(){ return objit.hasNext(); }
+			    @Override
 			    public Map.Entry<E,E> next() {
 				final E key = objit.next();
 				return new AbstractMapEntry<E,E>() {
-				    public E getKey() { return key; }
+				    @Override public E getKey() { return key; }
+				    @Override
 				    public E getValue() {
 					// note deferred for efficiency.
 					return find(key);
@@ -111,6 +116,7 @@ public class DisjointSet<E>  {
 	};
     }
     /** Returns a human-readable representation of the DisjointSet. */
+    @Override
     public String toString() {
 	MultiMap<E,E> mm = new GenericMultiMap<E,E>();
 	for (Node<E> n : elmap.values()) {

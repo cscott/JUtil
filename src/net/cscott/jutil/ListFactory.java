@@ -29,14 +29,17 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
         super();
     }
     
+    @Override
     public final List<V> makeCollection() {
 	return makeList();
     }
 
+    @Override
     public final List<V> makeCollection(int initCapacity) {
 	return makeList(initCapacity);
     }
 
+    @Override
     public final List<V> makeCollection(Collection<? extends V> c) {
 	return makeList(c);
     }
@@ -82,6 +85,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
     */
     public static <E> List<E> concatenate(final List<List<E>> lists) {
 	return new AbstractList<E>(){
+	    @Override
 	    public E get(int index) {
 		int origIndex = index;
 		int totalSize = 0;
@@ -107,6 +111,7 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
 		    }
 		}
 	    }
+	    @Override
 	    public int size() {
 		int sz = 0; 
 		for(int i=0; i<lists.size(); i++) {
@@ -149,12 +154,13 @@ public abstract class ListFactory<V> extends CollectionFactory<V> {
     @Deprecated
     public static <E> List<E> singleton(final E o) {
 	return new AbstractList<E>() {
+	    @Override
 	    public E get(int index) {
 		if(index==0) return o;
 		throw new IndexOutOfBoundsException
 			(""+index+" is out of bounds for list of size 1"); 
 	    }
-	    public int size() { return 1; }
+	    @Override public int size() { return 1; }
 	};
     }
 

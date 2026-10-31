@@ -18,7 +18,7 @@ public abstract class UnmodifiableMultiMap<K,V>
     extends UnmodifiableMap<K,V> implements MultiMap<K,V> {
     protected UnmodifiableMultiMap() { }
     // narrow type
-    protected abstract MultiMap<K,V> wrapped();
+    @Override protected abstract MultiMap<K,V> wrapped();
     /** Constructs and returns an unmodifiable {@link MultiMap}
 	backed by <code>mmap</code>.
     */
@@ -30,7 +30,7 @@ public abstract class UnmodifiableMultiMap<K,V>
             mms = new Factories.MultiMapSetWrapper<K,V>() {
                 @Override
                 protected Set<Map.Entry<K,V>> wrapped(){return mmap.entrySet();}
-                public MultiMap<K, V> asMultiMap() { return mmap; }
+                @Override public MultiMap<K, V> asMultiMap() { return mmap; }
             };
         }
 	return new UnmodifiableMultiMap<K,V>() {
@@ -54,26 +54,28 @@ public abstract class UnmodifiableMultiMap<K,V>
     }
     /** Returns a {@link Set} view that allows you to recapture
      *  the {@link MultiMap} view. */
-    public abstract UnmodifiableMultiMapSet<K,V> entrySet();
+    @Override public abstract UnmodifiableMultiMapSet<K,V> entrySet();
+    @Override
     public Collection<V> getValues(K key) {
         return Collections.unmodifiableCollection(wrapped().getValues(key));
     }
+    @Override
     public boolean contains(Object a, Object b) {
         return wrapped().contains(a,b);
     }
 
     /** Throws {@link UnsupportedOperationException}. */
-    public boolean remove(Object key, Object value) { return die(); }
+    @Override public boolean remove(Object key, Object value) { return die(); }
     /** Throws {@link UnsupportedOperationException}. */
-    public boolean add(K key, V value) { return die(); }
+    @Override public boolean add(K key, V value) { return die(); }
     /** Throws {@link UnsupportedOperationException}. */
-    public boolean addAll(K key, Collection<? extends V> values) { return die(); }
+    @Override public boolean addAll(K key, Collection<? extends V> values) { return die(); }
     /** Throws {@link UnsupportedOperationException}. */
-    public boolean addAll(MultiMap<? extends K,? extends V> mm) { return die(); }
+    @Override public boolean addAll(MultiMap<? extends K,? extends V> mm) { return die(); }
     /** Throws {@link UnsupportedOperationException}. */
-    public boolean retainAll(K key, Collection<?> values) { return die(); }
+    @Override public boolean retainAll(K key, Collection<?> values) { return die(); }
     /** Throws {@link UnsupportedOperationException}. */
-    public boolean removeAll(K key, Collection<?> values) { return die(); }
+    @Override public boolean removeAll(K key, Collection<?> values) { return die(); }
     /** Helper function: throws {@link UnsupportedOperationException}. */
     private boolean die() {
 	throw new UnsupportedOperationException();

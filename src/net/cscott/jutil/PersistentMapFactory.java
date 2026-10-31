@@ -34,6 +34,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
      *  is based on persistent randomized treaps.  All {@link Map}s
      *  created by this factory maximally reuse space, and have very
      *  fast comparison operations. */
+    @Override
     public Map<K,V> makeMap(Map<? extends K,? extends V> mm) {
 	return new MapImpl(mm);
     }
@@ -43,9 +44,10 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    putAll(mm);
 	}
 	MapImpl(Node<K,V> root) { this.root = root; }
-	public boolean isEmpty() { return this.root==null; }
-	public int size() { return (root==null)?0:root.size; }
-	public int hashCode() { return (root==null)?0:root.mapHashCode; }
+	@Override public boolean isEmpty() { return this.root==null; }
+	@Override public int size() { return (root==null)?0:root.size; }
+	@Override public int hashCode() { return (root==null)?0:root.mapHashCode; }
+	@Override
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
 	    if (o instanceof PersistentMapFactory.MapImpl &&
@@ -58,16 +60,19 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	private PersistentMapFactory<K,V> factory() {
 	    return PersistentMapFactory.this;
 	}
+	@Override
 	public void clear() {
 	    this.root = null;
 	}
 	// constant-time!
-	public MapImpl clone() { return new MapImpl(this.root); }
+	@Override public MapImpl clone() { return new MapImpl(this.root); }
+	@Override
 	public boolean containsKey(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
 	    return (Node.get(this.root, comparator, (K)key)!=null);
 	}
+	@Override
 	public V get(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -79,6 +84,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    // this arbitrary key
 	    this.root = Node.remove(this.root, comparator, (K)key, allocator);
 	}
+	@Override
 	public V remove(Object key) {
 	    V oldValue = get(key);
 	    removeFast(key);
@@ -87,11 +93,13 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	void putFast(K key, V value) {
 	    this.root = Node.put(this.root, comparator, key, value, allocator);
 	}
+	@Override
 	public V put(K key, V value) {
 	    V oldValue = get(key);
 	    putFast(key, value);
 	    return oldValue;
 	}
+	@Override
 	public void putAll(Map<? extends K,? extends V> mm) {
 	    // special fast case for maps from the same factory
 	    // maps from the same factory can be compared very quickly
@@ -102,20 +110,23 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    else // slow case
 		super.putAll(mm);
 	}
-	public MapSet<K,V> entrySet() { return new EntrySet(); }
+	@Override public MapSet<K,V> entrySet() { return new EntrySet(); }
 	private class EntrySet extends AbstractSet<Map.Entry<K,V>>
 	    implements MapSet<K,V> {
-	    public int size() { return MapImpl.this.size(); }
-	    public MapImpl asMap() { return MapImpl.this; }
+	    @Override public int size() { return MapImpl.this.size(); }
+	    @Override public MapImpl asMap() { return MapImpl.this; }
+	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
 		final Iterator<Node<K,V>> it = Node.iterator(root);
 		return new Iterator<Map.Entry<K,V>>() {
 		    Node<K,V> last = null;
-		    public boolean hasNext() { return it.hasNext(); }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override
 		    public Map.Entry<K,V> next() {
 			last = it.next();
 			return new NodeWrapper(last);
 		    }
+		    @Override
 		    public void remove() {
 			if (last==null)
 			    throw new IllegalStateException();
@@ -130,9 +141,10 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	private class NodeWrapper extends AbstractMapEntry<K,V> {
 	    Node<K,V> node;
 	    NodeWrapper(Node<K,V> node) { this.node = node; }
-	    public K getKey() { return node.key; }
-	    public V getValue() { return node.value; }
+	    @Override public K getKey() { return node.key; }
+	    @Override public V getValue() { return node.value; }
 	    // whee, side-effect impervious!
+	    @Override
 	    public V setValue(V value) {
 		V oldValue = node.value;
 		MapImpl.this.putFast(node.key, value);
@@ -161,8 +173,9 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 		((right==null)?0:right.size); // size of right tree
 	    //assert this.size == PersistentTreeNode.size(this);
 	}
-	public V getValue() { return value; }
+	@Override public V getValue() { return value; }
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
+	@Override
 	public boolean equals(Object o) {
 	    if (!(o instanceof Node)) return false;
 	    Node n = (Node) o;
@@ -173,7 +186,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 		((value==null)?n.value==null:value.equals(n.value)) &&
 		left == n.left && right == n.right;
 	}
-	public int hashCode() { return mapHashCode; }
+	@Override public int hashCode() { return mapHashCode; }
 	public int entryHashCode() { return super.hashCode(); }
     }
     /** Allocator uses a {@link WeakHashMap} to do hash consing. */
@@ -181,6 +194,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	extends PersistentTreeNode.Allocator<Node<K,V>,K,V> {
 	final WeakHashMap<Node<K,V>,WeakReference<Node<K,V>>> hashConsCache =
 	    new WeakHashMap<Node<K,V>,WeakReference<Node<K,V>>>();
+	@Override
 	Node<K,V> newNode(K key, V value,
 			  Node<K,V> left, Node<K,V> right) {
 	    Node<K,V> n = new Node<K,V>(key, value, left, right);
@@ -190,6 +204,7 @@ public class PersistentMapFactory<K,V> extends MapFactory<K,V> {
 	    return nn.get();
 	}
 
+	@Override
 	public String toString() {
 	    return hashConsCache.toString();
 	}

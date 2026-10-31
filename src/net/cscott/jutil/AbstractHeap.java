@@ -29,15 +29,16 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     }
 
     // abstract methods:
-    public abstract Map.Entry<K,V> insert(K key, V value);
-    public abstract Map.Entry<K,V> minimum();
-    public abstract void decreaseKey(Map.Entry<K,V> me, K newkey);
-    public abstract void delete(Map.Entry<K,V> me);
-    public abstract int size();
-    public abstract Collection<Map.Entry<K,V>> entries();
-    public abstract void clear();
+    @Override public abstract Map.Entry<K,V> insert(K key, V value);
+    @Override public abstract Map.Entry<K,V> minimum();
+    @Override public abstract void decreaseKey(Map.Entry<K,V> me, K newkey);
+    @Override public abstract void delete(Map.Entry<K,V> me);
+    @Override public abstract int size();
+    @Override public abstract Collection<Map.Entry<K,V>> entries();
+    @Override public abstract void clear();
 
     // methods which we helpfully provide for you:
+    @Override
     public void updateKey(Map.Entry<K,V> me, K newkey) {
 	int r = keyComparator.compare(me.getKey(), newkey);
 	if (r>0) decreaseKey(me, newkey); // usually faster.
@@ -60,26 +61,29 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     protected K setKey(Map.Entry<K,V> me, K newkey) {
 	throw new UnsupportedOperationException();
     }
+    @Override
     public Map.Entry<K,V> extractMinimum() {
 	Map.Entry<K,V> e = minimum();
 	delete(e);
 	return e;
     }
+    @Override
     public void union(Heap<? extends K,? extends V> h) {
 	for (Map.Entry<? extends K,? extends V> e : h.entries())
 	    insert(e.getKey(), e.getValue());
 	h.clear();
     }
-    public boolean isEmpty() { return size()==0; }
-    public int hashCode() { return 1+entries().hashCode(); }
+    @Override public boolean isEmpty() { return size()==0; }
+    @Override public int hashCode() { return 1+entries().hashCode(); }
+    @Override
     public boolean equals(Object o) {
 	if (o instanceof Heap) return entries().equals(((Heap)o).entries());
 	return false;
     }
-    public String toString() { return entries().toString(); }
+    @Override public String toString() { return entries().toString(); }
     /** Returns the comparator used to compare keys in this {@link Heap},
      *  or <code>null</code> if the keys' natural ordering is used. */
-    public Comparator<K> comparator() { return entryComparator.cc; }
+    @Override public Comparator<K> comparator() { return entryComparator.cc; }
     /** Returns the comparator used to compare keys in this {@link Heap}.
      *  <strong>Will never return <code>null</code>.</strong> */
     protected Comparator<K> keyComparator() { return keyComparator; }
@@ -91,12 +95,14 @@ public abstract class AbstractHeap<K,V> implements Heap<K,V> {
     private static class EntryComparator<K,V> implements Comparator<Map.Entry<K,V>> {
 	final Comparator<K> cc;
 	EntryComparator(Comparator<K> cc) { this.cc = cc; }
+	@Override
 	public int compare(Map.Entry<K,V> e1, Map.Entry<K,V> e2) {
 	    K k1 = e1.getKey(), k2 = e2.getKey();
 	    return (cc==null) ?
 		((Comparable)k1).compareTo(k2) :
 		cc.compare(k1, k2);
 	}
+	@Override
 	public boolean equals(Object obj) {
 	    if (obj instanceof EntryComparator) {
 		EntryComparator ec = (EntryComparator) obj;

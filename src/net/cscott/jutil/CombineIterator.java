@@ -27,6 +27,7 @@ public class CombineIterator<E> implements Iterator<E> {
     public CombineIterator(final Iterator<E> i1, final Iterator<E> i2) {
 	this(new UnmodifiableIterator<Iterator<E>>() {
 	    int i=0;
+	    @Override
 	    public Iterator<E> next() {
 		switch(i++) {
 		case 0: return i1;
@@ -34,6 +35,7 @@ public class CombineIterator<E> implements Iterator<E> {
 		default: throw new NoSuchElementException();
 		}
 	    }
+	    @Override
 	    public boolean hasNext() {
 		return i<2;
 	    }
@@ -46,6 +48,7 @@ public class CombineIterator<E> implements Iterator<E> {
 			   final Iterator<E> i3) {
 	this(new UnmodifiableIterator<Iterator<E>>() {
 	    int i=0;
+	    @Override
 	    public Iterator<E> next() {
 		switch(i++) {
 		case 0: return i1;
@@ -54,6 +57,7 @@ public class CombineIterator<E> implements Iterator<E> {
 		default: throw new NoSuchElementException();
 		}
 	    }
+	    @Override
 	    public boolean hasNext() {
 		return i<3;
 	    }
@@ -66,17 +70,20 @@ public class CombineIterator<E> implements Iterator<E> {
 	this.iti = it;
     }
 
+    @Override
     public E next() {
 	if (hasNext())
 	    return (last=cur).next();
 	else
 	    throw new NoSuchElementException();
     }
+    @Override
     public boolean hasNext() {
 	while ((cur==null || !cur.hasNext()) && iti.hasNext())
 	    cur=iti.next();
 	return (cur!=null && cur.hasNext());
     }
+    @Override
     public void remove() {
 	last.remove();
     }

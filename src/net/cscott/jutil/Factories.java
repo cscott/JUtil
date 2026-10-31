@@ -37,6 +37,7 @@ public final class Factories {
     public static final MapFactory hashMapFactory = hashMapFactory();
     public static final <K,V> MapFactory<K,V> hashMapFactory() {
 	return new SerialMapFactory<K,V>() {
+	    @Override
 	    public HashMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 		return new HashMap<K,V>(map);
 	    }
@@ -47,6 +48,7 @@ public final class Factories {
     public static final MapFactory linkedHashMapFactory = linkedHashMapFactory();
     public static final <K,V> MapFactory<K,V> linkedHashMapFactory() {
 	return new SerialMapFactory<K,V>() {
+	    @Override
 	    public LinkedHashMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 		return new LinkedHashMap<K,V>(map);
 	    }
@@ -57,6 +59,7 @@ public final class Factories {
     public static final <K extends Enum<K>,V> MapFactory<K,V> enumMapFactory
                                                    (final Class<K> enumClass) {
         return new SerialMapFactory<K,V>() {
+            @Override
             public EnumMap<K,V> makeMap(Map<? extends K,? extends V> map) {
                 EnumMap<K,V> m = new EnumMap<K,V>(enumClass);
                 m.putAll(map);
@@ -69,9 +72,11 @@ public final class Factories {
     public static final SetFactory hashSetFactory = hashSetFactory();
     public static final <V> SetFactory<V> hashSetFactory() {
 	return new SerialSetFactory<V>() {
+	    @Override
 	    public HashSet<V> makeSet(Collection<? extends V> c) {
 		return new HashSet<V>(c);
 	    }
+	    @Override
 	    public HashSet<V> makeSet(int i) {
 		return new HashSet<V>(i);
 	    }
@@ -82,9 +87,11 @@ public final class Factories {
     public static final SetFactory linkedHashSetFactory = linkedHashSetFactory();
     public static final <V> SetFactory<V> linkedHashSetFactory() {
 	return new SerialSetFactory<V>() {
+	    @Override
 	    public LinkedHashSet<V> makeSet(Collection<? extends V> c) {
 		return new LinkedHashSet<V>(c);
 	    }
+	    @Override
 	    public LinkedHashSet<V> makeSet(int i) {
 		return new LinkedHashSet<V>(i);
 	    }
@@ -94,11 +101,13 @@ public final class Factories {
     public static final <V extends Enum<V>> SetFactory<V> enumSetFactory
                                                    (final Class<V> enumClass) {
         return new SerialSetFactory<V>() {
+            @Override
             public EnumSet<V> makeSet(Collection<? extends V> c) {
                 EnumSet<V> s = makeSet(0);
                 s.addAll(c);
                 return s;
             }
+            @Override
             public EnumSet<V> makeSet(int i) {
                 // ignore the 'i' parameter.
                 return EnumSet.noneOf(enumClass);
@@ -110,9 +119,11 @@ public final class Factories {
     public static final SetFactory workSetFactory = workSetFactory();
     public static final <V> SetFactory<V> workSetFactory() {
 	return new SerialSetFactory<V>() {
+	    @Override
 	    public WorkSet<V> makeSet(Collection<? extends V> c) {
 		return new WorkSet<V>(c);
 	    }
+	    @Override
 	    public WorkSet<V> makeSet(int i) {
 		return new WorkSet<V>(i);
 	    }
@@ -124,6 +135,7 @@ public final class Factories {
     public static final SetFactory linearSetFactory = linearSetFactory();
     public static final <V> SetFactory<V> linearSetFactory() {
       return new SerialSetFactory<V>() {
+	@Override
 	public LinearSet<V> makeSet(Collection<? extends V> c) {
 	    LinearSet<V> ls;
 	    if (c instanceof Set) {
@@ -134,6 +146,7 @@ public final class Factories {
 	    }
 	    return ls;
 	}
+	@Override
 	public LinearSet<V> makeSet(int i) {
 	    return new LinearSet<V>(i);
 	}
@@ -144,6 +157,7 @@ public final class Factories {
     public static final SetFactory treeSetFactory = Factories.<Comparable>treeSetFactory();
     public static final <V extends Comparable<V>> SetFactory<V> treeSetFactory() {
 	return new SerialSetFactory<V>() {
+	    @Override
 	    public TreeSet<V> makeSet(Collection<? extends V> c) {
 		return new TreeSet<V>(c);
 	    }
@@ -151,6 +165,7 @@ public final class Factories {
     }
     public static final <V> SetFactory<V> treeSetFactory(final Comparator<? super V> comp) {
 	return new SerialSetFactory<V>() {
+	    @Override
 	    public TreeSet<V> makeSet(Collection<? extends V> c) {
 		TreeSet<V> result = new TreeSet<V>(comp);
 		result.addAll(c);
@@ -163,6 +178,7 @@ public final class Factories {
     public static final MapFactory treeMapFactory = Factories.<Comparable,Object>treeMapFactory();
     public static final <K extends Comparable<K>,V> MapFactory<K,V> treeMapFactory() {
 	return new SerialMapFactory<K,V>() {
+	    @Override
 	    public TreeMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 		return new TreeMap<K,V>(map);
 	    }
@@ -170,6 +186,7 @@ public final class Factories {
     }
     public static final <K,V> MapFactory<K,V> treeMapFactory(final Comparator<? super K> comp) {
 	return new SerialMapFactory<K,V>() {
+	    @Override
 	    public TreeMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 		TreeMap<K,V> result = new TreeMap<K,V>(comp);
 		result.putAll(map);
@@ -182,6 +199,7 @@ public final class Factories {
     public static final ListFactory linkedListFactory = linkedListFactory();
     public static final <V> ListFactory<V> linkedListFactory() {
 	return new SerialListFactory<V>() {
+	    @Override
 	    public LinkedList<V> makeList(Collection<? extends V> c) {
 		return new LinkedList<V>(c);
 	    }
@@ -193,9 +211,11 @@ public final class Factories {
     public static final ListFactory arrayListFactory = arrayListFactory();
     public static final <V> ListFactory<V> arrayListFactory() {
 	return new SerialListFactory<V>() {
+	    @Override
 	    public ArrayList<V> makeList(Collection<? extends V> c) {
 		return new ArrayList<V>(c);
 	    }
+	    @Override
 	    public ArrayList<V> makeList(int i) {
 		return new ArrayList<V>(i);
 	    }
@@ -208,6 +228,7 @@ public final class Factories {
      *  for example, to make a multimap of maps. */
     public static <K,V> SetFactory<Map.Entry<K,V>> mapSetFactory(final MapFactory<K,V> mf) {
 	return new SerialSetFactory<Map.Entry<K,V>>() {
+		@Override
 		public Set<Map.Entry<K,V>> makeSet(Collection<? extends Map.Entry<K,V>> c) {
 		    final Map<K,V> m = mf.makeMap();
 		    // we could call addAll on the result, but we'll be
@@ -219,8 +240,8 @@ public final class Factories {
 		    if (s instanceof MapSet && ((MapSet<K,V>)s).asMap()==m)
 			return s; // optimize!
 		    return new MapSetWrapper<K,V>() {
-                            protected Set<Map.Entry<K,V>> wrapped() {return s;}
-			    public Map<K,V> asMap() { return m; }
+                            @Override protected Set<Map.Entry<K,V>> wrapped() {return s;}
+			    @Override public Map<K,V> asMap() { return m; }
 			};
 		}
 	    };
@@ -236,6 +257,7 @@ public final class Factories {
      *  example, to make a multimap of multimaps. */
     public static <K,V> SetFactory<Map.Entry<K,V>> multiMapSetFactory(final MultiMapFactory<K,V> mf) {
 	return new SerialSetFactory<Map.Entry<K,V>>() {
+		@Override
 		public Set<Map.Entry<K,V>> makeSet(Collection<? extends Map.Entry<K,V>> c) {
 		    final MultiMap<K,V> m = mf.makeMultiMap();
 		    // we could call addAll on the result, but we'll be
@@ -248,8 +270,8 @@ public final class Factories {
 			((MultiMapSet<K,V>)s).asMultiMap()==m)
 			return s; // optimize!
 		    return new MultiMapSetWrapper<K,V>() {
-                            protected Set<Map.Entry<K,V>> wrapped() {return s;}
-			    public MultiMap<K,V> asMultiMap() { return m; }
+                            @Override protected Set<Map.Entry<K,V>> wrapped() {return s;}
+			    @Override public MultiMap<K,V> asMultiMap() { return m; }
 			};
 		}
 	    };
@@ -257,7 +279,7 @@ public final class Factories {
     static abstract class MultiMapSetWrapper<K,V> extends SetWrapper<Map.Entry<K,V>>
 	implements MultiMapSet<K,V> {
         protected MultiMapSetWrapper() { }
-        public final MultiMap<K,V> asMap() { return asMultiMap(); }
+        @Override public final MultiMap<K,V> asMap() { return asMultiMap(); }
     }
 
     /** Returns a {@link CollectionFactory} that generates
@@ -269,6 +291,7 @@ public final class Factories {
     public static <V> CollectionFactory<V>
 	synchronizedCollectionFactory(final CollectionFactory<V> cf) { 
 	return new SerialCollectionFactory<V>() {
+	    @Override
 	    public Collection<V> makeCollection(Collection<? extends V> c) {
 		return Collections.synchronizedCollection
 		    (cf.makeCollection(c));
@@ -285,6 +308,7 @@ public final class Factories {
     public static <V> SetFactory<V>
 	synchronizedSetFactory(final SetFactory<V> sf) {
 	return new SerialSetFactory<V>() {
+	    @Override
 	    public Set<V> makeSet(Collection<? extends V> c) {
 		return Collections.synchronizedSet(sf.makeSet(c));
 	    }
@@ -300,6 +324,7 @@ public final class Factories {
     public static <V> ListFactory<V>
 	synchronizedListFactory(final ListFactory<V> lf) {
 	return new SerialListFactory<V>() {
+	    @Override
 	    public List<V> makeList(Collection<? extends V> c) {
 		return Collections.synchronizedList(lf.makeList(c));
 	    }
@@ -315,6 +340,7 @@ public final class Factories {
     public static <K,V> MapFactory<K,V>
 	synchronizedMapFactory(final MapFactory<K,V> mf) {
 	return new SerialMapFactory<K,V>() {
+	    @Override
 	    public Map<K,V> makeMap(Map<? extends K,? extends V> map) {
 		return Collections.synchronizedMap(mf.makeMap(map));
 	    }
@@ -324,15 +350,18 @@ public final class Factories {
     public static <V> CollectionFactory<V>
 	noNullCollectionFactory(final CollectionFactory<V> cf) {
 	return new SerialCollectionFactory<V>() {
+	    @Override
 	    public Collection<V> makeCollection(final Collection<? extends V> c) {
 		assert noNull(c);
 		final Collection<V> back = cf.makeCollection(c);
 		return new CollectionWrapper<V>() {
-                    protected Collection<V> wrapped() { return back; }
+                    @Override protected Collection<V> wrapped() { return back; }
+		    @Override
 		    public boolean add(V o) {
 			assert o != null;
 			return super.add(o);
 		    }
+		    @Override
 		    public boolean addAll(Collection<? extends V> c2) {
 			assert Factories.noNull(c2);
 			return super.addAll(c2);

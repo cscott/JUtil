@@ -18,6 +18,7 @@ import java.util.AbstractMap;
 public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     implements MultiMap<K,V> {
 
+    @Override
     public String toString() {
 	StringBuffer sb = new StringBuffer();
 	sb.append('{');
@@ -37,6 +38,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	sb.append('}');
 	return sb.toString();
     };
+    @Override
     public int hashCode() {
 	int sum = 0;
 	for (Map.Entry<K,V> entry : entrySet())
@@ -51,6 +53,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	@return <code>true</code> if this mapping changed as a result of
 	        the call
     */
+    @Override
     public boolean add(K key, V value) {
 	return getValues(key).add(value);
     }
@@ -63,10 +66,12 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
     */
+    @Override
     public boolean addAll(K key, Collection<? extends V> values) {
 	return getValues(key).addAll(values);
     }
     /** Add all mappings in the given multimap to this multimap. */
+    @Override
     public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	boolean changed = false;
 	for (Map.Entry<? extends K, ? extends V> me : mm.entrySet())
@@ -83,6 +88,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
     */
+    @Override
     public boolean retainAll(K key, Collection<?> values) {
 	return getValues(key).retainAll(values);
     }
@@ -95,10 +101,12 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	@return <code>true</code> if this mapping changed as a result
 	        of the call
     */
+    @Override
     public boolean removeAll(K key, Collection<?> values) {
 	return getValues(key).removeAll(values);
     }
 
+    @Override
     public boolean equals(Object o) {
 	if (o==null) return false;
 	if (o==this) return true;
@@ -120,6 +128,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	mapped to in <code>mm</code>.  To add all of the mappings from
 	another {@link MultiMap}, use
 	{@link #addAll(MultiMap)}.  */
+    @Override
     public void putAll(Map<? extends K,? extends V> t) {
 	for (Map.Entry<? extends K, ? extends V> e : t.entrySet())
 	    this.put( e.getKey(), e.getValue() );
@@ -131,6 +140,7 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	that was previous associated with the specified key, or
 	<code>null</code> if no values were associated previously. 
     */
+    @Override
     public V put(K key, V value) {
 	Collection<V> c = getValues(key);
 	V prev = c.size()==0 ? null : c.iterator().next();
@@ -138,25 +148,28 @@ public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
 	c.add(value);
 	return prev;
     }
+    @Override
     public boolean containsKey(Object key) {
 	return keySet().contains(key);
     }
+    @Override
     public boolean containsValue(Object value) {
 	return values().contains(value);
     }
-    public boolean isEmpty() { return size()==0; }
-    public int size() { return entrySet().size(); }
+    @Override public boolean isEmpty() { return size()==0; }
+    @Override public int size() { return entrySet().size(); }
 
+    @Override
     public V get(Object key) {
 	if (!containsKey(key)) return null;
 	return getValues((K)key).iterator().next();
     }
 
-    public abstract Collection<V> getValues(K key);
-    public abstract boolean contains(Object a, Object b);
+    @Override public abstract Collection<V> getValues(K key);
+    @Override public abstract boolean contains(Object a, Object b);
 
-    public abstract V remove(Object key);
-    public abstract boolean remove(Object key, Object value);
-    public abstract void clear();
-    public abstract MultiMapSet<K,V> entrySet();
+    @Override public abstract V remove(Object key);
+    @Override public abstract boolean remove(Object key, Object value);
+    @Override public abstract void clear();
+    @Override public abstract MultiMapSet<K,V> entrySet();
 }

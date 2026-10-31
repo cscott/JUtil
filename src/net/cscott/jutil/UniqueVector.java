@@ -62,6 +62,7 @@ public class UniqueVector<E> extends AbstractList<E>
    * @param index the specified position.
    * @param element the element to be inserted.
    */
+  @Override
   public void add(int index, E element) {
     if (element==null) throw new NullPointerException();
     removeElement(element);
@@ -76,6 +77,7 @@ public class UniqueVector<E> extends AbstractList<E>
    * is increased if necessary.
    * @param obj the component to be added.
    */
+  @Override
   public boolean add(E obj) {
     if (obj==null) throw new NullPointerException();
     if (contains(obj)) return false;
@@ -95,6 +97,7 @@ public class UniqueVector<E> extends AbstractList<E>
    * @exception CloneNotSupportedException
    *            if the UniqueVector cannot be cloned.
    */
+  @Override
   public synchronized UniqueVector<E> clone() throws CloneNotSupportedException {
     return new UniqueVector<E>(this);
   }
@@ -104,6 +107,7 @@ public class UniqueVector<E> extends AbstractList<E>
    * @return <code>true</code> if the specified object is a component in
    *         this vector; <code>false</code> otherwise.
    */
+  @Override
   public boolean contains(Object elem) {
     return uniq.containsKey(elem);
   }
@@ -116,8 +120,8 @@ public class UniqueVector<E> extends AbstractList<E>
     if (anArray.length < size()) throw new IndexOutOfBoundsException();
     vect.toArray(anArray);
   }
-  public Object[] toArray() { return vect.toArray(); }
-  public <T> T[] toArray(T[] a) { return vect.toArray(a); }
+  @Override public Object[] toArray() { return vect.toArray(); }
+  @Override public <T> T[] toArray(T[] a) { return vect.toArray(a); }
 
   /**
    * Returns the component at the specified index.
@@ -130,6 +134,7 @@ public class UniqueVector<E> extends AbstractList<E>
     return get(index);
   }
   /** Returns the element at the specified posision in this vector. */
+  @Override
   public E get(int index) {
     return vect.get(index);
   }
@@ -166,6 +171,7 @@ public class UniqueVector<E> extends AbstractList<E>
    * @return the index of the first occurrence of the argument in this
    *         vector; returns <code>-1</code> if the object is not found.
    */
+  @Override
   public synchronized int indexOf(Object elem) {
     if (!contains(elem)) return -1;
     return uniq.get(elem).intValue();
@@ -208,7 +214,7 @@ public class UniqueVector<E> extends AbstractList<E>
    * @return <code>true</code> if this vector has no components;
    *         <code>false</code> otherwise.
    */
-  public boolean isEmpty() { return (vect.size()==0); }
+  @Override public boolean isEmpty() { return (vect.size()==0); }
   /**
    * Returns the last component of the vector.
    * @return the last component of the vector, i.e., the component at
@@ -227,7 +233,7 @@ public class UniqueVector<E> extends AbstractList<E>
    *         this vector; returns <code>-1</code> if the object is not
    *         found.
    */
-  public int lastIndexOf(Object elem) { return indexOf(elem); }
+  @Override public int lastIndexOf(Object elem) { return indexOf(elem); }
   /**
    * Searches backwards for the specified object, starting from the 
    * specified index, and returns an index to it.
@@ -247,7 +253,7 @@ public class UniqueVector<E> extends AbstractList<E>
    */
   public synchronized void removeAllElements() { clear(); }
   /** Removes all of the elements from this collection. */
-  public void clear() { vect.clear(); uniq.clear(); }
+  @Override public void clear() { vect.clear(); uniq.clear(); }
 
   /**
    * Removes the first (and only) occurance of the argument from this
@@ -282,6 +288,7 @@ public class UniqueVector<E> extends AbstractList<E>
     }
   }
   /** Removes the element at the specified position in this vector. */
+  @Override
   public E remove(int index) {
     if (index<0 || index >= vect.size()) 
       throw new IndexOutOfBoundsException();
@@ -312,6 +319,7 @@ public class UniqueVector<E> extends AbstractList<E>
   /** Replaces the element at the specified position in this vector with the
    *  specified element.
    */
+  @Override
   public E set(int index, E obj) {
     E old = vect.get(index);
     if (old.equals(obj)) return obj;
@@ -324,12 +332,12 @@ public class UniqueVector<E> extends AbstractList<E>
    * Returns the number of components in this vector.
    * @return the number of components in this vector.
    */
-  public int size() { return vect.size(); }
+  @Override public int size() { return vect.size(); }
   /**
    * Returns a string representation of this vector.
    * @return a string representation of this vector.
    */
-  public synchronized String toString() { return vect.toString(); }
+  @Override public synchronized String toString() { return vect.toString(); }
   /**
    * Trims the capacity of this vector to be the vector's current size.
    * An application can use this operation to minimize the storage of a
@@ -338,6 +346,7 @@ public class UniqueVector<E> extends AbstractList<E>
   public synchronized void trimToSize() { ((ArrayList<E>) vect).trimToSize(); }
 
   // hashCode() and equals() either obey the List specs, or the Set specs.
+  @Override
   public int hashCode() {
       if (!asSet) return super.hashCode();
       int hc=0;
@@ -347,6 +356,7 @@ public class UniqueVector<E> extends AbstractList<E>
       }
       return hc;
   }
+  @Override
   public boolean equals(Object o) {
       if (!asSet) return super.equals(o);
       if (!(o instanceof Set)) return false;

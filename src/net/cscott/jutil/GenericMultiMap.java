@@ -93,6 +93,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     // we can't intercept direct modification to the sets returned
     // by getValues(key), which we'd need to do.  So size() and
     // isEmpty() are slower than they might otherwise be.
+    @Override
     public int size() {
 	int count=0;
 	for (Collection<V> c : internMap.values() )
@@ -100,6 +101,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	return count;
     }
 
+    @Override
     public boolean isEmpty() {
 	// we could return 'size()==0' but that's slow.
 	for (Collection<V> c : internMap.values() )
@@ -108,11 +110,13 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	return true;
     }
     
+    @Override
     public boolean containsKey(Object key) {
 	Collection<V> s = internMap.get(key);
 	return (s != null && s.size() != 0);
     }
     
+    @Override
     public boolean containsValue(Object value) {
 	for (K k : internMap.keySet())
 	    if (getValues(k).contains(value))
@@ -132,6 +136,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	modify <code>this</code>, then <code>get</code> will operate
 	just as it would in any other {@link Map}.
     */
+    @Override
     public V get(Object key) {
 	Collection<V> s = internMap.get(key);
 	if (s == null || s.size() == 0) {
@@ -145,6 +150,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	Returns some previous value associated with specified key, or
 	<code>null</code> if there was no mapping for key.  
      */
+    @Override
     public V remove(Object key) {
 	Collection<V> c = internMap.get(key);
 	internMap.remove(key);
@@ -157,6 +163,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	Returns true if <code>this</code> was modified as a result of
 	this operation, else returns false.
     */
+    @Override
     public boolean remove(Object key, Object value) {
 	Collection<V> c = internMap.get(key);
 	boolean result = (c!=null) ? c.remove(value) : false;
@@ -164,6 +171,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	return result;
     }
 
+    @Override
     public void clear() {
 	internMap.clear();
     }
@@ -176,6 +184,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	{@link Collection} and returns it.
 	({@link MultiMap} specific operation). 
     */
+    @Override
     public Collection<V> getValues(final K key) {
 	Collection<V> c = internMap.get(key);
 	if (c == null) {
@@ -189,6 +198,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	in <code>this</code>.
 	({@link MultiMap} specific operation). 
     */
+    @Override
     public boolean contains(Object a, Object b) {
 	Collection<V> c = internMap.get(a);
 	if (c != null)
@@ -198,6 +208,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     }
 
     /** Returns a set view of the keys in this map. */
+    @Override
     public Set<K> keySet() {
 	return keySet;
     }
@@ -206,6 +217,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     /** Returns a collection view of the values contained in this
 	map.  
     */
+    @Override
     public Collection<V> values() { 
 	return valuesCollection;
     }
@@ -217,6 +229,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	{@link MultiMapSet}, from which you can get back the
 	original {@link MultiMap}.
     */
+    @Override
     public MultiMapSet<K,V> entrySet() {
 	return entrySet;
     }
@@ -225,63 +238,73 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
     // here are the class declarations that make the key set, entry set and
     // values collection work.
     class KeySet extends AbstractSet<K> {
-	public int size() { return internMap.keySet().size(); }
+	@Override public int size() { return internMap.keySet().size(); }
+	@Override
 	public Iterator<K> iterator() {
 	    return new Iterator<K>() {
 		    Iterator<K> it = internMap.keySet().iterator();
 		    K lastKey;
-		    public boolean hasNext() { return it.hasNext(); }
-		    public K next() { return (lastKey=it.next()); }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override public K next() { return (lastKey=it.next()); }
+		    @Override
 		    public void remove() {
 			Collection<V> c = internMap.get(lastKey);
 			it.remove();
 		    }
 		};
 	}
+	@Override
 	public boolean remove(Object o) {
 	    boolean changed = contains(o);
 	    GenericMultiMap.this.remove(o);
 	    return changed;
 	}
 	// for efficiency.
+	@Override
 	public boolean contains(Object o) {
 	    // note that this is slightly different from MM.containsKey(o)
 	    return internMap.containsKey(o);
 	}
+	@Override
 	public void clear() {
 	    GenericMultiMap.this.clear();
 	}
     }
     class ValuesCollection extends AbstractCollection<V> {
-	public int size() { return entrySet.size(); }
+	@Override public int size() { return entrySet.size(); }
+	@Override
 	public Iterator<V> iterator() {
 	    return new Iterator<V>() {
 		final Iterator<Map.Entry<K,V>> it = entrySet.iterator();
-		public boolean hasNext() { return it.hasNext(); }
-		public V next() { return it.next().getValue(); }
-		public void remove() { it.remove(); }
+		@Override public boolean hasNext() { return it.hasNext(); }
+		@Override public V next() { return it.next().getValue(); }
+		@Override public void remove() { it.remove(); }
 	    };
 	}
+	@Override
 	public boolean add(V o) {
 	    throw new UnsupportedOperationException();
 	}
+	@Override
 	public boolean remove(Object o) {
 	    throw new UnsupportedOperationException();
 	}
 	// other methods for efficiency.
+	@Override
 	public boolean contains(Object o) {
 	    return GenericMultiMap.this.containsValue(o);
 	}
-	public void clear() { entrySet.clear(); }
+	@Override public void clear() { entrySet.clear(); }
     }
     // common code
     class EntrySet extends AbstractCollection<Map.Entry<K,V>>
 	implements MultiMapSet<K,V> {
 	// these are methods in MultiMapSet
-	public GenericMultiMap<K,V> asMap() { return asMultiMap(); }
-	public GenericMultiMap<K,V> asMultiMap() { return GenericMultiMap.this; }
+	@Override public GenericMultiMap<K,V> asMap() { return asMultiMap(); }
+	@Override public GenericMultiMap<K,V> asMultiMap() { return GenericMultiMap.this; }
 	// these methods aren't in the collections interface
 	// (from classpath impl of AbstractSet)
+	@Override
 	public boolean equals(Object o) {
 	    if (o == this)
 		return true;
@@ -291,6 +314,7 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	    else
 		return false;
 	}
+	@Override
 	public int hashCode() {
 	    Iterator itr = EntrySet.this.iterator();
 	    int size = EntrySet.this.size();
@@ -304,7 +328,8 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 	    return hash;
 	}
 	// get down to business: Implement AbstractCollection
-	public int size() { return GenericMultiMap.this.size(); }
+	@Override public int size() { return GenericMultiMap.this.size(); }
+	@Override
 	public Iterator<Map.Entry<K,V>> iterator() {
 	    return new Iterator<Map.Entry<K,V>>() {
 		    Iterator<Map.Entry<K,Collection<V>>> mapit = internMap.entrySet().iterator();
@@ -312,12 +337,14 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 		    Iterator<V> lastit;
 		    K key;
 		    { advance(); }
-		    public boolean hasNext() { return setit.hasNext(); }
+		    @Override public boolean hasNext() { return setit.hasNext(); }
+		    @Override
 		    public Map.Entry<K,V> next() {
 			V o = setit.next();
 			K k = key;
 			advance();
 			return new PairMapEntry<K,V>(k, o) {
+				    @Override
 				    public V setValue(V newValue) {
 					V oldValue = getValue();
 					GenericMultiMap.this.remove(getKey(),
@@ -338,25 +365,30 @@ public class GenericMultiMap<K,V> extends AbstractMultiMap<K,V> {
 			    setit = c.iterator();
 			}
 		    }
+		    @Override
 		    public void remove() {
 			lastit.remove();
 		    }
 		};
 	}
+	@Override
 	public boolean add(Map.Entry<K,V> me) {
 	    return GenericMultiMap.this.add(me.getKey(), me.getValue());
 	}
+	@Override
 	public boolean remove(Object o) {
 	    if (!(o instanceof Map.Entry)) return false;
 	    Map.Entry me = (Map.Entry) o;
 	    return GenericMultiMap.this.remove(me.getKey(), me.getValue());
 	}
 	// other methods for efficiency.
+	@Override
 	public boolean contains(Object o) {
 	    if (!(o instanceof Map.Entry)) return false;
 	    Map.Entry me = (Map.Entry) o;
 	    return GenericMultiMap.this.contains(me.getKey(), me.getValue());
 	}
+	@Override
 	public void clear() {
 	    GenericMultiMap.this.clear();
 	}

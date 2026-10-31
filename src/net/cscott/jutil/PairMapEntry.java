@@ -29,10 +29,12 @@ public class PairMapEntry<K,V> extends AbstractMapEntry<K,V> {
 	this.value = value;
     }
 
+    @Override
     public K getKey() {
 	return key;
     }
     
+    @Override
     public V getValue() {
 	return value;
     }
@@ -44,6 +46,7 @@ public class PairMapEntry<K,V> extends AbstractMapEntry<K,V> {
 	return old;
     }
 
+    @Override
     public V setValue(V newValue) {
 	V old = value;
 	value = newValue;

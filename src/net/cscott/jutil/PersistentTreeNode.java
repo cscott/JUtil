@@ -34,10 +34,12 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	this.key = key; this.left= left; this.right = right;
     }
     // ACCESSOR FUNCTIONS for Map.Entry.
-    public final K getKey() { return key; }
+    @Override public final K getKey() { return key; }
+    @Override
     public V getValue() { return null; } // can be overridden by subclass
 
     // For debugging
+    @Override
     public String toString() {
 	return "["+key+"->"+getValue()+", left="+left+", right="+right+"]";
     }
@@ -201,7 +203,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
     static class NodePair<N extends PersistentTreeNode<N,K,V>,K,V> {
 	final N left, right; /* equal ends up on right side */
 	NodePair(N left, N right) { this.left = left; this.right = right; }
-	public String toString() { return "["+left+", "+right+"]"; }
+	@Override public String toString() { return "["+left+", "+right+"]"; }
     }
     private static <N extends PersistentTreeNode<N,K,V>,K,V>
 			      NodePair<N,K,V> partition
@@ -269,7 +271,7 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	if (newNode==null) return origNode;
 	// fill in missing merger.
 	if (merger==null) merger = new Merger<V>() {
-	    public V merge(V origValue, V newValue) { return newValue; }
+	    @Override public V merge(V origValue, V newValue) { return newValue; }
 	};
 	// okay, compare origNode and newNode.
 	int keycmp = c.compare(origNode.key, newNode.key);
@@ -319,7 +321,8 @@ abstract class PersistentTreeNode<N extends PersistentTreeNode<N,K,V>,K,V>
 	    for (N n=root; n!=null; n=n.left)
 		stack = new NodeList<N,K,V>(n, stack);
 	}
-	public boolean hasNext() { return stack!=null; }
+	@Override public boolean hasNext() { return stack!=null; }
+	@Override
 	public N next() {
 	    N n = stack.head;
 	    stack = stack.tail;

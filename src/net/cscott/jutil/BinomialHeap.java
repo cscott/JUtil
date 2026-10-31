@@ -45,6 +45,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
     }
 
     /** Returns a mapping entry with minimal key.  Takes O(lg n) time. */
+    @Override
     public Map.Entry<K,V> minimum() {
 	if (debug) checkHeap();
 	Node<K,V> y=null;
@@ -83,6 +84,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
      *  O(lg n) time if the given heap is a {@link BinomialHeap}
      *  and its entry comparator is the same as this one's.
      *  Otherwise, it takes O(n) time. */
+    @Override
     public void union(Heap<? extends K,? extends V> h) {
 	if (h instanceof BinomialHeap &&
 	    entryComparator().equals(((BinomialHeap)h).entryComparator()))
@@ -151,12 +153,14 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
      *  the <code>insert()</code>.  O(lg n) time.
      * @return The {@link java.util.Map.Entry} added.
      */
+    @Override
     public Map.Entry<K,V> insert(K key, V value) { // binomial-heap-insert
 	if (debug) checkHeap();
 	Entry<K,V> e = new Entry<K,V>(key, value);
 	insert(e);
 	return e;
     }
+    @Override
     protected void insert(Map.Entry<K,V> me) {
 	Entry<K,V> e = (Entry<K,V>) me;
 	Node<K,V> x = new Node<K,V>(e);
@@ -164,6 +168,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	if (debug) checkHeap();
     }
     /** Remove and return the map entry with minimal key. O(lg n) time. */
+    @Override
     public Map.Entry<K,V> extractMinimum() {
 	if (debug) checkHeap();
 	Node<K,V> x=((Entry<K,V>)minimum()).node; // find min node...
@@ -199,6 +204,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 
     /** Replace the key in the specified map entry with the specified
      *  <b>smaller</b> key.  O(lg n) time. */
+    @Override
     public void decreaseKey(Map.Entry<K,V> me, K newkey) {
 	if (debug) checkHeap();
 	Node<K,V> x = ((Entry<K,V>) me).node;
@@ -228,6 +234,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	b.entry = ea; ea.node = b;
     }
     /** Remove the specified map entry from the mapping. O(lg n) time. */
+    @Override
     public void delete(Map.Entry<K,V> me) {
 	if (debug) checkHeap();
 	Node<K,V> x = ((Entry<K,V>) me).node;
@@ -246,14 +253,17 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	return n.parent.sibling;
     }
     /** Return an unmodifiable collection of entries in this heap. */
+    @Override
     public Collection<Map.Entry<K,V>> entries() {
 	if (debug) checkHeap();
 	return new AbstractCollection<Map.Entry<K,V>>() {
-	    public int size() { return BinomialHeap.this.size(); }
+	    @Override public int size() { return BinomialHeap.this.size(); }
+	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
 		return new UnmodifiableIterator<Map.Entry<K,V>>() {
 		    Node<K,V> next = head;
-		    public boolean hasNext() { return next!=null; }
+		    @Override public boolean hasNext() { return next!=null; }
+		    @Override
 		    public Map.Entry<K,V> next() {
 			Node<K,V> n=next; next = successor(next); return n.entry;
 		    }
@@ -262,6 +272,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	};
     }
     /** Returns the size of this map. O(lg n) time. */
+    @Override
     public int size() {
 	if (debug) checkHeap();
 	int s=0;
@@ -270,16 +281,19 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	return s;
     }
     /** Removes all mappings from this map. O(1) time. */
+    @Override
     public void clear() {
 	this.head=null;
     }
     /** Returns <code>true</code> if this map contains no key-value mappings.*/
+    @Override
     public boolean isEmpty() {
 	return this.head==null;
     }
 
     /** Creates a new BinomialHeap with all the key-value pairs this one
      *  has.  O(n) time. */
+    @Override
     public BinomialHeap<K,V> clone() {
 	BinomialHeap<K,V> bm=new BinomialHeap<K,V>(comparator());
 	bm.head=_clone(null, this.head);
@@ -327,6 +341,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	K _setKey(K key) { return super.setKey(key); }
     }
     // to implement updateKey, etc...
+    @Override
     protected final K setKey(Map.Entry<K,V> me, K newkey) {
 	Entry<K,V> e = (Entry<K,V>) me;
 	return e._setKey(newkey);
@@ -343,6 +358,7 @@ public class BinomialHeap<K,V> extends AbstractHeap<K,V> implements Cloneable {
 	    this.entry.node = this;
 	    this.degree = 0;
 	}
+	@Override
 	public String toString() {
 	    return "<"+entry.toString()+", "+
 		"degree: "+degree+", "+

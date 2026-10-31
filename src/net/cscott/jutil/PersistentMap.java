@@ -103,49 +103,59 @@ public class PersistentMap<K,V> implements java.io.Serializable {
     }
     
     /** Cloning takes constant time, regardless of the size of the map. */
+    @Override
     public PersistentMap<K,V> clone() {
 	return new PersistentMap<K,V>(root, c, allocator);
     }
     /** Human-readable representation of the map. */
-    public String toString() { return asMap().toString(); }
+    @Override public String toString() { return asMap().toString(); }
     // fast Map.hashCode implementation.
-    public int hashCode() { return (root==null)?0:root.mapHashCode; }
+    @Override public int hashCode() { return (root==null)?0:root.mapHashCode; }
 
     /*---------------------------------------------------------------*/
     /** {@link java.util.Collection}s view of the mapping. */
     public Map<K,V> asMap() {
 	return new AbstractMap<K,V>() {
 	    // constant-time clone.
-	    public Map<K,V> clone() { return PersistentMap.this.asMap(); }
+	    @Override public Map<K,V> clone() { return PersistentMap.this.asMap(); }
+	    @Override
 	    public boolean containsKey(Object key) {
 		// ack, not safe if key is not a K!
 		return PersistentMap.this.containsKey((K)key);
 	    }
+	    @Override
 	    public V get(Object key) {
 		// ack, not safe is key is not a K!
 		return PersistentMap.this.get((K)key);
 	    }
+	    @Override
 	    public boolean isEmpty() {
 		return PersistentMap.this.isEmpty();
 	    }
+	    @Override
 	    public int size() {
 		return PersistentMap.this.size();
 	    }
 	    // xxx implement putAll()?
+	    @Override
 	    public Set<Map.Entry<K,V>> entrySet() {
 		return new AbstractSet<Map.Entry<K,V>>() {
+		    @Override
 		    public int size() {
 			return PersistentMap.this.size();
 		    }
+		    @Override
 		    public Iterator<Map.Entry<K,V>> iterator() {
 			final Iterator<Node<K,V>> it = Node.iterator(root);
 			return new Iterator<Map.Entry<K,V>>() {
 			    Node<K,V> last=null;
-			    public boolean hasNext() { return it.hasNext(); }
+			    @Override public boolean hasNext() { return it.hasNext(); }
+			    @Override
 			    public Map.Entry<K,V> next() {
 				last = it.next();
 				return last;
 			    }
+			    @Override
 			    public void remove() {
 				if (last==null)
 				    throw new IllegalStateException();
@@ -181,10 +191,11 @@ public class PersistentMap<K,V> implements java.io.Serializable {
 		((left==null)?0:left.size) + // size of left tree
 		((right==null)?0:right.size); // size of right tree
 	}
-	public V getValue() { return value; }
+	@Override public V getValue() { return value; }
 	static class Allocator<K,V>
 	    extends PersistentTreeNode.Allocator<Node<K,V>,K,V> 
 	    implements java.io.Serializable {
+	    @Override
 	    Node<K,V> newNode(K key, V value,
 			      Node<K,V> left, Node<K,V> right) {
 		return new Node<K,V>(key, value, left, right);

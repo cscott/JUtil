@@ -19,7 +19,7 @@ public abstract class UnmodifiableMap<K,V> extends MapWrapper<K,V> {
             ms = new Factories.MapSetWrapper<K,V>() {
                 @Override
                 protected Set<Map.Entry<K,V>> wrapped() {return m.entrySet();}
-                public Map<K,V> asMap() { return m; }
+                @Override public Map<K,V> asMap() { return m; }
             };
         }
         return new UnmodifiableMap<K,V>() {

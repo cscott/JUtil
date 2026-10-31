@@ -21,7 +21,8 @@ public class ReverseIterator<E> extends SnapshotIterator<E> {
 	super(it);
 	i = l.size()-1;
     }
-    public boolean hasNext() { return ( i >= 0 ); }
+    @Override public boolean hasNext() { return ( i >= 0 ); }
+    @Override
     public E  next() {
 	try { return l.get(i--); }
 	catch (IndexOutOfBoundsException e)

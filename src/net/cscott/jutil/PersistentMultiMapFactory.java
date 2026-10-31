@@ -45,6 +45,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
      *  is based on persistent randomized treaps.  All {@link MultiMap}s
      *  created by this factory maximally reuse space, and have very
      *  fast comparison operations. */
+    @Override
     public MultiMap<K,V> makeMultiMap() {
 	return new MultiMapImpl();
     }
@@ -52,9 +53,10 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	MapNode<K,V> root = null;
 	MultiMapImpl() { }
 	MultiMapImpl(MapNode<K,V> root) { this.root = root; }
-	public boolean isEmpty() { return this.root==null; }
-	public int size() { return (root==null)?0:root.size; }
-	public int hashCode() { return (root==null)?0:root.mapHashCode; }
+	@Override public boolean isEmpty() { return this.root==null; }
+	@Override public int size() { return (root==null)?0:root.size; }
+	@Override public int hashCode() { return (root==null)?0:root.mapHashCode; }
+	@Override
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
 	    if (o instanceof PersistentMultiMapFactory.MultiMapImpl &&
@@ -67,17 +69,20 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	private PersistentMultiMapFactory<K,V> factory() {
 	    return PersistentMultiMapFactory.this;
 	}
+	@Override
 	public void clear() {
 	    this.root = null;
 	}
 	// constant-time!
-	public MultiMapImpl clone() { return new MultiMapImpl(this.root); }
+	@Override public MultiMapImpl clone() { return new MultiMapImpl(this.root); }
+	@Override
 	public boolean containsKey(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
 	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, (K)key);
 	    return np!=null && np.value.size()>0;
 	}
+	@Override
 	public boolean contains(Object a, Object b) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -90,6 +95,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return true;
 	}
 
+	@Override
 	public V get(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -98,6 +104,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    // return arbitrary element of set.
 	    return np.value.key;
 	}
+	@Override
 	public V remove(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
@@ -107,6 +114,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 				       mapAllocator);
 	    return np.value.key;
 	}
+	@Override
 	public boolean remove(Object key, Object value) {
 	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, (K)key);
 	    if (np==null) return false;
@@ -118,6 +126,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 				    mapAllocator);
 	    return true;
 	}
+	@Override
 	public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	    if (!(mm instanceof PersistentMultiMapFactory.MultiMapImpl))
 		return super.addAll(mm);
@@ -125,6 +134,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    if (this.factory() != mmi.factory()) return super.addAll(mm);
 	    // fast impl.
 	    MapNode.Merger<SetNode<V>> merger=new MapNode.Merger<SetNode<V>>(){
+		@Override
 		public SetNode<V> merge(SetNode<V> oldv, SetNode<V> newv) {
 		    return SetNode.putAll(oldv, newv,
 					  valueComparator, setAllocator);
@@ -137,6 +147,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return true;
 	}
 
+	@Override
 	public Set<V> getValues(K key) {
 	    MapNode<K,V> np = MapNode.get(this.root, keyComparator, (K)key);
 	    return new ValuesSet(key, np==null?null:np.value);
@@ -148,32 +159,36 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	// HOWEVER, since (x^y)+(x^z) != (2*x)^(y+z), we hack the hashcode
 	// and use key.hash ^ value-as-set.hashCode()
 
+	@Override
 	public Collection<V> values() {
 	    return new AbstractSet<V>() {
-		public int size() { return MultiMapImpl.this.size(); }
+		@Override public int size() { return MultiMapImpl.this.size(); }
+		@Override
 		public Iterator<V> iterator() {
 		    return new FilterIterator<SetNode<V>,V>
 			(new CombineIterator<SetNode<V>>
 			 (new FilterIterator<MapNode<K,V>,Iterator<SetNode<V>>>
 			  (MapNode.iterator(root),
 			   new Filter<MapNode<K,V>,Iterator<SetNode<V>>>() {
+			      @Override
 			      public Iterator<SetNode<V>> map(MapNode<K,V> n) {
 				  return SetNode.iterator(n.value);
 			      }
 			  })),
 			 new Filter<SetNode<V>,V>() {
-			    public V map(SetNode<V> n) { return n.key; }
+			    @Override public V map(SetNode<V> n) { return n.key; }
 			});
 		}
 	    };
 	}
 
-	public MultiMapSet<K,V> entrySet() { return new EntrySet(); }
+	@Override public MultiMapSet<K,V> entrySet() { return new EntrySet(); }
 	private class EntrySet extends AbstractSet<Map.Entry<K,V>>
 	    implements MultiMapSet<K,V> {
-	    public int size() { return MultiMapImpl.this.size(); }
-	    public MultiMapImpl asMap() { return asMultiMap(); }
-	    public MultiMapImpl asMultiMap() { return MultiMapImpl.this; }
+	    @Override public int size() { return MultiMapImpl.this.size(); }
+	    @Override public MultiMapImpl asMap() { return asMultiMap(); }
+	    @Override public MultiMapImpl asMultiMap() { return MultiMapImpl.this; }
+	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
 		return new Iterator<Map.Entry<K,V>>() {
 		    final Iterator<MapNode<K,V>> map_it=MapNode.iterator(root);
@@ -181,6 +196,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		    MapNode<K,V> map_last = null;
 		    SetNode<V> set_last = null;
 		    
+		    @Override
 		    public boolean hasNext() {
 			while ((set_it==null || !set_it.hasNext()) &&
 			       map_it.hasNext()) {
@@ -189,12 +205,14 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 			}
 			return set_it!=null && set_it.hasNext();
 		    }
+		    @Override
 		    public Map.Entry<K,V> next() {
 			if (!hasNext())
 			    throw new NoSuchElementException();
 			set_last = set_it.next();
 			return new NodeWrapper(map_last.key, set_last.key);
 		    }
+		    @Override
 		    public void remove() {
 			if (set_last==null)
 			    throw new IllegalStateException();
@@ -213,10 +231,12 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    private PersistentMultiMapFactory<K,V> factory() {
 		return PersistentMultiMapFactory.this;
 	    }
-	    public int size() { return setRoot==null?0:setRoot.size; }
+	    @Override public int size() { return setRoot==null?0:setRoot.size; }
+	    @Override
 	    public int hashCode() {
 		return (setRoot==null)?0:setRoot.setHashCode;
 	    }
+	    @Override
 	    public boolean equals(Object o) {
 		// sets from the same factory can be compared very quickly
 		if (o instanceof PersistentMultiMapFactory.MultiMapImpl.ValuesSet &&
@@ -225,6 +245,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		    return this.setRoot == ((ValuesSet)o).setRoot;
 		return super.equals(o);
 	    }
+	    @Override
 	    public boolean add(V v) {
 		SetNode<V> v2 = SetNode.put(setRoot, valueComparator, v, v,
 					    setAllocator);
@@ -234,6 +255,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		setRoot = v2;
 		return true;
 	    }
+	    @Override
 	    public boolean addAll(Collection<? extends V> c) {
 		if (!(c instanceof PersistentMultiMapFactory.MultiMapImpl.ValuesSet))
 		    return super.addAll(c);
@@ -249,6 +271,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		setRoot = v2;
 		return true;
 	    }
+	    @Override
 	    public void clear() {
 		if (setRoot==null) return; // nothing to do!
 		MultiMapImpl.this.root = MapNode.remove(root, keyComparator,
@@ -256,11 +279,13 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		setRoot = null;
 		return;
 	    }
+	    @Override
 	    public boolean contains(Object o) {
 		if (setRoot==null) return false;
 		// unpleasant cast to V
 		return null != SetNode.get(setRoot, valueComparator, (V)o);
 	    }
+	    @Override
 	    public boolean remove(Object o) {
 		if (setRoot==null) return false;
 		SetNode<V> v2 = SetNode.remove(setRoot, valueComparator, (V)o,
@@ -277,15 +302,18 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    //public boolean retainAll(Collection<?> c) { }
 	    // XXX FAST IMPLEMENTATION POSSIBLE.
 	    //public boolean containsAll(Collection<?> c) { }
+	    @Override
 	    public Iterator<V> iterator() {
 		final Iterator<SetNode<V>> it = SetNode.iterator(setRoot);
 		return new Iterator<V>() {
 		    SetNode<V> last = null;
-		    public boolean hasNext() { return it.hasNext(); }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override
 		    public V next() {
 			last = it.next();
 			return last.key;
 		    }
+		    @Override
 		    public void remove() {
 			if (last==null)
 			    throw new IllegalStateException();
@@ -300,6 +328,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	private class NodeWrapper extends PairMapEntry<K,V> {
 	    NodeWrapper(K k, V v) { super(k, v); }
 	    // whee, side-effect impervious!
+	    @Override
 	    public V setValue(V value) {
 		MultiMapImpl.this.remove(getKey(), getValue());
 		MultiMapImpl.this.add(getKey(), value);
@@ -330,8 +359,9 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		((left==null)?0:left.size) + // size of left tree
 		((right==null)?0:right.size); // size of right tree
 	}
-	public SetNode<V> getValue() { return value; }
+	@Override public SetNode<V> getValue() { return value; }
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
+	@Override
 	public boolean equals(Object o) {
 	    if (!(o instanceof MapNode)) return false;
 	    MapNode n = (MapNode) o;
@@ -342,7 +372,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		((value==null)?n.value==null:value.equals(n.value)) &&
 		left == n.left && right == n.right;
 	}
-	public int hashCode() { return mapHashCode; }
+	@Override public int hashCode() { return mapHashCode; }
     }
     private static class SetNode<V>
 	extends PersistentTreeNode<SetNode<V>,V,V> {
@@ -362,6 +392,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    //assert this.size == PersistentTreeNode.size(this);
 	}
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
+	@Override
 	public boolean equals(Object o) {
 	    if (!(o instanceof SetNode)) return false;
 	    SetNode n = (SetNode) o;
@@ -369,13 +400,14 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 		left == n.left && right == n.right;
 	}
 	public int size() { return size; }
-	public int hashCode() { return setHashCode; }
+	@Override public int hashCode() { return setHashCode; }
     }
     /** Allocator uses a {@link WeakHashMap} to do hash consing. */
     static class MapAllocator<K,V>
 	extends PersistentTreeNode.Allocator<MapNode<K,V>,K,SetNode<V>> {
 	final WeakHashMap<MapNode<K,V>,WeakReference<MapNode<K,V>>> hashConsCache =
 	    new WeakHashMap<MapNode<K,V>,WeakReference<MapNode<K,V>>>();
+	@Override
 	MapNode<K,V> newNode(K key, SetNode<V> value,
 			     MapNode<K,V> left, MapNode<K,V> right) {
 	    MapNode<K,V> n = new MapNode<K,V>(key, value, left, right);
@@ -385,6 +417,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return nn.get();
 	}
 
+	@Override
 	public String toString() {
 	    return hashConsCache.toString();
 	}
@@ -394,6 +427,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	extends PersistentTreeNode.Allocator<SetNode<V>,V,V> {
 	final WeakHashMap<SetNode<V>,WeakReference<SetNode<V>>> hashConsCache =
 	    new WeakHashMap<SetNode<V>,WeakReference<SetNode<V>>>();
+	@Override
 	SetNode<V> newNode(V key, V value,
 			   SetNode<V> left, SetNode<V> right) {
 	    // ignore value.
@@ -404,6 +438,7 @@ public class PersistentMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
 	    return nn.get();
 	}
 
+	@Override
 	public String toString() {
 	    return hashConsCache.toString();
 	}

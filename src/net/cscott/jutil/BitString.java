@@ -294,6 +294,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
    * Returns a hash code value for this bit string whose value depends
    * only on which bits have been set within this {@link BitString}.
    */
+  @Override
   public int hashCode() {
     int h = 1234 * bits.length;
     for (int i = bits.length; --i >= 0; ) {
@@ -325,6 +326,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
    * @param obj the object to compare with
    * @return true if the contents of the bitsets are the same; false otherwise.
    */
+  @Override
   public boolean equals(Object obj) {
     BitString set;
     if (obj==null) return false;
@@ -377,6 +379,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
   /**
    * Clones the BitString.
    */
+  @Override
   public BitString clone() {
     BitString result = null;
     try {
@@ -393,6 +396,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
   /**
    * Converts the BitString to a String.
    */
+  @Override
   public String toString() {
     StringBuffer buffer = new StringBuffer();
     boolean needSeparator = false;

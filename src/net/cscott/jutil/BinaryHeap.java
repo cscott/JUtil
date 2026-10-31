@@ -53,6 +53,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	union(collection);
 	if (debug) checkHeap();
     }
+    @Override
     public Map.Entry<K,V> insert(K key, V value) {
 	int index=A.size();
 	Entry<K,V> e=new Entry<K,V>(key, value, index);
@@ -61,10 +62,12 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	if (debug) checkHeap();
 	return e;
     }
+    @Override
     public Map.Entry<K,V> minimum() {
 	if (size() < 1) throw new java.util.NoSuchElementException();
 	return A.get(1);
     }
+    @Override
     public Map.Entry<K,V> extractMinimum() {
 	if (size() < 1) throw new java.util.NoSuchElementException();
 	Entry<K,V> min = A.get(1);
@@ -74,6 +77,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	if (debug) checkHeap();
 	return min;
     }
+    @Override
     public void union(Heap<? extends K,? extends V> h) {
 	union(h.entries());
     }
@@ -88,9 +92,11 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	// done!
 	if (debug) checkHeap();
     }
+    @Override
     public void decreaseKey(Map.Entry<K,V> me, K newkey) {
 	updateKey(me, newkey);
     }
+    @Override
     public void updateKey(Map.Entry<K,V> me, K newkey) {
 	Entry<K,V> e = (Entry<K,V>) me;
 	if (keyComparator().compare(newkey, setKey(e, newkey)) < 0)
@@ -99,6 +105,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	    downheap(e.index);
 	if (debug) checkHeap();
     }
+    @Override
     public void delete(Map.Entry<K,V> me) {
 	int index = ((Entry<K,V>)me).index;
 	// replace this entry with one at end of heap & shrink heap.
@@ -113,19 +120,21 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	// done.
 	if (debug) checkHeap();
     }
-    public void clear() { A.clear(); A.add(null); }
-    public int size() { return A.size()-1; /* 0'th element unused. */ }
+    @Override public void clear() { A.clear(); A.add(null); }
+    @Override public int size() { return A.size()-1; /* 0'th element unused. */ }
+    @Override
     public Collection<Map.Entry<K,V>> entries() {
 	return new AbstractCollection<Map.Entry<K,V>>() {
-	    public int size() { return BinaryHeap.this.size(); }
+	    @Override public int size() { return BinaryHeap.this.size(); }
+	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
 		final Iterator<Entry<K,V>> it = A.iterator();
 		it.next(); // filter out element 0 of the array list.
 		// weakness of the type system: we need to wrap this
 		// iterator to make it return Map.Entry instead of Entry.
 		return new UnmodifiableIterator<Map.Entry<K,V>>() {
-		    public boolean hasNext() { return it.hasNext(); }
-		    public Map.Entry<K,V> next() { return it.next(); }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override public Map.Entry<K,V> next() { return it.next(); }
 		};
 	    }
 	};
@@ -184,6 +193,7 @@ public final class BinaryHeap<K,V> extends AbstractHeap<K,V> {
 	K _setKey(K newKey) { return setKey(newKey); }
     }
     // to implement updateKey, etc...
+    @Override
     protected final K setKey(Map.Entry<K,V> me, K newkey) {
 	Entry<K,V> e = (Entry<K,V>) me;
 	return e._setKey(newkey);

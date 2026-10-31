@@ -28,14 +28,17 @@ public abstract class SetFactory<V> extends CollectionFactory<V> {
         super();
     }
     
+    @Override
     public final Set<V> makeCollection() {
 	return makeSet();
     }
 
+    @Override
     public final Set<V> makeCollection(Collection<? extends V> c) {
 	return makeSet(c);
     }
 
+    @Override
     public final Set<V> makeCollection(int initCapacity) {
 	return makeSet(initCapacity);
     }

@@ -16,7 +16,7 @@ public abstract class UnmodifiableMapSet<K,V> extends MapSetWrapper<K,V> {
     /** Implementations should return the wrapped {@link MapSet} here. */ 
     @Override
     protected abstract MapSet<K,V> wrapped();
-    public abstract UnmodifiableMap<K,V> asMap();
+    @Override public abstract UnmodifiableMap<K,V> asMap();
     @Override
     public Iterator<Entry<K, V>> iterator() {
         return UnmodifiableIterator.proxy(wrapped().iterator());

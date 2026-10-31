@@ -20,42 +20,52 @@ public abstract class ListWrapper<E> extends CollectionWrapper<E>
     /** Creates a {@link ListWrapper}. */
     protected ListWrapper() { }
     
+    @Override
     public List<E> subList(int i, int j) {
 	return wrapped().subList(i, j);
     }
 
+    @Override
     public E get(int i) {
 	return wrapped().get(i);
     }
 
+    @Override
     public E set(int i, E o) {
 	return wrapped().set(i, o);
     }
 
+    @Override
     public E remove(int i) {
 	return wrapped().remove(i);
     }
 
+    @Override
     public java.util.ListIterator<E> listIterator(int i) {
 	return wrapped().listIterator(i);
     }
     
+    @Override
     public java.util.ListIterator<E> listIterator() {
 	return wrapped().listIterator();
     }
 
+    @Override
     public int lastIndexOf(Object o) {
 	return wrapped().lastIndexOf(o);
     }
 
+    @Override
     public int indexOf(Object o) {
 	return wrapped().indexOf(o);
     }
 
+    @Override
     public boolean addAll(int i, java.util.Collection<? extends E> c) {
 	return wrapped().addAll(i, c);
     }
 
+    @Override
     public void add(int i, E o) {
 	wrapped().add(i, o);
     }

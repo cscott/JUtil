@@ -168,9 +168,10 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
     /** Adds the object to the set and returns true if the element
      *  is not already present.  Otherwise makes no change to the
      *  set and returns false. */
-    public boolean add(E o) { return addLast(o); }
+    @Override public boolean add(E o) { return addLast(o); }
 
     /** Removes all elements from the set. */
+    @Override
     public void clear() {
 	assert isValid();
 	hm.clear(); listhead.next = listfoot; listfoot.prev = listhead;
@@ -182,6 +183,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	                     <code>this</code>, returns true.
 			     Else returns false.
     */
+    @Override
     public boolean contains(Object o) {
 	return hm.containsKey(o);
     }
@@ -190,21 +192,26 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	<BR> <B>effects:</B> If <code>this</code> has any elements,
 	                     returns true.  Else returns false.
     */
+    @Override
     public boolean isEmpty() {
 	return (listhead.next == listfoot);
     }
     /** Efficient set iterator. */
+    @Override
     public Iterator<E> iterator() {
 	return new Iterator<E>() {
 	    EntryList<E> elp = listhead;
+	    @Override
 	    public boolean hasNext() {
 		return elp.next.next!=null; /* remember to skip FOOTER node */
 	    }
+	    @Override
 	    public E next() {
 		if (!hasNext())
 		    throw new java.util.NoSuchElementException();
 		E o=elp.next.o; elp=elp.next; return o;
 	    }
+	    @Override
 	    public void remove() {
 		assert isValid();
 		if (elp==listhead) throw new IllegalStateException();
@@ -214,6 +221,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	    }
 	};
     }
+    @Override
     public boolean remove(Object o) {
 	assert isValid();
 	if (!hm.containsKey(o)) return false;
@@ -224,7 +232,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	assert isValid();
 	return true;
     }
-    public int size() { return hm.size(); }
+    @Override public int size() { return hm.size(); }
 
     // INNER CLASS. -------------------------------------------
     private static final class EntryList<E> implements Serializable {
@@ -232,6 +240,7 @@ public class WorkSet<E> extends java.util.AbstractSet<E> implements Serializable
 	EntryList<E> prev=null, next=null;
 	EntryList(E o) { this.o = o; }
 
+	@Override
 	public String toString() {
 	    StringBuffer sb = new StringBuffer("[");
 	    for (EntryList<E> elp = this; elp!=null; elp=elp.next) {

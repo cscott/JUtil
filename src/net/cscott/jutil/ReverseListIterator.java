@@ -20,14 +20,14 @@ public class ReverseListIterator<E> implements ListIterator<E> {
     public ReverseListIterator(List<E> l) {
 	this.it = l.listIterator(l.size());
     }
-    public void add(E o) { it.add(o); }
-    public boolean hasNext() { return it.hasPrevious(); }
-    public boolean hasPrevious() { return it.hasNext(); }
-    public E next() { return it.previous(); }
-    public int nextIndex() { return it.previousIndex(); }
-    public E previous() { return it.next(); }
-    public int previousIndex() { return it.nextIndex(); }
-    public void remove() { it.remove(); }
-    public void set(E o) { it.set(o); }
+    @Override public void add(E o) { it.add(o); }
+    @Override public boolean hasNext() { return it.hasPrevious(); }
+    @Override public boolean hasPrevious() { return it.hasNext(); }
+    @Override public E next() { return it.previous(); }
+    @Override public int nextIndex() { return it.previousIndex(); }
+    @Override public E previous() { return it.next(); }
+    @Override public int previousIndex() { return it.nextIndex(); }
+    @Override public void remove() { it.remove(); }
+    @Override public void set(E o) { it.set(o); }
     
 }

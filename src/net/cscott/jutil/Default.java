@@ -34,6 +34,7 @@ public abstract class Default  {
      *  type system. */
     public static final <T extends Comparable<T>> Comparator<T> comparator() {
 	return new SerializableComparator<T>() {
+	    @Override
 	    public int compare(T t1, T t2) {
 		if (t1==null && t2==null) return 0;
 		// null is less than everything
@@ -50,8 +51,8 @@ public abstract class Default  {
      *  play nicely with Java's type system. */
     public static final <E> Iterator<E> nullIterator() {
 	return new UnmodifiableIterator<E>() {
-	    public boolean hasNext() { return false; }
-	    public E next() { throw new NoSuchElementException(); }
+	    @Override public boolean hasNext() { return false; }
+	    @Override public E next() { throw new NoSuchElementException(); }
 	};
     }
     /** An {@link Iterator} over a singleton set. */
@@ -61,8 +62,8 @@ public abstract class Default  {
     /** An unmodifiable version of the given iterator. */
     public static final <E> Iterator<E> unmodifiableIterator(final Iterator<E> i) {
 	return new UnmodifiableIterator<E>() {
-	    public boolean hasNext() { return i.hasNext(); }
-	    public E next() { return i.next(); }
+	    @Override public boolean hasNext() { return i.hasNext(); }
+	    @Override public E next() { return i.next(); }
 	};
     }
     /** An empty set.
@@ -80,46 +81,51 @@ public abstract class Default  {
     }
     /** Implementation of an immutable empty set. */
     private static class EmptySet<E> implements Set<E>, java.io.Serializable {
-	    public int size() { return 0; }
-	    public boolean isEmpty() { return true; }
-	    public boolean contains(Object e) { return false; }
-	    public Iterator<E> iterator() { return nullIterator(); }
-	    public Object[] toArray() { return new Object[0]; }
+	    @Override public int size() { return 0; }
+	    @Override public boolean isEmpty() { return true; }
+	    @Override public boolean contains(Object e) { return false; }
+	    @Override public Iterator<E> iterator() { return nullIterator(); }
+	    @Override public Object[] toArray() { return new Object[0]; }
+	    @Override
 	    public <T> T[] toArray(T[] a) {
 		if (a.length>0) a[0]=null;
 		return a;
 	    }
+	    @Override
 	    public boolean add(E e) {
 		throw new UnsupportedOperationException();
 	    }
-	    public boolean remove(Object e) { return false; }
+	    @Override public boolean remove(Object e) { return false; }
+	    @Override
 	    public boolean containsAll(Collection<?> c) {
 		return c.isEmpty();
 	    }
+	    @Override
 	    public boolean addAll(Collection<? extends E> c) {
 		if (c.isEmpty()) return false;
 		throw new UnsupportedOperationException();
 	    }
-	    public boolean removeAll(Collection<?> c) { return false; }
-	    public boolean retainAll(Collection<?> c) { return false; }
-	    public void clear() { }
+	    @Override public boolean removeAll(Collection<?> c) { return false; }
+	    @Override public boolean retainAll(Collection<?> c) { return false; }
+	    @Override public void clear() { }
+	    @Override
 	    public boolean equals(Object o) {
 		// note we implement Set, not Collection, interface
 		if (!(o instanceof Set)) return false;
 		return ((Set)o).size()==0;
 	    }
-	    public int hashCode() { return 0; }
+	    @Override public int hashCode() { return 0; }
     }
     /** Implementation of an immutable empty sorted set. */
     private static class EmptySortedSet<E> extends EmptySet<E>
 	implements SortedSet<E> {
 	    // sorted set interface:
-	    public Comparator<E> comparator() { return null; }
-	    public SortedSet<E> subSet(E fromEl, E toEl) { return this; }
-	    public SortedSet<E> headSet(E toEl) { return this; }
-	    public SortedSet<E> tailSet(E fromEl) { return this; }
-	    public E first() { throw new NoSuchElementException(); }
-	    public E last() { throw new NoSuchElementException(); }
+	    @Override public Comparator<E> comparator() { return null; }
+	    @Override public SortedSet<E> subSet(E fromEl, E toEl) { return this; }
+	    @Override public SortedSet<E> headSet(E toEl) { return this; }
+	    @Override public SortedSet<E> tailSet(E fromEl) { return this; }
+	    @Override public E first() { throw new NoSuchElementException(); }
+	    @Override public E last() { throw new NoSuchElementException(); }
     }
     /** An empty list.  The parameterized version.
      *  Made necessary by limitations in GJ's type system.
@@ -145,35 +151,39 @@ public abstract class Default  {
     /** Implementation of an immutable empty map. */
     private static class EmptyMap<K,V>
 	implements Map<K,V>, java.io.Serializable {
-	public void clear() { }
-	public boolean containsKey(Object key) { return false; }
-	public boolean containsValue(Object value) { return false; }
+	@Override public void clear() { }
+	@Override public boolean containsKey(Object key) { return false; }
+	@Override public boolean containsValue(Object value) { return false; }
+	@Override
 	public MapSet<K,V> entrySet() {
 	    return new EmptyMapSet();
 	}
 	private class EmptyMapSet extends EmptySortedSet<Map.Entry<K,V>>
 	    implements MapSet<K,V> {
-	    public Map<K,V> asMap() { return EmptyMap.this; }
+	    @Override public Map<K,V> asMap() { return EmptyMap.this; }
 	}
+	@Override
 	public boolean equals(Object o) {
 	    if (!(o instanceof Map)) return false;
 	    return ((Map)o).size()==0;
 	}
-	public V get(Object key) { return null; }
-	public int hashCode() { return 0; }
-	public boolean isEmpty() { return true; }
-	public Set<K> keySet() { return Collections.<K>emptySet(); }
+	@Override public V get(Object key) { return null; }
+	@Override public int hashCode() { return 0; }
+	@Override public boolean isEmpty() { return true; }
+	@Override public Set<K> keySet() { return Collections.<K>emptySet(); }
+	@Override
 	public V put(K key, V value) {
 	    throw new UnsupportedOperationException();
 	}
+	@Override
 	public void putAll(Map<? extends K,? extends V> t) {
 	    if (t.size()==0) return;
 	    throw new UnsupportedOperationException();
 	}
-	public V remove(Object key) { return null; }
-	public int size() { return 0; }
-	public Collection<V> values() { return Collections.<V>emptySet(); }
-	public String toString() { return "{}"; }
+	@Override public V remove(Object key) { return null; }
+	@Override public int size() { return 0; }
+	@Override public Collection<V> values() { return Collections.<V>emptySet(); }
+	@Override public String toString() { return "{}"; }
 	// this should always be a singleton.
 	//private Object readResolve() { return Default.EMPTY_MAP; }
     }
@@ -181,12 +191,12 @@ public abstract class Default  {
     private static class EmptySortedMap<K,V> extends EmptyMap<K,V>
 	implements SortedMap<K,V> {
 	// SortedMap interface.
-	public Comparator<? super K> comparator() { return null; }
-	public K firstKey() { throw new NoSuchElementException(); }
-	public K lastKey() { throw new NoSuchElementException(); }
-	public SortedMap<K,V> headMap(K toKey) { return this; }
-	public SortedMap<K,V> tailMap(K fromKey) { return this; }
-	public SortedMap<K,V> subMap(K fromKey, K toKey) { return this; }
+	@Override public Comparator<? super K> comparator() { return null; }
+	@Override public K firstKey() { throw new NoSuchElementException(); }
+	@Override public K lastKey() { throw new NoSuchElementException(); }
+	@Override public SortedMap<K,V> headMap(K toKey) { return this; }
+	@Override public SortedMap<K,V> tailMap(K fromKey) { return this; }
+	@Override public SortedMap<K,V> subMap(K fromKey, K toKey) { return this; }
     }
     /** An empty multi-map. */
     public static final MultiMap EMPTY_MULTIMAP = EMPTY_MULTIMAP();
@@ -198,40 +208,49 @@ public abstract class Default  {
     /** Implementation of an immutable empty multimap. */
     private static class EmptyMultiMap<K,V> extends EmptyMap<K,V>
 	implements MultiMap<K,V> {
+	@Override
 	public MultiMapSet<K,V> entrySet() {
 	    return new EmptyMultiMapSet();
 	}
 	private class EmptyMultiMapSet extends EmptySortedSet<Map.Entry<K,V>>
 	    implements MultiMapSet<K,V> {
-	    public MultiMap<K,V> asMap() { return EmptyMultiMap.this; }
-	    public MultiMap<K,V> asMultiMap() { return EmptyMultiMap.this; }
+	    @Override public MultiMap<K,V> asMap() { return EmptyMultiMap.this; }
+	    @Override public MultiMap<K,V> asMultiMap() { return EmptyMultiMap.this; }
 	}
 	// this should always be a singleton.
 	//private Object readResolve() { return Default.EMPTY_MULTIMAP; }
 	// MultiMap interface.
+	@Override
 	public boolean remove(Object key, Object value) {
 	    return false;
 	}
+	@Override
 	public boolean add(K key, V value) {
 	    throw new UnsupportedOperationException();
 	}
+	@Override
 	public boolean addAll(K key, Collection<? extends V> values) {
 	    if (values.size()==0) return false;
 	    throw new UnsupportedOperationException();
 	}
+	@Override
 	public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	    if (mm.size()==0) return false;
 	    throw new UnsupportedOperationException();
 	}
+	@Override
 	public boolean retainAll(K key, Collection<?> values) {
 	    return false;
 	}
+	@Override
 	public boolean removeAll(K key, Collection<?> values) {
 	    return false;
 	}
+	@Override
 	public Set<V> getValues(K key) {
 	    return Collections.<V>emptySet();
 	}
+	@Override
 	public boolean contains(Object key, Object value) {
 	    return false;
 	}
@@ -241,25 +260,29 @@ public abstract class Default  {
      * helps w/ covariant subtyping. */
     public static <A> Collection<A> unmodifiableCollection(final Collection<? extends A> cc) {
 	return new AbstractCollection<A>() {
+	    @Override
 	    public boolean containsAll(Collection<?> c) {
 		return cc.containsAll(c);
 	    }
+	    @Override
 	    public boolean removeAll(Collection<?> c) {
 		return cc.removeAll(c);
 	    }
+	    @Override
 	    public boolean retainAll(Collection<?> c) {
 		return cc.retainAll(c);
 	    }
-	    public boolean contains(Object o) { return cc.contains(o); }
-	    public boolean isEmpty() { return cc.isEmpty(); }
+	    @Override public boolean contains(Object o) { return cc.contains(o); }
+	    @Override public boolean isEmpty() { return cc.isEmpty(); }
+	    @Override
 	    public Iterator<A> iterator() {
 		final Iterator<? extends A> it = cc.iterator();
 		return new UnmodifiableIterator<A>() {
-		    public boolean hasNext() { return it.hasNext(); }
-		    public A next() { return it.next(); }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override public A next() { return it.next(); }
 		};
 	    }
-	    public int size() { return cc.size(); }
+	    @Override public int size() { return cc.size(); }
 	};
     }
     /** A pair constructor method.  Pairs implement <code>hashCode()</code>
@@ -290,7 +313,8 @@ public abstract class Default  {
 	public A left() { return left; }
 	/** Return the right element of the pair (tail). */
 	public B right() { return right; }
-	public int size() { return 2; }
+	@Override public int size() { return 2; }
+	@Override
 	public Object get(int index) {
 	    switch(index) {
 	    case 0: return this.left;
@@ -298,6 +322,7 @@ public abstract class Default  {
 	    default: throw new IndexOutOfBoundsException();
 	    }
 	}
+	@Override
 	public Object set(int index, Object element) {
 	    Object prev;
 	    switch(index) {
@@ -321,8 +346,8 @@ public abstract class Default  {
      */
     public static <K,V> Map.Entry<K,V> entry(final K key, final V value) {
 	return new AbstractMapEntry<K,V>() {
-		public K getKey() { return key; }
-		public V getValue() { return value; }
+		@Override public K getKey() { return key; }
+		@Override public V getValue() { return value; }
 	    };
     }
 

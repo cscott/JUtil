@@ -15,18 +15,18 @@ import java.util.Map;
 public abstract class MapWrapper<K,V> implements Map<K,V> {
     public MapWrapper() { }
     protected abstract Map<K,V> wrapped();
-    public int size() { return wrapped().size(); }
-    public boolean isEmpty() { return wrapped().isEmpty(); }
-    public boolean containsKey(Object o) { return wrapped().containsKey(o); }
-    public boolean containsValue(Object o) { return wrapped().containsValue(o); }
-    public V get(Object o) { return wrapped().get(o); }
-    public V put(K k, V v) { return wrapped().put(k, v); }
-    public V remove(Object o) { return wrapped().remove(o); }
-    public void putAll(Map<? extends K,? extends V> m) { wrapped().putAll(m); }
-    public void clear() { wrapped().clear(); }
-    public java.util.Set<K> keySet() { return wrapped().keySet(); }
-    public java.util.Set<Map.Entry<K,V>> entrySet() { return wrapped().entrySet(); }
-    public java.util.Collection<V> values() { return wrapped().values(); }
+    @Override public int size() { return wrapped().size(); }
+    @Override public boolean isEmpty() { return wrapped().isEmpty(); }
+    @Override public boolean containsKey(Object o) { return wrapped().containsKey(o); }
+    @Override public boolean containsValue(Object o) { return wrapped().containsValue(o); }
+    @Override public V get(Object o) { return wrapped().get(o); }
+    @Override public V put(K k, V v) { return wrapped().put(k, v); }
+    @Override public V remove(Object o) { return wrapped().remove(o); }
+    @Override public void putAll(Map<? extends K,? extends V> m) { wrapped().putAll(m); }
+    @Override public void clear() { wrapped().clear(); }
+    @Override public java.util.Set<K> keySet() { return wrapped().keySet(); }
+    @Override public java.util.Set<Map.Entry<K,V>> entrySet() { return wrapped().entrySet(); }
+    @Override public java.util.Collection<V> values() { return wrapped().values(); }
     @Override
     public String toString() { return wrapped().toString(); }
     @Override

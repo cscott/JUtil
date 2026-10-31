@@ -44,10 +44,12 @@ public class GenericInvertibleMap<K,V>
     
     /** Returns an unmodifiable inverted view of <code>this</code>.
      */
+    @Override
     public MultiMap<V,K> invert() {
 	return UnmodifiableMultiMap.proxy(imap);
     }
 
+    @Override
     public V put(K key, V value) {
 	V old = super.put(key, value);
 	imap.remove(old, key);
@@ -55,6 +57,7 @@ public class GenericInvertibleMap<K,V>
 	return old;
     }
 
+    @Override
     public void putAll(Map<? extends K,? extends V> m) {
 	super.putAll(m);
 	Iterator<? extends Map.Entry<? extends K,? extends V>> entries = m.entrySet().iterator();
@@ -64,6 +67,7 @@ public class GenericInvertibleMap<K,V>
 	}
     }
     
+    @Override
     public V remove(Object key) {
 	V r = super.remove(key);
 	imap.remove(r, key);

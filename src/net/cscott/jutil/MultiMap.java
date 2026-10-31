@@ -79,14 +79,14 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	modify <code>this</code>, then <code>get</code> will operate
 	just as it would in any other {@link Map}.  
     */
-    public V get(Object key);
+    @Override public V get(Object key);
 
     /** Associates the specified value with the specified key in this
 	map, after removing all old values associated with the key.
 	Returns some value that was previously associated with the
 	specified key, or <code>null</code> if no values were
 	associated previously.  */
-    public V put(K key, V value);
+    @Override public V put(K key, V value);
 
     /** Copies the mappings from the specified map to this
 	map, after removing all old values associated with the key.  Note
@@ -98,7 +98,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	another {@link MultiMap}, use
 	{@link #addAll(MultiMap)}.
     */
-    public void putAll(Map<? extends K,? extends V> t);
+    @Override public void putAll(Map<? extends K,? extends V> t);
 
     /** Removes mappings from key to all associated values from this map.
      *  This is consistent with the {@link Map} definition of
@@ -111,7 +111,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
      *  associated <code>null</code> with the given key (in addition
      *  to possibly other values).
      */
-    public V remove(Object key);
+    @Override public V remove(Object key);
 
     /** Removes a mapping from key to value from this map if present.
 
@@ -122,7 +122,7 @@ public interface MultiMap<K,V> extends Map<K,V> {
 	Returns true if <code>this</code> was modified as a result of
 	this operation, else returns false.
     */
-    boolean remove(Object key, Object value);
+    @Override boolean remove(Object key, Object value);
     
     /** Ensures that <code>this</code> contains an association from
 	<code>key</code> to <code>value</code>.
@@ -185,11 +185,11 @@ public interface MultiMap<K,V> extends Map<K,V> {
 
     /** Returns the number of key-value mappings in this map (keys which
      *  map to multiple values count multiple times). */
-    public int size();
+    @Override public int size();
 
     /** Returns a {@link Set} view that allows you to recapture
      *  the {@link MultiMap} view. */
-    public MultiMapSet<K,V> entrySet();
+    @Override public MultiMapSet<K,V> entrySet();
 } 
 
 

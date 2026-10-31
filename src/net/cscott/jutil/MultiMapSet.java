@@ -12,6 +12,6 @@ package net.cscott.jutil;
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
  */
 public interface MultiMapSet<K,V> extends MapSet<K,V> {
-    public MultiMap<K,V> asMap();
+    @Override public MultiMap<K,V> asMap();
     public MultiMap<K,V> asMultiMap();
 }

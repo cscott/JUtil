@@ -33,14 +33,16 @@ public class LinearMap<K,V> extends AbstractMap<K,V> {
         set = new LinearSet<Map.Entry<K,V>>(capacity);
     }
 
+    @Override
     public Set<Map.Entry<K,V>> entrySet() {
 	// support remove operations only; otherwise allows multimaps.
 	return new AbstractSet<Map.Entry<K,V>>() {
-	    public int size() { return set.size(); }
-	    public Iterator<Map.Entry<K,V>> iterator() {return set.iterator();}
+	    @Override public int size() { return set.size(); }
+	    @Override public Iterator<Map.Entry<K,V>> iterator() {return set.iterator();}
 	};
     }
 
+    @Override
     public V put(K key, V value) {
 	Iterator<Map.Entry<K,V>> entries = set.iterator();
 	V oldValue = null;
@@ -62,6 +64,7 @@ public class LinearMap<K,V> extends AbstractMap<K,V> {
 		 k1.equals(k2)));
     }
 
+    @Override
     public V remove(Object key) {
 	Iterator<Map.Entry<K,V>> entries = set.iterator();
 	V oldValue = null;

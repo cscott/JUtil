@@ -40,10 +40,12 @@ public class FilterIterator<A,B> extends UnmodifiableIterator<B> {
 	done = true; // found end of enumeration.
     }
 
+    @Override
     public B next() {
 	if (done) throw new NoSuchElementException();
 	A o = next; advance(); return f.map(o);
     }
+    @Override
     public boolean hasNext() {
 	return !done;
     }

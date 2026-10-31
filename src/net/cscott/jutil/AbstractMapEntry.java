@@ -16,12 +16,12 @@ import java.util.Map;
  */
 public abstract class AbstractMapEntry<K,V> implements Map.Entry<K,V> {
     /** Returns the key corresponding to this entry. */
-    public abstract K getKey();
+    @Override public abstract K getKey();
     /** Returns the value corresponding to this entry.  If the mapping
      *  has been removed from the backing map (by the iterator's
      *  {@code remove()} operation), the results of this call are
      *  undefined. */
-    public abstract V getValue();
+    @Override public abstract V getValue();
     /** Replaces the value corresponding to this entry with the specified
      *  value (optional operation).  (Writes through to the map.)  The
      *  behavior of this call is undefined if the mapping has already been
@@ -29,10 +29,12 @@ public abstract class AbstractMapEntry<K,V> implements Map.Entry<K,V> {
      *  operation).
      *  @return old value corresponding to entry.
      */
+    @Override
     public V setValue(V value) {
 	throw new UnsupportedOperationException();
     }
     /** Returns a human-readable representation of this map entry. */
+    @Override
     public String toString() {
 	return 
 	    ((getKey()  ==null)?"null":getKey()  .toString()) + "=" +
@@ -41,6 +43,7 @@ public abstract class AbstractMapEntry<K,V> implements Map.Entry<K,V> {
     /** Compares the specified object with this entry for equality.
      *  Returns <code>true</code> if the given object is also a map
      *  entry and the two entries represent the same mapping. */
+    @Override
     public boolean equals(Object o) {
 	Map.Entry e1 = this;
 	Map.Entry e2;
@@ -55,6 +58,7 @@ public abstract class AbstractMapEntry<K,V> implements Map.Entry<K,V> {
 	     e2.getValue()==null : e1.getValue().equals(e2.getValue()));
     }
     /** Returns the hash code value for this map entry. */
+    @Override
     public int hashCode() {
 	return
 	    (getKey()==null   ? 0 : getKey().hashCode()) ^

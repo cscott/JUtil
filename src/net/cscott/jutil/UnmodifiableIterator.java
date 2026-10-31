@@ -28,14 +28,15 @@ public abstract class UnmodifiableIterator<E> implements Iterator<E> {
     /** Returns <code>true</code> if the iteration has more elements.
      * @return <code>true</code> if the iterator has more elements.
      */
-    public abstract boolean hasNext();
+    @Override public abstract boolean hasNext();
     /** Returns the next element in the iteration.
      * @exception java.util.NoSuchElementException iteration has no more elements.
      */
-    public abstract E next();
+    @Override public abstract E next();
     /** Always throws an {@link UnsupportedOperationException}.
      * @exception UnsupportedOperationException always.
      */
+    @Override
     public final void remove() {
 	throw new UnsupportedOperationException("Unmodifiable Iterator");
     }

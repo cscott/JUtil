@@ -84,13 +84,15 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	}
 	this.bitStringSize = i+1;
 	this.indexer = new Indexer<V>() {
+	    @Override
 	    public int getID(V o) {
 		return obj2int.get(o);
 	    }
+	    @Override
 	    public V getByID(int id) {
 		return int2obj.get(id);
 	    }
-	    public boolean implementsReverseMapping() { return true; }
+	    @Override public boolean implementsReverseMapping() { return true; }
 	};
 
     }
@@ -103,6 +105,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	<BR> <B>effects:</B> Constructs a lightweight
 	     {@link Set} with the elements from <code>c</code>.
     */ 
+    @Override
     public BitStringSet<V> makeSet(Collection<? extends V> c) {
 	BitStringSet<V> bss = new BitStringSet<V>(bitStringSize, this);
 	bss.addAll(c);
@@ -146,6 +149,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    this.fact = s.fact;
 	}
 
+	@Override
 	public boolean add(V o) {
 	    if (!fact.universe.contains(o)) 
 		throw new IllegalArgumentException
@@ -164,6 +168,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
+	@Override
 	public boolean addAll(Collection<? extends V> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
@@ -173,12 +178,14 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    } else return super.addAll(c);
 	}
 	
+	@Override
 	public void clear() {
 	    this.bs.clearAll();
 	    this.hashCode=0;
 	    this.hashCodeValid=true;
 	}
 	
+	@Override
 	public boolean contains(Object o) {
 	    if (fact.universe.contains(o)) {
 		int i = fact.indexer.getID((V)o);
@@ -190,6 +197,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
+	@Override
 	public boolean containsAll(Collection<?> c) {
 	    // check that ('c' - this) is nullset
 	    // (which is the same as C /\ NOT(this) )
@@ -205,10 +213,12 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    } else return super.containsAll(c);
 	}
 	
+	@Override
 	public BitStringSet<V> clone() {
 	    return new BitStringSet<V>(this);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 	    if (o==null) return false;
 	    if (o==this) return true;
@@ -220,6 +230,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    return super.equals(o);
 	}
 	// follow spec for Set.hashCode()
+	@Override
 	public int hashCode() {
 	    if (!this.hashCodeValid) {
 		// recompute hashcode from scratch.
@@ -229,22 +240,27 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    return this.hashCode; // valid cached copy.
 	}
 	
+	@Override
 	public boolean isEmpty() {
 	    return this.bs.isZero();
 	}
 	
+	@Override
 	public Iterator<V> iterator() {
 	    return fact.indexer.implementsReverseMapping() ?
 	      (Iterator<V>) new Iterator<V>() { // fast bit-set iterator
 		int lastindex=-1;
+		@Override
 		public boolean hasNext() {
 		    return BitStringSet.this.bs.firstSet(lastindex)!=-1;
 		}
+		@Override
 		public V next() {
 		    lastindex = BitStringSet.this.bs.firstSet(lastindex);
 		    if (lastindex<0) throw new NoSuchElementException();
 		    return fact.indexer.getByID(lastindex);
 		}
+		@Override
 		public void remove() {
 		    if (lastindex<0 || !BitStringSet.this.bs.get(lastindex))
 			throw new IllegalStateException();
@@ -259,18 +275,22 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		    Iterator<V> internIter = new FilterIterator<V,V>
 			(fact.universe.iterator(), 
 			 new FilterIterator.Filter<V,V>() {
+				 @Override
 				 public boolean isElement(V o) {
 				     return BitStringSet.this.bs.get
 					 (fact.indexer.getID(o));
 				 }});
 		    V last = null;
+		    @Override
 		    public V next() {
 			last = internIter.next();
 			return last;
 		    }
+		    @Override
 		    public boolean hasNext() {
 			return internIter.hasNext();
 		    }
+		    @Override
 		    public void remove() {
 			BitStringSet.this.bs.clear(fact.indexer.getID(last));
 			if (BitStringSet.this.hashCodeValid)
@@ -279,6 +299,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 		    }};
 	}
 	
+	@Override
 	public boolean remove(Object o) {
 	    if (!fact.universe.contains(o)) {
 		// o is not member of universe, therefore cannot be in set.
@@ -296,6 +317,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
+	@Override
 	public boolean removeAll(Collection<?> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
@@ -318,6 +340,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
+	@Override
 	public boolean retainAll(Collection<?> c) {
 	    if (c instanceof BitStringSet &&
 		((BitStringSet)c).fact == this.fact) {
@@ -329,6 +352,7 @@ public class BitSetFactory<V> extends SetFactory<V> {
 	    }
 	}
 
+	@Override
 	public int size() {
 	    return this.bs.numberOfOnes();
 	}

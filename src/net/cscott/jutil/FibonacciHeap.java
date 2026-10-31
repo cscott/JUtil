@@ -53,11 +53,13 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
     }
 
     /** Insert an entry into the heap. */
+    @Override
     public Map.Entry<K,V> insert(K key, V value) {
 	Entry<K,V> e = new Entry<K,V>(key, value);
 	insert(e);
 	return e;
     }
+    @Override
     protected void insert(Map.Entry<K,V> me) {
 	Node<K,V> x = new Node<K,V>((Entry<K,V>)me);
 	// THESE ARE DONE IN THE CONSTRUCTOR.
@@ -69,6 +71,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	n++; // increase size;
 	// done.
     }
+    @Override
     public Map.Entry<K,V> minimum() {
 	if (this.min==null) throw new java.util.NoSuchElementException();
 	return this.min.entry;
@@ -83,6 +86,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	h.clear();
 	// done.
     }
+    @Override
     public void union(Heap<? extends K,? extends V> h) {
 	if (h instanceof FibonacciHeap &&
 	    entryComparator().equals(((FibonacciHeap)h).entryComparator()))
@@ -91,6 +95,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	    union((FibonacciHeap<? extends K,? extends V>)h);
 	else super.union(h);
     }
+    @Override
     public Map.Entry<K,V> extractMinimum() {
 	if (this.min==null) throw new java.util.NoSuchElementException();
 	Node<K,V> z = this.min;
@@ -163,6 +168,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	y.mark = false;
     }
 
+    @Override
     public void decreaseKey(Map.Entry<K,V> me, K newkey) {
 	decreaseKey((Entry<K,V>)me, newkey, false);
     }
@@ -198,22 +204,26 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	    _cascadingCut(z);
 	}
     }
+    @Override
     public void delete(Map.Entry<K,V> me) {
 	decreaseKey((Entry<K,V>)me, null, true); // effectively key is -infinity
 	extractMinimum();
 	// now that wasn't too hard, was it?
     }
 
-    public int size() { return n; }
-    public void clear() { min=null; n=0; }
+    @Override public int size() { return n; }
+    @Override public void clear() { min=null; n=0; }
 
+    @Override
     public Collection<Map.Entry<K,V>> entries() {
 	return new AbstractCollection<Map.Entry<K,V>>() {
-	    public int size() { return n; }
+	    @Override public int size() { return n; }
+	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
 		return new UnmodifiableIterator<Map.Entry<K,V>>() {
 		    Node<K,V> next = min;
-		    public boolean hasNext() { return next!=null; }
+		    @Override public boolean hasNext() { return next!=null; }
+		    @Override
 		    public Map.Entry<K,V> next() {
 			if (next==null)
 			    throw new java.util.NoSuchElementException();
@@ -244,6 +254,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	K _setKey(K key) { return super.setKey(key); }
     }
     // to implement updateKey, etc...
+    @Override
     protected final K setKey(Map.Entry<K,V> me, K newkey) {
 	Entry<K,V> e = (Entry<K,V>) me;
 	return e._setKey(newkey);
@@ -279,6 +290,7 @@ public class FibonacciHeap<K,V> extends AbstractHeap<K,V> {
 	    degree--;
 	    if (degree==0) this.child=null;
 	}
+	@Override
 	public String toString() {
 	    return "<"+entry+", d:"+degree+", parent:"+_2s(parent)+
 		", child:"+_2s(child)+", left:"+_2s(left)+

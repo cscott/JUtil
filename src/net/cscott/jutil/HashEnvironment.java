@@ -36,16 +36,19 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     // -- MAP INTERFACE
     /** Returns <code>true</code> if this map contains a mapping for the
      *  specified key. */
+    @Override
     public boolean containsKey(Object key) {
 	LList<V> l = back.get(key);
 	return (l==null) ? false : l.hasValue();
     }
     /** Returns the value to which this map maps the specified key. */
+    @Override
     public V get(Object key) {
 	LList<V> l = back.get(key);
 	return (l==null) ? null : l.getValue();
     }
     /** Associates the specified value with the specified key in this map. */
+    @Override
     public V put(K key, V value) {
 	LList<V> l = back.get(key);
 	back.put(key, new Valued<V>(value, l));
@@ -54,6 +57,7 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
 	return l.getValue();
     }
     /** Removes the mapping for this key from this map if present. */
+    @Override
     public V remove(Object key) {
 	LList<V> l = back.get(key);
 	if (l==null || !l.hasValue()) return null;
@@ -74,17 +78,20 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
 	if (l.next!=null && l.next.hasValue()) size++;
     }
     /** Returns the number of key-value mappings in this map. */
-    public int size() { return size; }
+    @Override public int size() { return size; }
     /** Clears all mappings. */
+    @Override
     public void clear() {
 	for (K k: keySet())
 	    remove(k);
     }
     
     // --- ENVIRONMENT INTERFACE
+    @Override
     public Environment.Mark getMark() {
 	return new Mark(scope.size());
     }
+    @Override
     public void undoToMark(Environment.Mark m) {
 	for (int i = ((Mark)m).i; scope.size() > i; ) {
 	    pop(scope.get(scope.size()-1));
@@ -96,9 +103,11 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     // --- EVIL EVIL SET VIEW
     /** The {@link Set} returned by this method is really a
      *  {@link MapSet}. */
+    @Override
     public MapSet<K,V> entrySet() {
 	return new AbstractMapSet<K,V>() {
-	    public int size() { return HashEnvironment.this.size; }
+	    @Override public int size() { return HashEnvironment.this.size; }
+	    @Override
 	    public Iterator<Map.Entry<K,V>> iterator() {
 		final Iterator<Map.Entry<K,LList<V>>> it =
 		    HashEnvironment.this.back.entrySet().iterator();
@@ -111,22 +120,25 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
 			}
 			return null;
 		    }
-		    public boolean hasNext() { return next!=null; }
+		    @Override public boolean hasNext() { return next!=null; }
+		    @Override
 		    public Map.Entry<K,V> next() {
 			if (next==null) throw new NoSuchElementException();
 			final Map.Entry<K,LList<V>> e = last = next;
 			next = advance();
 			return new AbstractMapEntry<K,V>() {
-			    public K getKey() { return e.getKey(); }
-			    public V getValue() { return e.getValue().getValue(); }
+			    @Override public K getKey() { return e.getKey(); }
+			    @Override public V getValue() { return e.getValue().getValue(); }
 			    // put() replaces the value of an existing key in
 			    // the backing map, which doesn't disturb the
 			    // iteration.
+			    @Override
 			    public V setValue(V value) {
 				return HashEnvironment.this.put(e.getKey(), value);
 			    }
 			};
 		    }
+		    @Override
 		    public void remove() {
 			if (last==null) throw new IllegalStateException();
 			// as above, this does not disturb the iteration.
@@ -135,7 +147,7 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
 		    }
 		};
 	    }
-	    public HashEnvironment<K,V> asMap(){ return HashEnvironment.this; }
+	    @Override public HashEnvironment<K,V> asMap(){ return HashEnvironment.this; }
 	};
     }
     // needed to make the anonymous class declaration above work.
@@ -154,14 +166,14 @@ public class HashEnvironment<K,V> extends AbstractMap<K,V>
     }
     private static class NoValue<T> extends LList<T> {
 	NoValue(LList<T> next) { super(next); }
-	boolean hasValue() { return false; }
-	T getValue() { return null; }
+	@Override boolean hasValue() { return false; }
+	@Override T getValue() { return null; }
     }
     private static class Valued<T> extends LList<T> {
 	final T value;
 	Valued(T value, LList<T> next) { super(next); this.value=value; }
-	boolean hasValue() { return true; }
-	T getValue() { return value; }
+	@Override boolean hasValue() { return true; }
+	@Override T getValue() { return value; }
     }
 
 }

@@ -17,9 +17,11 @@ public abstract class MultiMapFactory<K,V> extends MapFactory<K,V> {
     public MultiMapFactory() {
     }
     // MapFactory interface
+    @Override
     public final MultiMap<K,V> makeMap() {
 	return makeMultiMap();
     }
+    @Override
     public final MultiMap<K,V> makeMap(Map<? extends K,? extends V> map) {
 	MultiMap<K,V> mm = makeMap();
 	mm.putAll(map);

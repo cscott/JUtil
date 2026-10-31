@@ -81,14 +81,17 @@ public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 	this.lf = lf;
     }
 
+    @Override
     public Iterator<E> iterator() {
 	return list.iterator();
     }
 
+    @Override
     public int size() {
 	return list.size();
     }
 
+    @Override
     public boolean add(E o) {
 	if (list.contains(o)) {
 	    return false;
@@ -98,6 +101,7 @@ public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 	}
     }
 
+    @Override
     public boolean addAll(Collection<? extends E> c) {
 	HashSet<E> s = new HashSet<E>(this.size() + c.size());
 	s.addAll(this);
@@ -106,6 +110,7 @@ public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 	return r;
     }
 
+    @Override
     public boolean remove(Object o) {
 	int index = list.indexOf(o);
 	if (index == -1) {
@@ -116,6 +121,7 @@ public class LinearSet<E> extends AbstractSet<E> implements Cloneable,
 	}
     }
 
+    @Override
     public LinearSet<E> clone() {
 	return new LinearSet<E>(this);
     }

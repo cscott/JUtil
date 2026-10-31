@@ -49,6 +49,7 @@ public class BinaryTree {
 	// Note that methods need not be in node class itself; can be
 	// kept in BinaryTree.
 	
+	@Override
 	public String toString() {
 	    return "node: "+key
 		// +" lft:"+left.key

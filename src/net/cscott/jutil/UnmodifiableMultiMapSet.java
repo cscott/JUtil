@@ -11,6 +11,6 @@ implements MultiMapSet<K,V> {
     /** Implementations should return the wrapped {@link MultiMapSet} here. */ 
     @Override
     protected abstract MultiMapSet<K,V> wrapped();
-    public UnmodifiableMultiMap<K,V> asMap() { return asMultiMap(); }
-    public abstract UnmodifiableMultiMap<K,V> asMultiMap();
+    @Override public UnmodifiableMultiMap<K,V> asMap() { return asMultiMap(); }
+    @Override public abstract UnmodifiableMultiMap<K,V> asMultiMap();
 }

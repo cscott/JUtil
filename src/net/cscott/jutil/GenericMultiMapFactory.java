@@ -26,6 +26,7 @@ public class GenericMultiMapFactory<K,V> extends MultiMapFactory<K,V> {
     }
 
     /** Create a new {@link GenericMultiMap}. */
+    @Override
     public GenericMultiMap<K,V> makeMultiMap() {
 	return new GenericMultiMap<K,V>(mf, cf);
     }

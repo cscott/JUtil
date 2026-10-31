@@ -60,12 +60,14 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 
     /** Returns an unmodifiable inverted view of <code>this</code>.
      */
-    public InvertibleMultiMap<V,K> invert() { return inverse; }
+    @Override public InvertibleMultiMap<V,K> invert() { return inverse; }
 
+    @Override
     public boolean add(K key, V value) {
 	imap.add(value, key);
 	return map.add(key, value);
     }
+    @Override
     public boolean addAll(K key, Collection<? extends V> values) {
 	boolean changed = false;
 	for (V v: values)
@@ -73,6 +75,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 		changed = true;
 	return changed;
     }
+    @Override
     public boolean addAll(MultiMap<? extends K,? extends V> mm) {
 	boolean changed = false;
 	for (Map.Entry<? extends K,? extends V> me : mm.entrySet()) {
@@ -81,31 +84,38 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	}
 	return changed;
     }
-    public void clear() { map.clear(); imap.clear(); }
+    @Override public void clear() { map.clear(); imap.clear(); }
+    @Override
     public boolean contains(Object a, Object b) {
 	return map.contains(a, b);
     }
+    @Override
     public boolean containsKey(Object key) {
 	return map.containsKey(key);
     }
+    @Override
     public boolean containsValue(Object value) {
 	return imap.containsKey(value);
     }
     /** The {@link Set} returned by this method is actually an
      *  instance of {@link MultiMapSet}. */
+    @Override
     public MultiMapSet<K,V> entrySet() {
 	// value field of entry set contains a single value.
 	return new AbstractMultiMapSet<K,V>() {
+		@Override
 		public Iterator<Map.Entry<K,V>> iterator() {
 		    final Iterator<Map.Entry<K,V>> it =
 			map.entrySet().iterator();
 		    return new Iterator<Map.Entry<K,V>>() {
 			    Map.Entry<K,V> last;
-			    public boolean hasNext() { return it.hasNext(); }
+			    @Override public boolean hasNext() { return it.hasNext(); }
+			    @Override
 			    public Map.Entry<K,V> next() {
 				last = it.next();
 				return last;
 			    }
+			    @Override
 			    public void remove() {
 				// do it here.
 				it.remove();
@@ -114,23 +124,27 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 			    }
 			};
 		}
-		public void clear() { GenericInvertibleMultiMap.this.clear(); }
+		@Override public void clear() { GenericInvertibleMultiMap.this.clear(); }
+		@Override
 		public boolean contains(Object o) {
 		    if (!(o instanceof Map.Entry)) return false;
 		    Map.Entry<K,V> me = (Map.Entry) o;
 		    return GenericInvertibleMultiMap.this.contains
 			(me.getKey(), me.getValue());
 		}
+		@Override
 		public int size() {
 		    return GenericInvertibleMultiMap.this.size();
 		}
+		@Override
 		public boolean remove(Object o) {
 		    if (!(o instanceof Map.Entry)) return false;
 		    Map.Entry<K,V> me = (Map.Entry) o;
 		    return GenericInvertibleMultiMap.this.remove
 			(me.getKey(), me.getValue());
 		}
-		public MultiMap<K,V> asMap() { return asMultiMap(); }
+		@Override public MultiMap<K,V> asMap() { return asMultiMap(); }
+		@Override
 		public MultiMap<K,V> asMultiMap() {
 		    return GenericInvertibleMultiMap.this;
 		}
@@ -141,53 +155,66 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	extends AbstractSet<Map.Entry<K,V>>
 	implements MultiMapSet<K,V> { }
 
+    @Override
     public boolean equals(Object o) {
 	return map.equals(o);
     }
+    @Override
     public V get(Object key) {
 	return map.get(key);
     }
+    @Override
     public Collection<V> getValues(final K key) {
 	return new AbstractCollection<V>() {
+	    @Override
 	    public Iterator<V> iterator() {
 		final Iterator<V> it=map.getValues(key).iterator();
 		return new Iterator<V>() {
 		    V last;
-		    public boolean hasNext() { return it.hasNext(); }
-		    public V next() { last=it.next(); return last; }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override public V next() { last=it.next(); return last; }
+		    @Override
 		    public void remove() {
 			imap.remove(last, key);
 			it.remove();
 		    }
 		};
 	    }
+	    @Override
 	    public boolean add(V o) {
 		return GenericInvertibleMultiMap.this.add(key, o);
 	    }
-	    public void clear() { map.remove(key); }
+	    @Override public void clear() { map.remove(key); }
+	    @Override
 	    public boolean contains(Object o) {
 		return GenericInvertibleMultiMap.this.contains(key, o);
 	    }
+	    @Override
 	    public boolean remove(Object o) {
 		return GenericInvertibleMultiMap.this.remove(key, o);
 	    }
-	    public int size() { return map.getValues(key).size(); }
+	    @Override public int size() { return map.getValues(key).size(); }
 	};
     }
+    @Override
     public int hashCode() {
 	return map.hashCode();
     }
+    @Override
     public boolean isEmpty() {
 	return map.isEmpty();
     }
+    @Override
     public Set<K> keySet() {
 	return new AbstractSet<K>() {
+	    @Override
 	    public Iterator<K> iterator() {
 		final Iterator<K> it = map.keySet().iterator();
 		return new Iterator<K>() {
 		    K last;
-		    public boolean hasNext() { return it.hasNext(); }
-		    public K next() { last=it.next(); return last; }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override public K next() { last=it.next(); return last; }
+		    @Override
 		    public void remove() {
 			// mirror op in imap.
 			for (V v: map.getValues(last))
@@ -197,9 +224,10 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 		    }
 		};
 	    }
-	    public void clear() { GenericInvertibleMultiMap.this.clear(); }
-	    public boolean contains(Object o) { return containsKey(o); }
-	    public int size() { return GenericInvertibleMultiMap.this.size(); }
+	    @Override public void clear() { GenericInvertibleMultiMap.this.clear(); }
+	    @Override public boolean contains(Object o) { return containsKey(o); }
+	    @Override public int size() { return GenericInvertibleMultiMap.this.size(); }
+	    @Override
 	    public boolean remove(Object o) {
 		boolean changed = containsKey(o);
 		GenericInvertibleMultiMap.this.remove(o);
@@ -207,16 +235,19 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	    }
 	};
     }
+    @Override
     public V put(K key, V value) {
 	V old = this.remove(key);
 	this.add(key, value);
 	return old;
     }
+    @Override
     public void putAll(Map<? extends K,? extends V> t) {
 	for (Map.Entry<? extends K, ? extends V> me : t.entrySet()) {
 	    this.put(me.getKey(), me.getValue());
 	}
     }
+    @Override
     public V remove(Object key) {
 	V old = null;
 	for (Iterator<V> it=this.getValues((K)key).iterator(); it.hasNext(); ){
@@ -225,10 +256,12 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	}
 	return old;
     }
+    @Override
     public boolean remove(Object key, Object value) {
 	imap.remove(value, key);
 	return map.remove(key, value);
     }
+    @Override
     public boolean removeAll(K key, Collection<?> values) {
 	boolean changed = false;
 	for (Object v : values)
@@ -236,6 +269,7 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 		changed = true;
 	return changed;
     }
+    @Override
     public boolean retainAll(K key, Collection<?> values) {
 	boolean changed = false;
 	for (Iterator<V> it=this.getValues(key).iterator(); it.hasNext(); )
@@ -245,8 +279,8 @@ public class GenericInvertibleMultiMap<K,V> implements InvertibleMultiMap<K,V> {
 	    }
 	return changed;
     }
-    public int size() { return map.size(); }
-    public String toString() { return map.toString(); }
+    @Override public int size() { return map.size(); }
+    @Override public String toString() { return map.toString(); }
     // this is a little unexpected: only one copy of each value.
-    public Collection<V> values() { return inverse.keySet(); }
+    @Override public Collection<V> values() { return inverse.keySet(); }
 }

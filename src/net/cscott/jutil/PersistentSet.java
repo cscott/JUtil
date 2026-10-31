@@ -93,14 +93,16 @@ public class PersistentSet<T>  implements Iterable<T> {
     }
 
     /** Cloning takes constant time, regardless of the size of the set. */
+    @Override
     public PersistentSet<T> clone() {
 	return new PersistentSet<T>(root, c, allocator);
     }
    
     /** Human-readable representation of the set. */
-    public String toString() { return asSet().toString(); }
+    @Override public String toString() { return asSet().toString(); }
     
     /** Unmodifiable iterator. */
+    @Override
     public Iterator<T> iterator() {
         final Iterator<Node<T>> it = Node.iterator(root);
         return new UnmodifiableIterator<T>() {
@@ -116,26 +118,32 @@ public class PersistentSet<T>  implements Iterable<T> {
     public Set<T> asSet() {
 	return new AbstractSet<T>() {
 	    // constant-time clone.
-	    public Set<T> clone() { return PersistentSet.this.asSet(); }
+	    @Override public Set<T> clone() { return PersistentSet.this.asSet(); }
+	    @Override
 	    public boolean contains(Object o) {
 		// oops, not safe if we pass a non-T o in here!
 		return PersistentSet.this.contains((T)o);
 	    }
+	    @Override
 	    public boolean isEmpty() {
 		return PersistentSet.this.isEmpty();
 	    }
+	    @Override
 	    public int size() {
 		return PersistentSet.this.size();
 	    }
+	    @Override
 	    public Iterator<T> iterator() {
                 final Iterator<Node<T>> it = Node.iterator(root);
 		return new Iterator<T>() {
 		    Node<T> last=null;
-		    public boolean hasNext() { return it.hasNext(); }
+		    @Override public boolean hasNext() { return it.hasNext(); }
+		    @Override
 		    public T next() {
 			last = it.next();
 			return last.key;
 		    }
+		    @Override
 		    public void remove() {
 			if (last==null)
 			    throw new IllegalStateException();
@@ -167,9 +175,10 @@ public class PersistentSet<T>  implements Iterable<T> {
 		((left==null)?0:left.size) + // size of left tree
 		((right==null)?0:right.size); // size of right tree
 	}
-	public T getValue() { return key; }
+	@Override public T getValue() { return key; }
 	static class Allocator<T>
 	    extends PersistentTreeNode.Allocator<Node<T>,T,T> {
+	    @Override
 	    Node<T> newNode(T key, T value, Node<T> left, Node<T> right) {
 		// ignore value.
 		return new Node<T>(key, left, right);

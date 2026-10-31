@@ -30,5 +30,5 @@ public interface InvertibleMultiMap<K,V>
 	if and only if <em>a</em> in <code>this</code> maps to
 	a collection containing <em>b</em>.
      */
-    public InvertibleMultiMap<V,K> invert();
+    @Override public InvertibleMultiMap<V,K> invert();
 }

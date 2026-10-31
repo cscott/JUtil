@@ -31,6 +31,7 @@ public class IntervalTree extends RedBlackTree {
     */
     public static class Interval {
 	static Comparator COMPARE = new Comparator() {
+	    @Override
 	    public int compare(Object a, Object b) {
 		return ((Interval)a).low - ((Interval)b).low; }};
 
@@ -60,14 +61,17 @@ public class IntervalTree extends RedBlackTree {
 	}
     }
     /** requires: o is-a {@link Interval}. */
-    protected Node makeNode(Object o) { return new IntervalNode(o); }
+    @Override protected Node makeNode(Object o) { return new IntervalNode(o); }
 
+    @Override
     protected Node setLeft(Node p, Node l) { 
 	Node n = super.setLeft(p,l); fixMax(p); return n;
     }
+    @Override
     protected Node setRight(Node p, Node r) { 
 	Node n = super.setRight(p,r); fixMax(p); return n;
     }
+    @Override
     protected Node setParent(Node c, Node p) { 
 	Node n = super.setParent(c,p); fixMax(p); return n;
     }
@@ -91,10 +95,12 @@ public class IntervalTree extends RedBlackTree {
     // setRight() and setParent() for every link, and rotations fix
     // the max of a node before that of its new parent, so fix the
     // max all the way up from the change.
+    @Override
     protected void insertNode(Node z) {
 	super.insertNode(z);
 	fixMaxToRoot(z);
     }
+    @Override
     protected void deleteNode(Node z) {
 	super.deleteNode(z);
 	// z is no longer in the tree, but still points to its last parent.

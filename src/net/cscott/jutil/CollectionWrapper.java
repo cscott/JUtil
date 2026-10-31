@@ -23,54 +23,67 @@ public abstract class CollectionWrapper<E> implements Collection<E> {
     /** Creates a {@link CollectionWrapper}. */
     protected CollectionWrapper() { }
     
+    @Override
     public boolean add(E o) {
 	return wrapped().add(o);
     }
 
+    @Override
     public boolean addAll(Collection<? extends E> c) {
 	return wrapped().addAll(c);
     }
 
+    @Override
     public void clear() {
 	wrapped().clear();
     }
     
+    @Override
     public boolean contains(Object o) {
 	return wrapped().contains(o);
     }
     
+    @Override
     public boolean containsAll(Collection<?> c) {
 	return wrapped().containsAll(c);
     }
 
+    @Override
     public boolean isEmpty() {
 	return wrapped().isEmpty();
     }
 
+    @Override
     public Iterator<E> iterator() {
 	return wrapped().iterator();
     }
 
+    @Override
     public boolean remove(Object o) {
 	return wrapped().remove(o);
     }
     
+    @Override
     public boolean removeAll(Collection<?> c) {
 	return wrapped().removeAll(c);
     }
 
+    @Override
     public boolean retainAll(Collection<?> c) {
 	return wrapped().retainAll(c);
     }
 
+    @Override
     public int size() {
 	return wrapped().size();
     }
 
+    @Override
     public Object[] toArray() {
 	return wrapped().toArray();
     }
     
+    @Override
     public <T> T[] toArray(T[] a) {
 	return wrapped().toArray(a);
     }

@@ -34,6 +34,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
      *  The <code>remove()</code> method of the returned {@link Set}
      *  is very slow.
      */
+    @Override
     public Set<V> makeSet(Collection<? extends V> c) {
 	return new AggregateSet(c);
     }
@@ -46,6 +47,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	AggregateSet(Collection<? extends V> c) {
 	    addAll(c);
 	}
+	@Override
 	public boolean add(V o) {
 	    EntryList<V> entry = new EntryList<V>(IDENTITY, o);
 	    if (m.containsKey(entry)) return false;
@@ -54,17 +56,21 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	    size++;
 	    return true;
 	}
+	@Override
 	public boolean contains(Object o) {
 	    return m.containsKey(new EntryList(IDENTITY, o));
 	}
+	@Override
 	public boolean isEmpty() {
 	    assert (size==0)==(IDENTITY.next==null);
 	    return size==0;
 	}
+	@Override
 	public Iterator<V> iterator() {
 	    return new Iterator<V>() {
 		Header<V> entry = IDENTITY;
-		public boolean hasNext() { return entry.next!=null; }
+		@Override public boolean hasNext() { return entry.next!=null; }
+		@Override
 		public V next() {
 		    if (!hasNext()) throw new NoSuchElementException();
 		    removeValid = true;
@@ -72,6 +78,7 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 		    entry = nentry;
 		    return nentry.value;
 		}
+		@Override
 		public void remove() {
 		    if (!removeValid) throw new IllegalStateException();
 		    EntryList<V> oentry = (EntryList<V>) entry;
@@ -88,13 +95,14 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	    e.remove();
 	    size--;
 	}
+	@Override
 	public boolean remove(Object o) {
 	    EntryList<V> entry = m.get(new EntryList(IDENTITY, o));
 	    if (entry==null) return false;
 	    remove(entry);
 	    return true;
 	}
-	public int size() { return size; }
+	@Override public int size() { return size; }
 	// garbage-collect entries in backing store, too!
 	protected void finalize() {
 	    clear();
@@ -130,14 +138,16 @@ public class AggregateSetFactory<V> extends SetFactory<V>
 	    if (this.next!=null) this.next.prev = this.prev;
 	    this.prev = this.next = null; // safety.
 	}
-	ID<E> identity() { return id; }
+	@Override ID<E> identity() { return id; }
 
+	@Override
 	public boolean equals(Object o) {
 	    if (!(o instanceof EntryList)) return false;
 	    EntryList e = (EntryList) o;
 	    return this.id==e.id &&
 		(this.value==null? e.value==null : this.value.equals(e.value));
 	}
+	@Override
 	public int hashCode() {
 	    return this.id.hashCode() +
 		((this.value==null) ? 0 : this.value.hashCode());
@@ -145,6 +155,6 @@ public class AggregateSetFactory<V> extends SetFactory<V>
     }
     /** Type for 'set identity' object. */
     private static final class ID<E> extends Header<E> {
-	ID<E> identity() { return this; }
+	@Override ID<E> identity() { return this; }
     }
 }

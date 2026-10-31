@@ -36,6 +36,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
      *  is based on persistent randomized treaps.  All {@link Set}s
      *  created by this factory maximally reuse space, and have very
      *  fast equality-test and clone operations. */
+    @Override
     public Set<T> makeSet(Collection<? extends T> c) {
 	return new SetImpl(c);
     }
@@ -45,9 +46,10 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    addAll(c);
 	}
 	SetImpl(Node<T> root) { this.root = root; }
-	public boolean isEmpty() { return this.root==null; }
-	public int size() { return (root==null)?0:root.size; }
-	public int hashCode() { return (root==null)?0:root.setHashCode; }
+	@Override public boolean isEmpty() { return this.root==null; }
+	@Override public int size() { return (root==null)?0:root.size; }
+	@Override public int hashCode() { return (root==null)?0:root.setHashCode; }
+	@Override
 	public boolean equals(Object o) {
 	    // maps from the same factory can be compared very quickly
 	    if (o instanceof PersistentSetFactory.SetImpl &&
@@ -60,26 +62,31 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	private PersistentSetFactory<T> factory() {
 	    return PersistentSetFactory.this;
 	}
+	@Override
 	public void clear() {
 	    this.root = null;
 	}
 	// constant-time!
-	public SetImpl clone() { return new SetImpl(this.root); }
+	@Override public SetImpl clone() { return new SetImpl(this.root); }
+	@Override
 	public boolean contains(Object key) {
 	    // yuck, can't enforce that comparator will be able to handle
 	    // this arbitrary key
 	    return (Node.get(this.root, comparator, (T)key)!=null);
 	}
+	@Override
 	public boolean remove(Object key) {
 	    Node<T> old_root = this.root;
 	    this.root = Node.remove(this.root, comparator, (T)key, allocator);
 	    return old_root!=this.root;
 	}
+	@Override
 	public boolean add(T elem) {
 	    Node<T> old_root = this.root;
 	    this.root = Node.put(this.root, comparator, elem, elem, allocator);
 	    return old_root!=this.root;
 	}
+	@Override
 	public boolean addAll(Collection<? extends T> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
@@ -92,6 +99,7 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    } else // slow case
 		return super.addAll(c);
 	}
+	@Override
 	public boolean containsAll(Collection<?> c) {
 	    // special fast case for sets from the same factory
 	    // sets from the same factory can be compared very quickly
@@ -101,15 +109,18 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 	    else // slow case
 		return super.containsAll(c);
 	}
+	@Override
 	public Iterator<T> iterator() {
 	    final Iterator<Node<T>> it = Node.iterator(root);
 	    return new Iterator<T>() {
 		Node<T> last = null;
-		public boolean hasNext() { return it.hasNext(); }
+		@Override public boolean hasNext() { return it.hasNext(); }
+		@Override
 		public T next() {
 		    last = it.next();
 		    return last.key;
 		}
+		@Override
 		public void remove() {
 		    if (last==null)
 			throw new IllegalStateException();
@@ -170,21 +181,23 @@ public class PersistentSetFactory<T> extends SetFactory<T> {
 		((left==null)?0:left.size) + // size of left tree
 		((right==null)?0:right.size); // size of right tree
 	}
-	public T getValue() { return key; }
+	@Override public T getValue() { return key; }
 	// override 'equals' and 'hashCode' to facilitate hash-consing.
+	@Override
 	public boolean equals(Object o) {
 	    if (!(o instanceof Node)) return false;
 	    Node n = (Node) o;
 	    return ((key==null)?n.key==null:key.equals(n.key)) &&
 		left == n.left && right == n.right;
 	}
-	public int hashCode() { return setHashCode; }
+	@Override public int hashCode() { return setHashCode; }
     }
     /** Allocator uses a {@link WeakHashMap} to do hash consing. */
     static class Allocator<T>
 	extends PersistentTreeNode.Allocator<Node<T>,T,T> {
 	final WeakHashMap<Node<T>,WeakReference<Node<T>>> hashConsCache =
 	    new WeakHashMap<Node<T>,WeakReference<Node<T>>>();
+	@Override
 	Node<T> newNode(T key, T value,
 			Node<T> left, Node<T> right) {
 	    assert key==value;

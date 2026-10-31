@@ -137,16 +137,16 @@ public interface Heap<K,V> {
     /** Returns the hash code for this heap.  The hash code for this
      *  heap will be one greater than the hash code for the
      *  {@link Collection} returned by {@link #entries()}. */
-    public int hashCode();
+    @Override public int hashCode();
     /** Compares the specified object with this heap for equality.
      *  Returns <code>true</code> iff the given object is also a
      *  {@link Heap} and the {@link Collection}s returned
      *  by their {@link #entries()} methods are equal using
      *  the <code>equals()</code> method of {@link Collection}.
      */
-    public boolean equals(Object o);
+    @Override public boolean equals(Object o);
     /** Returns a string representation of this {@link Heap}. */
-    public String toString();
+    @Override public String toString();
 
     /** Returns the comparator associated with this {@link Heap},
      *  or <code>null</code> if it uses its elements' natural ordering. */

@@ -44,6 +44,7 @@ public class RedBlackTree extends BinaryTree {
     protected class RBNode extends Node {
 	private int color = BLACK;
 	protected RBNode(Object key) { super(key); }
+	@Override
 	public String toString() {
 	    return super.toString()+" col:"+ ((color ==BLACK)?"b":"r");
 	}
@@ -54,7 +55,7 @@ public class RedBlackTree extends BinaryTree {
 	subclasses of {@link RedBlackTree} can associate new data
 	with their own nodes by extending the {@link Node} class
 	and overriding this method. */
-    protected Node makeNode(Object o) { return new RBNode(o); }
+    @Override protected Node makeNode(Object o) { return new RBNode(o); }
 
     public RedBlackTree() { super(); }
     public RedBlackTree(Comparator c) { super(c); }
@@ -69,6 +70,7 @@ public class RedBlackTree extends BinaryTree {
     }
     private void setColor(Node n, int c) { ((RBNode)n).color = c; }
 
+    @Override
     protected void insertNode(Node x) {
 	checkRep();
 	super.insertNode(x);
@@ -113,12 +115,14 @@ public class RedBlackTree extends BinaryTree {
 	checkRep();
     }
 
+    @Override
     protected void swapPositions(Node a, Node b) {
 	super.swapPositions(a,b);
 	int c = color(a);
 	setColor(a, color(b));
 	setColor(b, c);
     }
+    @Override
     protected void deleteNode(Node z) {
 	checkRep();
 

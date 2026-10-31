@@ -15,6 +15,6 @@ public class IteratorEnumerator<E> implements Enumeration<E> {
     private final Iterator<E> i;
     /** Creates a {@link IteratorEnumerator}. */
     public IteratorEnumerator(Iterator<E> i) { this.i = i; }
-    public boolean hasMoreElements() { return i.hasNext(); }
-    public E nextElement() { return i.next(); }
+    @Override public boolean hasMoreElements() { return i.hasNext(); }
+    @Override public E nextElement() { return i.next(); }
 }

@@ -29,7 +29,8 @@ public class SnapshotIterator<E> extends UnmodifiableIterator<E> {
 	while (it.hasNext()) l.add(it.next());
 	l.trimToSize();
     }
-    public boolean hasNext() { return ( i < l.size() ); }
+    @Override public boolean hasNext() { return ( i < l.size() ); }
+    @Override
     public E  next() {
 	try { return l.get(i++); }
 	catch (IndexOutOfBoundsException e)

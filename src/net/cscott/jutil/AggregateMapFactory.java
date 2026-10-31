@@ -35,6 +35,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
      *  subset of the backing set of this
      *  {@link AggregateMapFactory}.
      */
+    @Override
     public Map<K,V> makeMap(final Map<? extends K,? extends V> mm) {
 	return new AggregateMap(mm);
     }
@@ -65,6 +66,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	    size++;
 	}
 
+	@Override
 	public V put(K key, V value) {
 	    DoublyLinkedList<K,V> entry=new DoublyLinkedList<K,V>(key, value);
 	    DoublyLinkedList<K,V> old=m.put(Default.entry(IDENTITY,key),entry);
@@ -72,9 +74,11 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 	    link(entry);
 	    return (old==null) ? null : old.getValue();
 	}
+	@Override
 	public boolean containsKey(Object key) {
 	    return m.containsKey(Default.entry(IDENTITY, key));
 	}
+	@Override
 	public boolean containsValue(Object value) {
 	    for (DoublyLinkedList<K,V> dll=entries; dll!=null; dll=dll.next)
 		if (value==null ?
@@ -83,12 +87,15 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 		    return true;
 	    return false;
 	}
+	@Override
 	public Set<Map.Entry<K,V>> entrySet() {
 	    return new AbstractMapSet<K,V>() {
+		    @Override
 		    public Iterator<Map.Entry<K,V>> iterator() {
 			return new Iterator<Map.Entry<K,V>>() {
 				DoublyLinkedList<K,V> dll=entries, last=null;
-				public boolean hasNext() { return dll!=null; }
+				@Override public boolean hasNext() { return dll!=null; }
+				@Override
 				public Map.Entry<K,V> next() {
 				    if (dll==null)
 					throw new NoSuchElementException();
@@ -96,6 +103,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 				    dll=dll.next;
 				    return last;
 				}
+				@Override
 				public void remove() {
 				    if (last==null)
 					throw new
@@ -107,7 +115,8 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 				}
 			    };
 		    }
-		    public int size() { return size; }
+		    @Override public int size() { return size; }
+		    @Override
 		    public boolean add(Map.Entry<K,V> me) {
 			if (me==null)
 			    throw new UnsupportedOperationException();
@@ -118,6 +127,7 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 			AggregateMap.this.put(me.getKey(), me.getValue());
 			return true;
 		    }
+		    @Override
 		    public boolean contains(Object o) {
 			if (!(o instanceof Map.Entry)) return false;
 			Map.Entry me = (Map.Entry) o;
@@ -125,25 +135,28 @@ public class AggregateMapFactory<K,V> extends MapFactory<K,V>
 			if (!m.containsKey(pair)) return false;
 			return me.equals(m.get(pair));
 		    }
+		    @Override
 		    public boolean remove(Object o) {
 			if (!contains(o)) return false;
 			Map.Entry me = (Map.Entry) o;
 			AggregateMap.this.remove(me.getKey());
 			return true;
 		    }
-		    public Map<K,V> asMap() { return AggregateMap.this; }
+		    @Override public Map<K,V> asMap() { return AggregateMap.this; }
 		};
 	}
+	@Override
 	public V get(Object key) {
 	    DoublyLinkedList<K,V> entry = m.get(Default.entry(IDENTITY, key));
 	    return (entry==null)?null:entry.getValue();
 	}
+	@Override
 	public V remove(Object key) {
 	    DoublyLinkedList<K,V> entry = m.remove(Default.entry(IDENTITY, key));
 	    if (entry!=null) unlink(entry);
 	    return (entry==null)?null:entry.getValue();
 	}
-	public int size() { return size; }
+	@Override public int size() { return size; }
 	// garbage-collect entries in backing store, too!
 	protected void finalize() {
 	    clear();
