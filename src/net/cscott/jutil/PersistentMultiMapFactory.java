@@ -26,6 +26,7 @@ import java.util.WeakHashMap;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ * @since 1.3
  */
 public class PersistentMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
     final MapAllocator<K,V> mapAllocator = new MapAllocator<>();

@@ -8,6 +8,7 @@ import java.util.*;
  *  using instances of {@link GenericMultiMap}.
  *
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ * @since 1.3
  */
 public class GenericMultiMapFactory<K,V> implements MultiMapFactory<K,V> {
     final MapFactory<K,Collection<V>> mf;

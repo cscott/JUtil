@@ -14,6 +14,7 @@ import java.util.AbstractMap;
  * interface, to minimize the effort requires to implement this interface.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ * @since 1.3
  */
 public abstract class AbstractMultiMap<K,V> extends AbstractMap<K,V>
     implements MultiMap<K,V> {

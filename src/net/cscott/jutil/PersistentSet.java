@@ -101,7 +101,8 @@ public class PersistentSet<T>  implements Iterable<T> {
     /** Human-readable representation of the set. */
     @Override public String toString() { return asSet().toString(); }
     
-    /** Unmodifiable iterator. */
+    /** Unmodifiable iterator.
+     *  @since 1.3 */
     @Override
     public Iterator<T> iterator() {
         final Iterator<Node<T>> it = Node.iterator(root);

@@ -50,10 +50,13 @@ public final class Factories {
     
     /** A {@link MapFactory} that generates {@link LinkedHashMap}s.
      *  @deprecated Use {@link #linkedHashMapFactory()}, which is parameterized.
+     *  @since 1.3
      */
     @Deprecated(since="2.0")
     @SuppressWarnings({"rawtypes","unchecked"})
     public static final MapFactory linkedHashMapFactory = linkedHashMapFactory();
+    /** Returns a {@link MapFactory} that generates {@link LinkedHashMap}s.
+     *  @since 1.3 */
     public static final <K,V> MapFactory<K,V> linkedHashMapFactory() {
 	return new SerialMapFactory<K,V>() {
 	    @Override
@@ -63,7 +66,8 @@ public final class Factories {
 	};
     }
 
-    /** A {@link MapFactory} that generates {@link EnumMap}s. */ 
+    /** A {@link MapFactory} that generates {@link EnumMap}s.
+     *  @since 1.3 */
     public static final <K extends Enum<K>,V> MapFactory<K,V> enumMapFactory
                                                    (final Class<K> enumClass) {
         return new SerialMapFactory<K,V>() {
@@ -97,10 +101,13 @@ public final class Factories {
     
     /** A {@link SetFactory} that generates {@link LinkedHashSet}s.
      *  @deprecated Use {@link #linkedHashSetFactory()}, which is parameterized.
+     *  @since 1.3
      */
     @Deprecated(since="2.0")
     @SuppressWarnings({"rawtypes","unchecked"})
     public static final SetFactory linkedHashSetFactory = linkedHashSetFactory();
+    /** Returns a {@link SetFactory} that generates {@link LinkedHashSet}s.
+     *  @since 1.3 */
     public static final <V> SetFactory<V> linkedHashSetFactory() {
 	return new SerialSetFactory<V>() {
 	    @Override
@@ -113,7 +120,8 @@ public final class Factories {
 	    }
 	};
     }
-    /** A {@link SetFactory} that generates {@link EnumSet}s. */
+    /** A {@link SetFactory} that generates {@link EnumSet}s.
+     *  @since 1.3 */
     public static final <V extends Enum<V>> SetFactory<V> enumSetFactory
                                                    (final Class<V> enumClass) {
         return new SerialSetFactory<V>() {
@@ -191,6 +199,8 @@ public final class Factories {
     @Deprecated(since="2.0")
     @SuppressWarnings({"rawtypes","unchecked"})
     public static final SetFactory treeSetFactory = Factories.<Comparable>treeSetFactory();
+    /** Returns a {@link SetFactory} that generates {@link TreeSet}s,
+     *  in the elements' natural order. */
     public static final <V extends Comparable<V>> SetFactory<V> treeSetFactory() {
 	return new SerialSetFactory<V>() {
 	    @Override
@@ -199,6 +209,9 @@ public final class Factories {
 	    }
 	};
     }
+    /** Returns a {@link SetFactory} that generates {@link TreeSet}s,
+     *  ordered by <code>comp</code>.
+     *  @since 1.5 */
     public static final <V> SetFactory<V> treeSetFactory(final Comparator<? super V> comp) {
 	return new SerialSetFactory<V>() {
 	    @Override
@@ -212,10 +225,14 @@ public final class Factories {
 
     /** A {@link MapFactory} that generates {@link TreeMap}s.
      *  @deprecated Use {@link #treeMapFactory()}, which is parameterized.
+     *  @since 1.5
      */
     @Deprecated(since="2.0")
     @SuppressWarnings({"rawtypes","unchecked"})
     public static final MapFactory treeMapFactory = Factories.<Comparable,Object>treeMapFactory();
+    /** Returns a {@link MapFactory} that generates {@link TreeMap}s,
+     *  in the keys' natural order.
+     *  @since 1.5 */
     public static final <K extends Comparable<K>,V> MapFactory<K,V> treeMapFactory() {
 	return new SerialMapFactory<K,V>() {
 	    @Override
@@ -224,6 +241,9 @@ public final class Factories {
 	    }
 	};
     }
+    /** Returns a {@link MapFactory} that generates {@link TreeMap}s,
+     *  ordered by <code>comp</code>.
+     *  @since 1.5 */
     public static final <K,V> MapFactory<K,V> treeMapFactory(final Comparator<? super K> comp) {
 	return new SerialMapFactory<K,V>() {
 	    @Override

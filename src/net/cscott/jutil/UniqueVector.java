@@ -364,7 +364,8 @@ public class UniqueVector<E> extends AbstractList<E>
   }
   /** Creates a {@link Spliterator} over the elements of this vector,
    *  in order.  (This resolves the conflict between the default
-   *  methods of {@link List} and {@link Set}.) */
+   *  methods of {@link List} and {@link Set}.)
+   *  @since 2.0 */
   @Override
   public Spliterator<E> spliterator() {
       return Spliterators.spliterator

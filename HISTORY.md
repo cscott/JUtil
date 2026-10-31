@@ -5,7 +5,8 @@
 * JDK 21 or later is required, to build and to run JUtil.
 * Published on Maven Central, as `net.cscott:jutil`; `ant release`
   builds the bundle to upload.  The jar is an automatic module,
-  `net.cscott.jutil`.
+  `net.cscott.jutil`.  The jar and the sources jar hold the license,
+  as `META-INF/COPYING`.
 * The tests use JUnit 6, and are in `test/` instead of the jar.  They
   replace `TestMap`, `TestSet`, and the `main()` self-test methods of
   `BinaryHeap`, `BinomialHeap`, `FibonacciHeap`, `BinaryTree` (with its
@@ -147,6 +148,9 @@
   `Iterator<? extends E>`.
 * Each deprecated class and member says which release deprecated it,
   as `@Deprecated(since="1.3")` or `@Deprecated(since="2.0")`.
+  Classes and members added after 1.0 say which release added them,
+  with `@since`, and the API documentation lists them by release on
+  its "New API" page.
 * The documentation of `MultiMap`, `PersistentMap` and `DisjointSet`
   has examples, which `ant test` runs with [JDoctest].
 

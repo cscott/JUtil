@@ -19,6 +19,7 @@ import java.util.WeakHashMap;
  * randomized treaps.
  * 
  * @author  C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ * @since 1.1
  */
 public class PersistentMapFactory<K,V> implements MapFactory<K,V> {
     final Allocator<K,V> allocator = new Allocator<>();

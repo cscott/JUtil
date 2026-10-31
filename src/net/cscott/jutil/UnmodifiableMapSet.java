@@ -10,6 +10,7 @@ import net.cscott.jutil.Factories.MapSetWrapper;
  * {@link UnmodifiableMapSet} prevents mutation of a wrapped
  * {@link MapSet}.
  * @author C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ * @since 1.3
  */
 public abstract class UnmodifiableMapSet<K,V> extends MapSetWrapper<K,V> {
     protected UnmodifiableMapSet() { }

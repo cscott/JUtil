@@ -4,6 +4,7 @@ package net.cscott.jutil;
  * {@link UnmodifiableMultiMapSet} prevents mutation of a wrapped
  * {@link MultiMapSet}.
  * @author C. Scott Ananian &lt;cananian@alumni.princeton.edu&gt;
+ * @since 1.3
  */
 public abstract class UnmodifiableMultiMapSet<K,V> extends UnmodifiableMapSet<K,V>
 implements MultiMapSet<K,V> {

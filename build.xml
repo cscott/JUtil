@@ -230,6 +230,10 @@ JUtil build file.
 	  <arg value="-J-Dnet.cscott.jdoctest.output=${api_dir}/tests" />
 	  <arg value="-J-ea:net.cscott..." />
 	  <arg value="-Xdoclint:all,-missing" />
+	  <!-- list the API added and deprecated in these releases, from
+	       the @since tags and @Deprecated(since=...) -->
+	  <arg value="--since" />
+	  <arg value="1.1,1.2,1.3,1.5,2.0" />
 	  <classpath refid="classpath.path" />
           <!-- javadoc links to the JDK API docs by default -->
 	</javadoc>
@@ -240,6 +244,7 @@ JUtil build file.
             description="Exports the project as a jar">
 	<jar destfile="${basedir}/${jar.file}">
 		<fileset dir="${classes_dir}" excludes="README" />
+		<metainf dir="${basedir}" includes="COPYING" />
 		<manifest>
 		  <attribute name="Automatic-Module-Name"
 			     value="net.cscott.jutil" />
@@ -296,6 +301,7 @@ JUtil build file.
       <copy file="${jar.file}" todir="${main_dir}" />
       <jar destfile="${main_dir}/${package}-${version}-sources.jar">
         <fileset dir="${src_dir}" includes="**/*.java **/*.html" />
+        <metainf dir="${basedir}" includes="COPYING" />
       </jar>
       <jar destfile="${main_dir}/${package}-${version}-javadoc.jar">
         <fileset dir="${api_dir}" excludes="tests/**" />

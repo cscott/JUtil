@@ -17,7 +17,8 @@ import java.util.Collection;
  * @author  Felix S. Klock II &lt;pnkfelix@mit.edu&gt;
  */
 public abstract class CollectionWrapper<E> implements Collection<E> {
-    /** Implementations should return the wrapped {@link Collection} here. */
+    /** Implementations should return the wrapped {@link Collection} here.
+     *  @since 1.3 */
     protected abstract Collection<E> wrapped();
 
     /** Creates a {@link CollectionWrapper}. */

@@ -44,7 +44,10 @@ public abstract class Default  {
      *  <code>null</code> is less than everything else.
      * @deprecated Use
      *  {@link Comparator#nullsFirst(Comparator) Comparator.nullsFirst}<code>(</code>{@link Comparator#naturalOrder()}<code>)</code>,
-     *  which this is, or {@link #comparator()}.
+     *  which this is.
+     *  Plain {@link Comparator#naturalOrder()} is not a replacement:
+     *  it throws {@link NullPointerException} when it compares
+     *  <code>null</code>.
      */
     @Deprecated(since="2.0")
     @SuppressWarnings("rawtypes")
@@ -57,15 +60,18 @@ public abstract class Default  {
      * @deprecated Use
      *  {@link Comparator#nullsFirst(Comparator) Comparator.nullsFirst}<code>(</code>{@link Comparator#naturalOrder()}<code>)</code>,
      *  which this returns.
+     *  Plain {@link Comparator#naturalOrder()} is not a replacement:
+     *  it throws {@link NullPointerException} when it compares
+     *  <code>null</code>.
+     *  @since 1.2
      */
     @Deprecated(since="2.0")
     public static final <T extends Comparable<T>> Comparator<T> comparator() {
 	return nullsFirst();
     }
     /** An {@link Iterator} over the empty set.
-     * @deprecated Use {@link Collections#emptyIterator()}, or
-     *  {@link #nullIterator()}.  Unlike this iterator, the
-     *  <code>remove()</code> method of
+     * @deprecated Use {@link Collections#emptyIterator()}.  Unlike
+     *  this iterator, the <code>remove()</code> method of
      *  {@link Collections#emptyIterator()} throws
      *  {@link IllegalStateException}, not
      *  {@link UnsupportedOperationException}.
@@ -109,6 +115,7 @@ public abstract class Default  {
      * @deprecated Use {@link Collections#emptySortedSet()}, or
      *  {@link Collections#emptySet()} when the set need not be a
      *  {@link SortedSet}.
+     *  @since 1.2
      */
     @Deprecated(since="1.3")
     @SuppressWarnings("rawtypes")
@@ -197,6 +204,7 @@ public abstract class Default  {
      * @deprecated Use {@link Collections#emptySortedMap()}, or
      *  {@link Collections#emptyMap()} when the map need not be a
      *  {@link SortedMap}.
+     *  @since 1.2
      */
     @Deprecated(since="1.3")
     public static final <K,V> SortedMap<K,V> EMPTY_MAP() {
@@ -266,7 +274,8 @@ public abstract class Default  {
     @SuppressWarnings("rawtypes")
     public static final MultiMap EMPTY_MULTIMAP = EMPTY_MULTIMAP();
     /** An empty multi-map, parameterized to play nicely with Java's
-     *  type system. */
+     *  type system.
+     *  @since 1.2 */
     public static final <K,V> MultiMap<K,V> EMPTY_MULTIMAP() {
 	return new EmptyMultiMap<>();
     }

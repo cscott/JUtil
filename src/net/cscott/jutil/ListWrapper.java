@@ -13,7 +13,8 @@ import java.util.List;
  */
 public abstract class ListWrapper<E> extends CollectionWrapper<E>
     implements List<E> {
-    /** Implementations should return the wrapped {@link List} here. */
+    /** Implementations should return the wrapped {@link List} here.
+     *  @since 1.3 */
     @Override
     protected abstract List<E> wrapped();
     

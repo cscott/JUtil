@@ -21,6 +21,7 @@ import java.util.Iterator;
 public abstract class UnmodifiableIterator<E> implements Iterator<E> {
     /** Create an {@link UnmodifiableIterator} from the given (potentailly
      * modifiable) {@link Iterator}.
+     *  @since 1.3
      */
     public static <E> UnmodifiableIterator<E> proxy(final Iterator<E> it) {
         return new UnmodifiableIterator<E>() {

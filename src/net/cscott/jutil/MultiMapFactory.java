@@ -36,6 +36,7 @@ public interface MultiMapFactory<K,V> extends MapFactory<K,V> {
 
     /** Creates a new {@link MultiMap} initialized with all 
 	of the {@link java.util.Map.Entry}s in <code>map</code>
+	@since 1.3
     */
     default MultiMap<K,V> makeMultiMap(MultiMap<? extends K,? extends V> map) {
 	MultiMap<K,V> mm = makeMultiMap();

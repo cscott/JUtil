@@ -14,6 +14,8 @@ import java.util.Map;
 */
 public abstract class MapWrapper<K,V> implements Map<K,V> {
     public MapWrapper() { }
+    /** Implementations should return the wrapped {@link Map} here.
+     *  @since 1.3 */
     protected abstract Map<K,V> wrapped();
     @Override public int size() { return wrapped().size(); }
     @Override public boolean isEmpty() { return wrapped().isEmpty(); }

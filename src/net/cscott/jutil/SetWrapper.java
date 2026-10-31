@@ -12,7 +12,8 @@ import java.util.Set;
  */
 public abstract class SetWrapper<E> extends CollectionWrapper<E>
     implements Set<E> {
-    /** Implementations should return the wrapped {@link Set} here. */
+    /** Implementations should return the wrapped {@link Set} here.
+     *  @since 1.3 */
     @Override
     protected abstract Set<E> wrapped();
     
