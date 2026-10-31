@@ -2,4 +2,6 @@ This directory contains java sources for the JUtil java utility classes.
 
 This project can be build with either Eclipse or Ant.
 
-A Java 1.5 compiler is required.
+A JDK between 1.5 and 8 is required to build JUtil 1.x; JDK 9 and later
+can't compile for Java 1.5.  The resulting jutil.jar runs on Java 1.5
+and later.

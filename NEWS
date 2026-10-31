@@ -1,5 +1,5 @@
 JUtil NEWS - User visible changes.
-Copyright (C) 2003-2006 C. Scott Ananian <cscott@cscott.net>
+Copyright (C) 2003-2026 C. Scott Ananian <cscott@cscott.net>
 
 Version 1.1 - January 2004, by C. Scott Ananian
 
@@ -13,3 +13,14 @@ take advantage of new classes introduced in Java 1.5 (for example, EnumSet).
 Several new classes (PersistentMap/Set/MultiMap, etc).  CollectionWrapper
 classes made abstract, with a virtual 'wrapped()' method to allow greater type
 safety.  UnmodifiableMultiMap wrapper made safe.
+
+Version 1.4 - February 2009, by C. Scott Ananian
+
+Binary compatible with JDK 1.5, and compiled with debug information.
+More assertions in WorkSet.
+
+Version 1.5 - October 2026, by C. Scott Ananian
+
+Factories for TreeMap, and for TreeSet and TreeMap with a Comparator.
+Factories.treeSetFactory() now requires a Comparable element type.
+Builds on JDK 1.5 through 8.
